@@ -5,6 +5,10 @@ VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeriodisationProgramApp.WebApi", "PeriodisationProgramApp.WebApi\PeriodisationProgramApp.WebApi.csproj", "{55CBB80C-D766-47F9-8623-FEEAE344B0AB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeriodisationProgramApp.DataAccess", "PeriodisationProgramApp.DataAccess\PeriodisationProgramApp.DataAccess.csproj", "{90AEAE1B-7F09-4F13-8039-AF529799D2C7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeriodisationProgramApp.Domain", "PeriodisationProgramApp.Domain\PeriodisationProgramApp.Domain.csproj", "{A7FF6FDA-BE99-4284-98FD-698D36BF7F56}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{55CBB80C-D766-47F9-8623-FEEAE344B0AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{55CBB80C-D766-47F9-8623-FEEAE344B0AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{55CBB80C-D766-47F9-8623-FEEAE344B0AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{90AEAE1B-7F09-4F13-8039-AF529799D2C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90AEAE1B-7F09-4F13-8039-AF529799D2C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90AEAE1B-7F09-4F13-8039-AF529799D2C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90AEAE1B-7F09-4F13-8039-AF529799D2C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7FF6FDA-BE99-4284-98FD-698D36BF7F56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7FF6FDA-BE99-4284-98FD-698D36BF7F56}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7FF6FDA-BE99-4284-98FD-698D36BF7F56}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7FF6FDA-BE99-4284-98FD-698D36BF7F56}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
