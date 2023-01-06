@@ -10,7 +10,7 @@ namespace PeriodisationProgramApp.DataAccess.Configurations
         {
             builder.Property(e => e.Created).HasDefaultValueSql("NOW()").ValueGeneratedOnAdd();
             builder.Property(e => e.Updated).HasDefaultValueSql("NOW()").ValueGeneratedOnAddOrUpdate();
-            builder.HasQueryFilter(e => e.IsDeleted);
+            builder.HasQueryFilter(e => !e.IsDeleted);
         }
     }
 }

@@ -1,0 +1,126 @@
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Host=localhost;Port=15432;Database=ppadb;Username=ppauser;Password=ktrmn76;"
+  },
+  "DefaultDataSettings": {
+    "DefaultUser": {
+      "Id": "01faeb35-159a-454e-bf45-7343fb9cf14c",
+      "Username": "PatinentZero",
+      "Email": "pprcut47@yandex.ru",
+      "MuscleGroups": [
+        {
+          "Name": "Back",
+          "MaintenanceVolume": 6,
+          "MinimumEffectiveVolume": 10,
+          "MaximumRecoverableVolume": 20,
+          "MaximumRecoverableVolumeMultiplicator": 5,
+          "AverageRecoveryTime": 2
+        },
+        {
+          "Name": "Abs",
+          "MaintenanceVolume": 0,
+          "MinimumEffectiveVolume": 0,
+          "MaximumRecoverableVolume": 25,
+          "MaximumRecoverableVolumeMultiplicator": 0,
+          "AverageRecoveryTime": 1
+        },
+        {
+          "Name": "Traps",
+          "MaintenanceVolume": 0,
+          "MinimumEffectiveVolume": 0,
+          "MaximumRecoverableVolume": 10,
+          "MaximumRecoverableVolumeMultiplicator": 8,
+          "AverageRecoveryTime": 1
+        },
+        {
+          "Name": "Triceps",
+          "MaintenanceVolume": 4,
+          "MinimumEffectiveVolume": 6,
+          "MaximumRecoverableVolume": 16,
+          "MaximumRecoverableVolumeMultiplicator": 4,
+          "AverageRecoveryTime": 1
+        },
+        {
+          "Name": "Forearms",
+          "MaintenanceVolume": 0,
+          "MinimumEffectiveVolume": 4,
+          "MaximumRecoverableVolume": 15,
+          "MaximumRecoverableVolumeMultiplicator": 5,
+          "AverageRecoveryTime": 1
+        },
+        {
+          "Name": "Calves",
+          "MaintenanceVolume": 6,
+          "MinimumEffectiveVolume": 8,
+          "MaximumRecoverableVolume": 16,
+          "MaximumRecoverableVolumeMultiplicator": 4,
+          "AverageRecoveryTime": 1
+        },
+        {
+          "Name": "Front Delts",
+          "MaintenanceVolume": 0,
+          "MinimumEffectiveVolume": 0,
+          "MaximumRecoverableVolume": 12,
+          "MaximumRecoverableVolumeMultiplicator": 4,
+          "AverageRecoveryTime": 2
+        },
+        {
+          "Name": "Glutes",
+          "MaintenanceVolume": 0,
+          "MinimumEffectiveVolume": 0,
+          "MaximumRecoverableVolume": 12,
+          "MaximumRecoverableVolumeMultiplicator": 6,
+          "AverageRecoveryTime": 2
+        },
+        {
+          "Name": "Chest",
+          "MaintenanceVolume": 4,
+          "MinimumEffectiveVolume": 6,
+          "MaximumRecoverableVolume": 20,
+          "MaximumRecoverableVolumeMultiplicator": 5,
+          "AverageRecoveryTime": 2
+        },
+        {
+          "Name": "Biceps",
+          "MaintenanceVolume": 4,
+          "MinimumEffectiveVolume": 8,
+          "MaximumRecoverableVolume": 20,
+          "MaximumRecoverableVolumeMultiplicator": 5,
+          "AverageRecoveryTime": 1
+        },
+        {
+          "Name": "Quads",
+          "MaintenanceVolume": 6,
+          "MinimumEffectiveVolume": 8,
+          "MaximumRecoverableVolume": 18,
+          "MaximumRecoverableVolumeMultiplicator": 4,
+          "AverageRecoveryTime": 2
+        },
+        {
+          "Name": "Hamstrings",
+          "MaintenanceVolume": 3,
+          "MinimumEffectiveVolume": 4,
+          "MaximumRecoverableVolume": 12,
+          "MaximumRecoverableVolumeMultiplicator": 3,
+          "AverageRecoveryTime": 2
+        },
+        {
+          "Name": "Side Delts",
+          "MaintenanceVolume": 6,
+          "MinimumEffectiveVolume": 8,
+          "MaximumRecoverableVolume": 25,
+          "MaximumRecoverableVolumeMultiplicator": 5,
+          "AverageRecoveryTime": 1
+        },
+        {
+          "Name": "Rear Delts",
+          "MaintenanceVolume": 0,
+          "MinimumEffectiveVolume": 6,
+          "MaximumRecoverableVolume": 18,
+          "MaximumRecoverableVolumeMultiplicator": 6,
+          "AverageRecoveryTime": 1
+        }
+      ]
+    }
+  }
+}

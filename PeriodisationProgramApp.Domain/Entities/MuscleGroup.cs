@@ -10,6 +10,20 @@
 
         public int MaximumRecoverableVolume { get; set; }
 
+        public int MaximumRecoverableVolumeMultiplicator { get; set; }
+
+        public int AverageRecoveryTime { get; set; }
+
         public Guid UserId { get; set; }
+
+        public void Update(MuscleGroup other)
+        {
+            Name = other.Name;
+            MaintenanceVolume = other.MaintenanceVolume;
+            MinimumEffectiveVolume = other.MinimumEffectiveVolume;
+            MaximumRecoverableVolume = other.MaximumRecoverableVolume;
+            MaximumRecoverableVolumeMultiplicator = other.MaximumRecoverableVolumeMultiplicator;
+            AverageRecoveryTime = other.AverageRecoveryTime;
+        }
     }
 }

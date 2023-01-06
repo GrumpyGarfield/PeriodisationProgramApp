@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using PeriodisationProgramApp.DataAccess;
@@ -11,9 +12,11 @@ using PeriodisationProgramApp.DataAccess;
 namespace PeriodisationProgramApp.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20230106175340_EntityConfigurationUpdate")]
+    partial class EntityConfigurationUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -52,9 +55,9 @@ namespace PeriodisationProgramApp.DataAccess.Migrations
 
                     b.Property<double>("StimulusToFatigueRatio")
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasPrecision(38, 1)
+                        .HasPrecision(1)
                         .HasColumnType("double precision")
-                        .HasComputedColumnSql("cast(\"RawStimulusMagnitude\" + 1 as decimal) / (\"FatigueMagnitude\" + 1)", true);
+                        .HasComputedColumnSql("(\"RawStimulusMagnitude\" + 1) / (\"FatigueMagnitude\" + 1)", true);
 
                     b.Property<DateTime>("Updated")
                         .ValueGeneratedOnAddOrUpdate()

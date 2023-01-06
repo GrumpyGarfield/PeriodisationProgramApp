@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using PeriodisationProgramApp.DataAccess;
@@ -11,9 +12,11 @@ using PeriodisationProgramApp.DataAccess;
 namespace PeriodisationProgramApp.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20230106150357_MuscleGroupsConfigurationUpdated")]
+    partial class MuscleGroupsConfigurationUpdated
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -52,9 +55,9 @@ namespace PeriodisationProgramApp.DataAccess.Migrations
 
                     b.Property<double>("StimulusToFatigueRatio")
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasPrecision(38, 1)
+                        .HasPrecision(1)
                         .HasColumnType("double precision")
-                        .HasComputedColumnSql("cast(\"RawStimulusMagnitude\" + 1 as decimal) / (\"FatigueMagnitude\" + 1)", true);
+                        .HasComputedColumnSql("(\"RawStimulusMagnitude\" + 1) / (\"FatigueMagnitude\" + 1)", true);
 
                     b.Property<DateTime>("Updated")
                         .ValueGeneratedOnAddOrUpdate()
@@ -304,10 +307,14 @@ namespace PeriodisationProgramApp.DataAccess.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("Created")
-                        .HasColumnType("timestamp with time zone");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("NOW()");
 
                     b.Property<string>("Email")
-                        .HasColumnType("text");
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
                     b.Property<string>("Hash")
                         .HasColumnType("text");
@@ -319,10 +326,14 @@ namespace PeriodisationProgramApp.DataAccess.Migrations
                         .HasColumnType("text");
 
                     b.Property<DateTime>("Updated")
-                        .HasColumnType("timestamp with time zone");
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("NOW()");
 
                     b.Property<string>("Username")
-                        .HasColumnType("text");
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
 
                     b.HasKey("Id");
 

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using PeriodisationProgramApp.DataAccess;
@@ -11,9 +12,11 @@ using PeriodisationProgramApp.DataAccess;
 namespace PeriodisationProgramApp.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20230106083635_TableConfigurations")]
+    partial class TableConfigurations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -52,9 +55,9 @@ namespace PeriodisationProgramApp.DataAccess.Migrations
 
                     b.Property<double>("StimulusToFatigueRatio")
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasPrecision(38, 1)
+                        .HasPrecision(1)
                         .HasColumnType("double precision")
-                        .HasComputedColumnSql("cast(\"RawStimulusMagnitude\" + 1 as decimal) / (\"FatigueMagnitude\" + 1)", true);
+                        .HasComputedColumnSql("(\"RawStimulusMagnitude\" + 1) / (\"FatigueMagnitude\" + 1)", true);
 
                     b.Property<DateTime>("Updated")
                         .ValueGeneratedOnAddOrUpdate()
@@ -83,9 +86,7 @@ namespace PeriodisationProgramApp.DataAccess.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("Created")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasDefaultValueSql("NOW()");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("ExerciseId")
                         .HasColumnType("uuid");
@@ -100,9 +101,7 @@ namespace PeriodisationProgramApp.DataAccess.Migrations
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("Updated")
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("timestamp with time zone")
-                        .HasDefaultValueSql("NOW()");
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
@@ -119,11 +118,6 @@ namespace PeriodisationProgramApp.DataAccess.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<int>("AverageRecoveryTime")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasDefaultValue(1);
-
                     b.Property<DateTime>("Created")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp with time zone")
@@ -137,11 +131,6 @@ namespace PeriodisationProgramApp.DataAccess.Migrations
 
                     b.Property<int>("MaximumRecoverableVolume")
                         .HasColumnType("integer");
-
-                    b.Property<int>("MaximumRecoverableVolumeMultiplicator")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer")
-                        .HasDefaultValue(5);
 
                     b.Property<int>("MinimumEffectiveVolume")
                         .HasColumnType("integer");
@@ -165,15 +154,11 @@ namespace PeriodisationProgramApp.DataAccess.Migrations
 
                     b.ToTable("MuscleGroups", t =>
                         {
-                            t.HasCheckConstraint("CK_AverageRecoveryTime", "\"AverageRecoveryTime\" > 0 AND \"AverageRecoveryTime\" < 10");
+                            t.HasCheckConstraint("CK_MaintenanceVolume", "\"MaintenanceVolume\" > 0 AND \"MaintenanceVolume\" < 100");
 
-                            t.HasCheckConstraint("CK_MaintenanceVolume", "\"MaintenanceVolume\" > -1 AND \"MaintenanceVolume\" < 100");
+                            t.HasCheckConstraint("CK_MaximumRecoverableVolume", "\"MaximumRecoverableVolume\" > 0 AND \"MaximumRecoverableVolume\" < 100");
 
-                            t.HasCheckConstraint("CK_MaximumRecoverableVolume", "\"MaximumRecoverableVolume\" > -1 AND \"MaximumRecoverableVolume\" < 100");
-
-                            t.HasCheckConstraint("CK_MaximumRecoverableVolumeMultiplicator", "\"MaximumRecoverableVolumeMultiplicator\" > -1 AND \"MaximumRecoverableVolumeMultiplicator\" < 100");
-
-                            t.HasCheckConstraint("CK_MinimumEffectiveVolume", "\"MinimumEffectiveVolume\" > -1 AND \"MinimumEffectiveVolume\" < 100");
+                            t.HasCheckConstraint("CK_MinimumEffectiveVolume", "\"MinimumEffectiveVolume\" > 0 AND \"MinimumEffectiveVolume\" < 100");
                         });
                 });
 
@@ -251,7 +236,7 @@ namespace PeriodisationProgramApp.DataAccess.Migrations
 
                     b.ToTable("TrainingSessions", t =>
                         {
-                            t.HasCheckConstraint("CK_RepsInReserve", "\"RepsInReserve\" > -1 AND \"RepsInReserve\" < 10");
+                            t.HasCheckConstraint("CK_RepsInReserve", "\"RepsInReserve\" > 0 AND \"RepsInReserve\" < 10");
 
                             t.HasCheckConstraint("CK_Week", "\"Week\" > 0 AND \"Week\" < 100");
                         });
@@ -304,10 +289,14 @@ namespace PeriodisationProgramApp.DataAccess.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("Created")
-                        .HasColumnType("timestamp with time zone");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("NOW()");
 
                     b.Property<string>("Email")
-                        .HasColumnType("text");
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
                     b.Property<string>("Hash")
                         .HasColumnType("text");
@@ -319,14 +308,29 @@ namespace PeriodisationProgramApp.DataAccess.Migrations
                         .HasColumnType("text");
 
                     b.Property<DateTime>("Updated")
-                        .HasColumnType("timestamp with time zone");
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("timestamp with time zone")
+                        .HasDefaultValueSql("NOW()");
 
                     b.Property<string>("Username")
-                        .HasColumnType("text");
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
 
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("a83cc106-c6b1-44c3-a3c1-12d9a05f03a0"),
+                            Created = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Email = "pprcut47@yandex.ru",
+                            IsDeleted = false,
+                            Updated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Username = "patientZero"
+                        });
                 });
 
             modelBuilder.Entity("PeriodisationProgramApp.Domain.Entities.Exercise", b =>

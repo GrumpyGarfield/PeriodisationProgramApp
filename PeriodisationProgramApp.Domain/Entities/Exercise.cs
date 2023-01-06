@@ -15,5 +15,14 @@
         public Guid UserId { get; set; }
 
         public bool IsPublic { get; set; }
+
+        public void Update(Exercise other)
+        {
+            Name = other.Name;
+            RawStimulusMagnitude = other.RawStimulusMagnitude;
+            FatigueMagnitude = other.FatigueMagnitude;
+            StimulusToFatigueRatio = other.StimulusToFatigueRatio;
+            IsPublic = other.IsPublic;
+        }
     }
 }

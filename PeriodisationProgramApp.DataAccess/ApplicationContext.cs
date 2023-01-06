@@ -15,6 +15,11 @@ namespace PeriodisationProgramApp.DataAccess
         public DbSet<TrainingSession> TrainingSessions { get; set; }
         public DbSet<TrainingSessionExercise> TrainingSessionsExercises { get; set; }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.LogTo(Console.WriteLine);
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationContext).Assembly);
