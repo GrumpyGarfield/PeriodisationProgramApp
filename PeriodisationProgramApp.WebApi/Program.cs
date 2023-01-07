@@ -32,9 +32,9 @@ using (var serviceScope = app.Services.CreateScope())
 {
     try
     {
-        var context = serviceScope.ServiceProvider.GetRequiredService<ApplicationContext>();
+        var unitOfWork = serviceScope.ServiceProvider.GetRequiredService<IUnitOfWork>();
         var defaultDataSettings = serviceScope.ServiceProvider.GetRequiredService<IDefaultDataSettings>();
-        DataInitializer.SeedData(context, defaultDataSettings).Wait();
+        DataInitializer.SeedData(unitOfWork, defaultDataSettings).Wait();
     }
     catch(Exception ex)
     {

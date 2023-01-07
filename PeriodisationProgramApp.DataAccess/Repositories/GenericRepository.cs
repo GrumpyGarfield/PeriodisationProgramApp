@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using PeriodisationProgramApp.Domain.Entities;
 using PeriodisationProgramApp.Domain.Interfaces;
 using System.Linq.Expressions;
 
 namespace PeriodisationProgramApp.DataAccess.Repositories
 {
-    public class GenericRepository<T> : IGenericRepository<T> where T : class
+    public class GenericRepository<T> : IGenericRepository<T> where T : Entity
     {
         protected readonly ApplicationContext _context;
 
@@ -60,6 +61,7 @@ namespace PeriodisationProgramApp.DataAccess.Repositories
 
         public void Update(T entity)
         {
+            entity.Updated = DateTime.UtcNow;
             _context.Set<T>().Update(entity);
         }
 
@@ -71,6 +73,12 @@ namespace PeriodisationProgramApp.DataAccess.Repositories
         public void RemoveRange(IEnumerable<T> entities)
         {
             _context.Set<T>().RemoveRange(entities);
+        }
+
+        public void MarkAsDeleted(T entity)
+        {
+            entity.IsDeleted = true;
+            _context.Set<T>().Update(entity);
         }
     }
 }

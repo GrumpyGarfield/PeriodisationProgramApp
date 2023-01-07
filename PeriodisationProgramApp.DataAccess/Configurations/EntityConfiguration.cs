@@ -8,8 +8,8 @@ namespace PeriodisationProgramApp.DataAccess.Configurations
     {
         public virtual void Configure(EntityTypeBuilder<TEntity> builder)
         {
-            builder.Property(e => e.Created).HasDefaultValueSql("NOW()").ValueGeneratedOnAdd();
-            builder.Property(e => e.Updated).HasDefaultValueSql("NOW()").ValueGeneratedOnAddOrUpdate();
+            builder.Property(e => e.Created).HasDefaultValueSql("NOW()");
+            builder.Property(e => e.Updated).HasDefaultValueSql("NOW()");
             builder.HasQueryFilter(e => !e.IsDeleted);
         }
     }

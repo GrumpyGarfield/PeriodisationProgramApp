@@ -27,7 +27,7 @@ namespace PeriodisationProgramApp.Domain.Comparers
 
         public int GetHashCode(MuscleGroup muscleGroup)
         {
-            int code = muscleGroup.Name!.Length + (muscleGroup.MaintenanceVolume * muscleGroup.MinimumEffectiveVolume * muscleGroup.MaximumRecoverableVolume);
+            int code = muscleGroup.Name!.GetHashCode() + muscleGroup.MaintenanceVolume + muscleGroup.MinimumEffectiveVolume + muscleGroup.MaximumRecoverableVolume;
             return code.GetHashCode();
         }
     }

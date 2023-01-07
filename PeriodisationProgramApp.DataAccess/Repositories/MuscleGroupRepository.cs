@@ -4,11 +4,11 @@ using PeriodisationProgramApp.Domain.Interfaces;
 
 namespace PeriodisationProgramApp.DataAccess.Repositories
 {
-    public class MuscleGroupsRepository : GenericRepository<MuscleGroup>, IMuscleGroupsRepository
+    public class MuscleGroupRepository : GenericRepository<MuscleGroup>, IMuscleGroupRepository
     {
         private readonly IDefaultDataSettings _defaultDataSettings;
 
-        public MuscleGroupsRepository(ApplicationContext context, IDefaultDataSettings defaultDataSettings) : base(context)
+        public MuscleGroupRepository(ApplicationContext context, IDefaultDataSettings defaultDataSettings) : base(context)
         {
             _defaultDataSettings = defaultDataSettings; 
         }

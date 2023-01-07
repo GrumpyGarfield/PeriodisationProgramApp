@@ -2,7 +2,7 @@
 
 namespace PeriodisationProgramApp.Domain.Interfaces
 {
-    public interface IMuscleGroupsRepository : IGenericRepository<MuscleGroup>
+    public interface IMuscleGroupRepository : IGenericRepository<MuscleGroup>
     {
         IEnumerable<MuscleGroup> GetDefaultMuscleGroups();
     }

@@ -3,58 +3,67 @@ using PeriodisationProgramApp.Configuration.Interfaces;
 using PeriodisationProgramApp.Domain.Comparers;
 using PeriodisationProgramApp.Domain.Entities;
 using PeriodisationProgramApp.Domain.Enums;
+using PeriodisationProgramApp.Domain.Interfaces;
+using System.Xml.Linq;
 
 namespace PeriodisationProgramApp.DataAccess
 {
     public static class DataInitializer
     {
-        public static async Task SeedData(ApplicationContext context, IDefaultDataSettings defaultDataSettings)
+        private static IDefaultDataSettings? _defaultDataSettings;
+        private static IUnitOfWork? _unitOfWork;
+        private static User? _defaultUser;
+
+        public static async Task SeedData(IUnitOfWork unitOfWork, IDefaultDataSettings defaultDataSettings)
         {
-            var defaultUser = await context.Users
-                    .Include(u => u.MuscleGroups)
-                    .Include(u => u.Exercises)
-                    .FirstOrDefaultAsync(u => u.Id == defaultDataSettings.DefaultUser!.Id);
+            _unitOfWork = unitOfWork;
+            _defaultDataSettings= defaultDataSettings;
+
+            var defaultUser = await _unitOfWork.Users.GetDefaultUserWithData();
 
             if (defaultUser == null)
             {
-                await context.Users.AddAsync(defaultDataSettings.DefaultUser!);
-                await context.SaveChangesAsync();
+                await _unitOfWork.Users.AddAsync(_defaultDataSettings.DefaultUser!);
+                await _unitOfWork.CompleteAsync();
             }
             else
-            {          
-                if (!defaultUser!.Equals(defaultDataSettings.DefaultUser))
+            {
+                _defaultUser = defaultUser;
+
+                if (!_defaultUser!.Equals(_defaultDataSettings.DefaultUser))
                 {
-                    context.Entry(defaultUser!).State = EntityState.Detached;
-                    context.Entry(defaultDataSettings.DefaultUser!).State = EntityState.Modified;
-                    context.Users.Update(defaultDataSettings.DefaultUser!);
+                    _defaultUser.Update(_defaultDataSettings.DefaultUser!);
+                    _unitOfWork.Users.Update(_defaultDataSettings.DefaultUser!);
                 }
 
-                UpdateMuscleGroups(context, defaultUser.MuscleGroups, defaultDataSettings.DefaultUser!.MuscleGroups);
-                UpdateExercises(context, defaultUser.Exercises, defaultDataSettings.DefaultUser!.Exercises);
+                UpdateMuscleGroups(_defaultUser.MuscleGroups, _defaultDataSettings.DefaultUser!.MuscleGroups);
+                UpdateExercises(defaultUser.Exercises, _defaultDataSettings.DefaultUser!.Exercises);
 
-                await context.SaveChangesAsync();
+                await _unitOfWork.CompleteAsync();
             }
         }
 
-        private static void UpdateMuscleGroups(ApplicationContext context, List<MuscleGroup> oldMuscleGroups, List<MuscleGroup> newMuscleGroups)
+        private static void UpdateMuscleGroups(List<MuscleGroup> oldMuscleGroups, List<MuscleGroup> newMuscleGroups)
         {
             var comparer = new MuscleGroupEqualityComparer();
 
             var muscleGroupsToRemove = oldMuscleGroups.Where(o => newMuscleGroups.All(n => n.Name != o.Name));
-            var muscleGroupsToAdd = newMuscleGroups.Where(n => oldMuscleGroups.All(o => o.Name != n.Name));
+            var muscleGroupsToAdd = newMuscleGroups.Where(n => oldMuscleGroups.All(o => o.Name != n.Name)).ToList();
             var muscleGroupsToUpdate = oldMuscleGroups.Except(muscleGroupsToRemove, comparer).Except(newMuscleGroups, comparer);
 
-            context.MuscleGroups.RemoveRange(muscleGroupsToRemove);
-            context.MuscleGroups.AddRange(muscleGroupsToAdd);
+            _unitOfWork!.MuscleGroups.RemoveRange(muscleGroupsToRemove);
             
             foreach (var muscleGroup in muscleGroupsToUpdate)
             {
                 muscleGroup.Update(newMuscleGroups.Find(m => m.Name == muscleGroup.Name)!);
-                context.MuscleGroups.Update(muscleGroup);
+                _unitOfWork.MuscleGroups.Update(muscleGroup);
             }
+
+            muscleGroupsToAdd.ForEach(m => m.UserId = _defaultUser!.Id);
+            _unitOfWork.MuscleGroups.AddRange(muscleGroupsToAdd);
         }
 
-        private static void UpdateExercises(ApplicationContext context, List<Exercise> oldExercises, List<Exercise> newExercises)
+        private static void UpdateExercises(List<Exercise> oldExercises, List<Exercise> newExercises)
         {
             var comparer = new ExerciseEqualityComparer();
 
@@ -62,13 +71,47 @@ namespace PeriodisationProgramApp.DataAccess
             var exercisesToAdd = newExercises.Where(n => oldExercises.All(o => o.Name != n.Name));
             var exercisesToUpdate = oldExercises.Except(exercisesToRemove, comparer).Except(newExercises, comparer);
 
-            context.Exercises.RemoveRange(exercisesToRemove);
-            context.Exercises.AddRange(exercisesToAdd);
+            _unitOfWork!.Exercises.RemoveRange(exercisesToRemove);
 
             foreach (var exercise in exercisesToUpdate)
             {
-                exercise.Update(newExercises.Find(m => m.Name == exercise.Name)!);
-                context.Exercises.Update(exercise);
+                var newExercise = newExercises.Find(m => m.Name == exercise.Name)!;
+
+                exercise.Update(newExercise);
+                _unitOfWork.Exercises.Update(exercise);
+
+                UpdateExerciseMuscleGroups(exercise.Id, exercise.ExerciseMuscleGroups, newExercise.ExerciseMuscleGroups);
+            }
+
+            foreach (var exercise in exercisesToAdd)
+            {
+                exercise.UserId = _defaultUser!.Id;
+                exercise.ExerciseMuscleGroups.ForEach(e => e.MuscleGroup = _unitOfWork.MuscleGroups.Find(m => m.UserId == _defaultUser.Id && m.Name == e.MuscleGroup!.Name).FirstOrDefault());
+                _unitOfWork.Exercises.Add(exercise);
+            }
+        }
+
+        private static void UpdateExerciseMuscleGroups(Guid exerciseId, List<ExerciseMuscleGroup> oldExerciseMuscleGroups, List<ExerciseMuscleGroup> newExerciseMuscleGroups)
+        {
+            var comparer = new ExerciseMuscleGroupEqualityComparer();
+
+            var exerciseMuscleGroupsToRemove = oldExerciseMuscleGroups.Where(o => newExerciseMuscleGroups.All(n => n.MuscleGroup!.Name != o.MuscleGroup!.Name));
+            var exerciseMuscleGroupsToAdd = newExerciseMuscleGroups.Where(n => oldExerciseMuscleGroups.All(o => o.MuscleGroup!.Name != n.MuscleGroup!.Name));
+            var exerciseMuscleGroupsToUpdate = oldExerciseMuscleGroups.Except(exerciseMuscleGroupsToRemove, comparer).Except(newExerciseMuscleGroups, comparer);
+
+            _unitOfWork!.ExerciseMuscleGroups.RemoveRange(exerciseMuscleGroupsToRemove);
+
+            foreach (var exerciseMuscleGroup in exerciseMuscleGroupsToUpdate)
+            {
+                exerciseMuscleGroup.Update(newExerciseMuscleGroups.Find(m => m.MuscleGroup!.Name == exerciseMuscleGroup.MuscleGroup!.Name)!);
+                _unitOfWork.ExerciseMuscleGroups.Update(exerciseMuscleGroup);
+            }
+
+            foreach (var exerciseMuscleGroup in exerciseMuscleGroupsToAdd)
+            {
+                exerciseMuscleGroup.ExerciseId = exerciseId;
+                exerciseMuscleGroup.MuscleGroup = _unitOfWork.MuscleGroups.Find(m => m.UserId == _defaultUser!.Id && m.Name == exerciseMuscleGroup.MuscleGroup!.Name).FirstOrDefault();
+                _unitOfWork.ExerciseMuscleGroups.Add(exerciseMuscleGroup);
             }
         }
     }    

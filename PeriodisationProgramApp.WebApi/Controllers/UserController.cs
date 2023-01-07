@@ -21,11 +21,18 @@ namespace PeriodisationProgramApp.WebApi.Controllers
             _db = db;
         }
 
-        [HttpGet(Name = "GetMuscleGroups")]
-        public IActionResult GetMuscleGroups()
+        [HttpGet(Name = "GetDefaultMuscleGroups")]
+        public IActionResult GetDefaultMuscleGroups()
         {
             var muscleGroups = _unitOfWork.MuscleGroups.GetDefaultMuscleGroups();
             return Ok(muscleGroups);
+        }
+
+        [HttpGet(Name = "GetDefaultExercises")]
+        public IActionResult GetDefaultExercises()
+        {
+            var exercises = _unitOfWork.Exercises.GetDefaultExercises();
+            return Ok(exercises);
         }
     }
 }

@@ -27,5 +27,7 @@ namespace PeriodisationProgramApp.Domain.Interfaces
         void Remove(T entity);
 
         void RemoveRange(IEnumerable<T> entities);
+
+        void MarkAsDeleted(T entity);
     }
 }

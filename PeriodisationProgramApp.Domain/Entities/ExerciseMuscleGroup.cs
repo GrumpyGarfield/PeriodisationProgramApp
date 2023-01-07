@@ -9,5 +9,10 @@ namespace PeriodisationProgramApp.Domain.Entities
         public MuscleGroup? MuscleGroup { get; set; }
 
         public MuscleGroupKind MuscleGroupKind { get; set; }
+
+        public void Update(ExerciseMuscleGroup other)
+        {
+            MuscleGroupKind = other.MuscleGroupKind;
+        }
     }
 }

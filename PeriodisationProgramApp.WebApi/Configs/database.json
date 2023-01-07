@@ -120,6 +120,34 @@
           "MaximumRecoverableVolumeMultiplicator": 6,
           "AverageRecoveryTime": 1
         }
+      ],
+      "Exercises": [
+        {
+          "Name": "Bench Press",
+          "RawStimulusMagnitude": 8,
+          "FatigueMagnitude": 5,
+          "IsPublic": true,
+          "ExerciseMuscleGroups": [
+            {
+              "MuscleGroup": {
+                "Name": "Chest"
+              },
+              "MuscleGroupKind": 1
+            },
+            {
+              "MuscleGroup": {
+                "Name": "Triceps"
+              },
+              "MuscleGroupKind": 2
+            },
+            {
+              "MuscleGroup": {
+                "Name": "Front Delts"
+              },
+              "MuscleGroupKind": 2
+            }
+          ]
+        }
       ]
     }
   }

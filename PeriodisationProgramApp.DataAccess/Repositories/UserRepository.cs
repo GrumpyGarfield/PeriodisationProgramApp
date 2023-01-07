@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using PeriodisationProgramApp.Configuration.Interfaces;
 using PeriodisationProgramApp.Domain.Entities;
 using PeriodisationProgramApp.Domain.Interfaces;
@@ -14,9 +15,18 @@ namespace PeriodisationProgramApp.DataAccess.Repositories
             _defaultDataSettings = defaultDataSettings;
         }
 
-        public User GetDefaultUser()
+        public async Task<User?> GetDefaultUser()
         {
-            return _context.Users.Find(_defaultDataSettings.DefaultUser!.Id)!;
+            return await _context.Users.FindAsync(_defaultDataSettings.DefaultUser!.Id);
+        }
+
+        public async Task<User?> GetDefaultUserWithData()
+        {
+            return await _context.Users.Include(u => u.MuscleGroups)
+                                 .Include(u => u.Exercises)
+                                    .ThenInclude(e => e.ExerciseMuscleGroups)
+                                        .ThenInclude(e => e.MuscleGroup)
+                                 .FirstOrDefaultAsync(u => u.Id == _defaultDataSettings.DefaultUser!.Id);
         }
     }
 }

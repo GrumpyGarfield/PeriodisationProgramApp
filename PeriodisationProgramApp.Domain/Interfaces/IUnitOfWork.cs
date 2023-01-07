@@ -4,8 +4,14 @@
     {
         IUsersRepository Users { get; }
 
-        IMuscleGroupsRepository MuscleGroups { get; }
+        IMuscleGroupRepository MuscleGroups { get; }
+
+        IExerciseRepository Exercises { get; }
+
+        IExerciseMuscleGroupRepository ExerciseMuscleGroups { get; }
 
         int Complete();
+
+        Task<int> CompleteAsync();
     }
 }

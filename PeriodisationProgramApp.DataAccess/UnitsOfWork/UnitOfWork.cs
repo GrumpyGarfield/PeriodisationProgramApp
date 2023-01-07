@@ -15,17 +15,29 @@ namespace PeriodisationProgramApp.DataAccess.UnitsOfWork
             _defaultDataSettings = defaultDataSettings;
 
             Users = new UserRepository(_context, _defaultDataSettings);
-            MuscleGroups = new MuscleGroupsRepository(_context, _defaultDataSettings);
+            MuscleGroups = new MuscleGroupRepository(_context, _defaultDataSettings);
+            Exercises = new ExerciseRepository(_context, _defaultDataSettings);
+            ExerciseMuscleGroups = new ExerciseMuscleGroupRepository(_context, _defaultDataSettings);
         }
 
         public IUsersRepository Users { get; private set; } 
 
-        public IMuscleGroupsRepository MuscleGroups { get; private set; }
+        public IMuscleGroupRepository MuscleGroups { get; private set; }
+
+        public IExerciseRepository Exercises { get; private set; }
+
+        public IExerciseMuscleGroupRepository ExerciseMuscleGroups { get; private set; }
 
         public int Complete()
         {
             return _context.SaveChanges();
         }
+
+        public async Task<int> CompleteAsync()
+        {
+            return await _context.SaveChangesAsync();
+        }
+
         public void Dispose()
         {
             _context.Dispose();

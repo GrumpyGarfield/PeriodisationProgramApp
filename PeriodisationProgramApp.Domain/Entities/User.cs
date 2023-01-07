@@ -30,5 +30,13 @@
 
             return true;
         }
+
+        public void Update(User other)
+        {
+            Username = other.Username;
+            Email = other.Email;
+            Hash = other.Hash;
+            Salt = other.Salt;
+        }
     }
 }
