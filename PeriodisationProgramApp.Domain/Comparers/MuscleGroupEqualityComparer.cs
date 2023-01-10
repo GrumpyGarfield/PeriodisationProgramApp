@@ -10,7 +10,7 @@ namespace PeriodisationProgramApp.Domain.Comparers
 
             if (muscleGroup == null || otherMuscleGroup == null) return false;
 
-            if (muscleGroup.Name != otherMuscleGroup.Name) return false;
+            if (muscleGroup.Type != otherMuscleGroup.Type) return false;
 
             if (muscleGroup.MaintenanceVolume != otherMuscleGroup.MaintenanceVolume) return false;
 
@@ -27,7 +27,7 @@ namespace PeriodisationProgramApp.Domain.Comparers
 
         public int GetHashCode(MuscleGroup muscleGroup)
         {
-            int code = muscleGroup.Name!.GetHashCode() + muscleGroup.MaintenanceVolume + muscleGroup.MinimumEffectiveVolume + muscleGroup.MaximumRecoverableVolume;
+            int code = muscleGroup.Type!.GetHashCode() + muscleGroup.MaintenanceVolume + muscleGroup.MinimumEffectiveVolume + muscleGroup.MaximumRecoverableVolume;
             return code.GetHashCode();
         }
     }

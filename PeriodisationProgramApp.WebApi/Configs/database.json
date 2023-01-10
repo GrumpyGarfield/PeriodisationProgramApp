@@ -9,7 +9,7 @@
       "Email": "pprcut47@yandex.ru",
       "MuscleGroups": [
         {
-          "Name": "Back",
+          "Type": 2,
           "MaintenanceVolume": 6,
           "MinimumEffectiveVolume": 10,
           "MaximumRecoverableVolume": 20,
@@ -17,7 +17,7 @@
           "AverageRecoveryTime": 2
         },
         {
-          "Name": "Abs",
+          "Type": 1,
           "MaintenanceVolume": 0,
           "MinimumEffectiveVolume": 0,
           "MaximumRecoverableVolume": 25,
@@ -25,7 +25,7 @@
           "AverageRecoveryTime": 1
         },
         {
-          "Name": "Traps",
+          "Type": 13,
           "MaintenanceVolume": 0,
           "MinimumEffectiveVolume": 0,
           "MaximumRecoverableVolume": 10,
@@ -33,7 +33,7 @@
           "AverageRecoveryTime": 1
         },
         {
-          "Name": "Triceps",
+          "Type": 14,
           "MaintenanceVolume": 4,
           "MinimumEffectiveVolume": 6,
           "MaximumRecoverableVolume": 16,
@@ -41,7 +41,7 @@
           "AverageRecoveryTime": 1
         },
         {
-          "Name": "Forearms",
+          "Type": 6,
           "MaintenanceVolume": 0,
           "MinimumEffectiveVolume": 4,
           "MaximumRecoverableVolume": 15,
@@ -49,7 +49,7 @@
           "AverageRecoveryTime": 1
         },
         {
-          "Name": "Calves",
+          "Type": 4,
           "MaintenanceVolume": 6,
           "MinimumEffectiveVolume": 8,
           "MaximumRecoverableVolume": 16,
@@ -57,7 +57,7 @@
           "AverageRecoveryTime": 1
         },
         {
-          "Name": "Front Delts",
+          "Type": 7,
           "MaintenanceVolume": 0,
           "MinimumEffectiveVolume": 0,
           "MaximumRecoverableVolume": 12,
@@ -65,7 +65,7 @@
           "AverageRecoveryTime": 2
         },
         {
-          "Name": "Glutes",
+          "Type": 8,
           "MaintenanceVolume": 0,
           "MinimumEffectiveVolume": 0,
           "MaximumRecoverableVolume": 12,
@@ -73,7 +73,7 @@
           "AverageRecoveryTime": 2
         },
         {
-          "Name": "Chest",
+          "Type": 5,
           "MaintenanceVolume": 4,
           "MinimumEffectiveVolume": 6,
           "MaximumRecoverableVolume": 20,
@@ -81,7 +81,7 @@
           "AverageRecoveryTime": 2
         },
         {
-          "Name": "Biceps",
+          "Type": 3,
           "MaintenanceVolume": 4,
           "MinimumEffectiveVolume": 8,
           "MaximumRecoverableVolume": 20,
@@ -89,7 +89,7 @@
           "AverageRecoveryTime": 1
         },
         {
-          "Name": "Quads",
+          "Type": 10,
           "MaintenanceVolume": 6,
           "MinimumEffectiveVolume": 8,
           "MaximumRecoverableVolume": 18,
@@ -97,7 +97,7 @@
           "AverageRecoveryTime": 2
         },
         {
-          "Name": "Hamstrings",
+          "Type": 9,
           "MaintenanceVolume": 3,
           "MinimumEffectiveVolume": 4,
           "MaximumRecoverableVolume": 12,
@@ -105,7 +105,7 @@
           "AverageRecoveryTime": 2
         },
         {
-          "Name": "Side Delts",
+          "Type": 12,
           "MaintenanceVolume": 6,
           "MinimumEffectiveVolume": 8,
           "MaximumRecoverableVolume": 25,
@@ -113,7 +113,7 @@
           "AverageRecoveryTime": 1
         },
         {
-          "Name": "Rear Delts",
+          "Type": 11,
           "MaintenanceVolume": 0,
           "MinimumEffectiveVolume": 6,
           "MaximumRecoverableVolume": 18,
@@ -130,21 +130,169 @@
           "ExerciseMuscleGroups": [
             {
               "MuscleGroup": {
-                "Name": "Chest"
+                "Type": 5
               },
-              "MuscleGroupKind": 1
+              "MuscleGroupRole": 1
             },
             {
               "MuscleGroup": {
-                "Name": "Triceps"
+                "Type": 14
               },
-              "MuscleGroupKind": 2
+              "MuscleGroupRole": 2
             },
             {
               "MuscleGroup": {
-                "Name": "Front Delts"
+                "Type": 7
               },
-              "MuscleGroupKind": 2
+              "MuscleGroupRole": 2
+            }
+          ]
+        },
+        {
+          "Name": "Pull-Up",
+          "RawStimulusMagnitude": 9,
+          "FatigueMagnitude": 5,
+          "IsPublic": true,
+          "ExerciseMuscleGroups": [
+            {
+              "MuscleGroup": {
+                "Type": 2
+              },
+              "MuscleGroupRole": 1
+            },
+            {
+              "MuscleGroup": {
+                "Type": 3
+              },
+              "MuscleGroupRole": 2
+            },
+            {
+              "MuscleGroup": {
+                "Type": 11
+              },
+              "MuscleGroupRole": 2
+            },
+            {
+              "MuscleGroup": {
+                "Type": 1
+              },
+              "MuscleGroupRole": 3
+            },
+            {
+              "MuscleGroup": {
+                "Type": 6
+              },
+              "MuscleGroupRole": 3
+            }
+          ]
+        },
+        {
+          "Name": "Squats",
+          "RawStimulusMagnitude": 9,
+          "FatigueMagnitude": 6,
+          "IsPublic": true,
+          "ExerciseMuscleGroups": [
+            {
+              "MuscleGroup": {
+                "Type": 10
+              },
+              "MuscleGroupRole": 1
+            },
+            {
+              "MuscleGroup": {
+                "Type": 8
+              },
+              "MuscleGroupRole": 2
+            },
+            {
+              "MuscleGroup": {
+                "Type": 1
+              },
+              "MuscleGroupRole": 3
+            }
+          ]
+        },
+        {
+          "Name": "Romanian Deadlift",
+          "RawStimulusMagnitude": 9,
+          "FatigueMagnitude": 5,
+          "IsPublic": true,
+          "ExerciseMuscleGroups": [
+            {
+              "MuscleGroup": {
+                "Type": 9
+              },
+              "MuscleGroupRole": 1
+            },
+            {
+              "MuscleGroup": {
+                "Type": 8
+              },
+              "MuscleGroupRole": 2
+            },
+            {
+              "MuscleGroup": {
+                "Type": 13
+              },
+              "MuscleGroupRole": 2
+            },
+            {
+              "MuscleGroup": {
+                "Type": 1
+              },
+              "MuscleGroupRole": 3
+            }
+          ]
+        },
+        {
+          "Name": "Dumbbell Biceps Curl",
+          "RawStimulusMagnitude": 9,
+          "FatigueMagnitude": 3,
+          "IsPublic": true,
+          "ExerciseMuscleGroups": [
+            {
+              "MuscleGroup": {
+                "Type": 3
+              },
+              "MuscleGroupRole": 1
+            },
+            {
+              "MuscleGroup": {
+                "Type": 6
+              },
+              "MuscleGroupRole": 3
+            }
+          ]
+        },
+        {
+          "Name": "Dips",
+          "RawStimulusMagnitude": 9,
+          "FatigueMagnitude": 5,
+          "IsPublic": true,
+          "ExerciseMuscleGroups": [
+            {
+              "MuscleGroup": {
+                "Type": 14
+              },
+              "MuscleGroupRole": 1
+            },
+            {
+              "MuscleGroup": {
+                "Type": 5
+              },
+              "MuscleGroupRole": 2
+            },
+            {
+              "MuscleGroup": {
+                "Type": 1
+              },
+              "MuscleGroupRole": 3
+            },
+            {
+              "MuscleGroup": {
+                "Type": 7
+              },
+              "MuscleGroupRole": 3
             }
           ]
         }

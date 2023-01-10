@@ -10,7 +10,7 @@ namespace PeriodisationProgramApp.DataAccess.Configurations
         {
             base.Configure(builder);
             
-            builder.Property(m => m.Name).IsRequired().HasMaxLength(100);
+            builder.Property(m => m.Type).IsRequired();
             builder.Property(m => m.MaintenanceVolume).IsRequired();
             builder.Property(m => m.MinimumEffectiveVolume).IsRequired();
             builder.Property(m => m.MaximumRecoverableVolume).IsRequired();

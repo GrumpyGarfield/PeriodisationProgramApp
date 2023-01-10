@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PeriodisationProgramApp.Configuration.Interfaces;
+using PeriodisationProgramApp.Configuration.Models;
 using PeriodisationProgramApp.Domain.Comparers;
 using PeriodisationProgramApp.Domain.Entities;
 using PeriodisationProgramApp.Domain.Enums;
@@ -47,15 +48,15 @@ namespace PeriodisationProgramApp.DataAccess
         {
             var comparer = new MuscleGroupEqualityComparer();
 
-            var muscleGroupsToRemove = oldMuscleGroups.Where(o => newMuscleGroups.All(n => n.Name != o.Name));
-            var muscleGroupsToAdd = newMuscleGroups.Where(n => oldMuscleGroups.All(o => o.Name != n.Name)).ToList();
+            var muscleGroupsToRemove = oldMuscleGroups.Where(o => newMuscleGroups.All(n => n.Type != o.Type));
+            var muscleGroupsToAdd = newMuscleGroups.Where(n => oldMuscleGroups.All(o => o.Type != n.Type)).ToList();
             var muscleGroupsToUpdate = oldMuscleGroups.Except(muscleGroupsToRemove, comparer).Except(newMuscleGroups, comparer);
 
             _unitOfWork!.MuscleGroups.RemoveRange(muscleGroupsToRemove);
             
             foreach (var muscleGroup in muscleGroupsToUpdate)
             {
-                muscleGroup.Update(newMuscleGroups.Find(m => m.Name == muscleGroup.Name)!);
+                muscleGroup.Update(newMuscleGroups.Find(m => m.Type == muscleGroup.Type)!);
                 _unitOfWork.MuscleGroups.Update(muscleGroup);
             }
 
@@ -86,7 +87,7 @@ namespace PeriodisationProgramApp.DataAccess
             foreach (var exercise in exercisesToAdd)
             {
                 exercise.UserId = _defaultUser!.Id;
-                exercise.ExerciseMuscleGroups.ForEach(e => e.MuscleGroup = _unitOfWork.MuscleGroups.Find(m => m.UserId == _defaultUser.Id && m.Name == e.MuscleGroup!.Name).FirstOrDefault());
+                exercise.ExerciseMuscleGroups.ForEach(e => e.MuscleGroup = _unitOfWork.MuscleGroups.Find(m => m.UserId == _defaultUser.Id && m.Type == e.MuscleGroup!.Type).FirstOrDefault());
                 _unitOfWork.Exercises.Add(exercise);
             }
         }
@@ -95,22 +96,22 @@ namespace PeriodisationProgramApp.DataAccess
         {
             var comparer = new ExerciseMuscleGroupEqualityComparer();
 
-            var exerciseMuscleGroupsToRemove = oldExerciseMuscleGroups.Where(o => newExerciseMuscleGroups.All(n => n.MuscleGroup!.Name != o.MuscleGroup!.Name));
-            var exerciseMuscleGroupsToAdd = newExerciseMuscleGroups.Where(n => oldExerciseMuscleGroups.All(o => o.MuscleGroup!.Name != n.MuscleGroup!.Name));
+            var exerciseMuscleGroupsToRemove = oldExerciseMuscleGroups.Where(o => newExerciseMuscleGroups.All(n => n.MuscleGroup!.Type != o.MuscleGroup!.Type));
+            var exerciseMuscleGroupsToAdd = newExerciseMuscleGroups.Where(n => oldExerciseMuscleGroups.All(o => o.MuscleGroup!.Type != n.MuscleGroup!.Type));
             var exerciseMuscleGroupsToUpdate = oldExerciseMuscleGroups.Except(exerciseMuscleGroupsToRemove, comparer).Except(newExerciseMuscleGroups, comparer);
 
             _unitOfWork!.ExerciseMuscleGroups.RemoveRange(exerciseMuscleGroupsToRemove);
 
             foreach (var exerciseMuscleGroup in exerciseMuscleGroupsToUpdate)
             {
-                exerciseMuscleGroup.Update(newExerciseMuscleGroups.Find(m => m.MuscleGroup!.Name == exerciseMuscleGroup.MuscleGroup!.Name)!);
+                exerciseMuscleGroup.Update(newExerciseMuscleGroups.Find(m => m.MuscleGroup!.Type == exerciseMuscleGroup.MuscleGroup!.Type)!);
                 _unitOfWork.ExerciseMuscleGroups.Update(exerciseMuscleGroup);
             }
 
             foreach (var exerciseMuscleGroup in exerciseMuscleGroupsToAdd)
             {
                 exerciseMuscleGroup.ExerciseId = exerciseId;
-                exerciseMuscleGroup.MuscleGroup = _unitOfWork.MuscleGroups.Find(m => m.UserId == _defaultUser!.Id && m.Name == exerciseMuscleGroup.MuscleGroup!.Name).FirstOrDefault();
+                exerciseMuscleGroup.MuscleGroup = _unitOfWork.MuscleGroups.Find(m => m.UserId == _defaultUser!.Id && m.Type == exerciseMuscleGroup.MuscleGroup!.Type).FirstOrDefault();
                 _unitOfWork.ExerciseMuscleGroups.Add(exerciseMuscleGroup);
             }
         }

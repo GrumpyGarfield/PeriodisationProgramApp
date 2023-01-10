@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using PeriodisationProgramApp.BusinessLogic.Factories.TrainingProgramFactories;
 using PeriodisationProgramApp.DataAccess;
-using PeriodisationProgramApp.Domain.Entities;
+using PeriodisationProgramApp.Domain.Enums;
 using PeriodisationProgramApp.Domain.Interfaces;
 
 namespace PeriodisationProgramApp.WebApi.Controllers
@@ -32,6 +33,13 @@ namespace PeriodisationProgramApp.WebApi.Controllers
         public IActionResult GetDefaultExercises()
         {
             var exercises = _unitOfWork.Exercises.GetDefaultExercises();
+            return Ok(exercises);
+        }
+
+        [HttpGet(Name = "GetRandomChestExercises")]
+        public IActionResult GetRandomChestExercises(int number)
+        {
+            var exercises = _unitOfWork.Exercises.GetRandomExercisesOfType(MuscleGroupType.Chest, number);
             return Ok(exercises);
         }
     }

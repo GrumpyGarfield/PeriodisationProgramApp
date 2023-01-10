@@ -1,8 +1,10 @@
-﻿namespace PeriodisationProgramApp.Domain.Entities
+﻿using PeriodisationProgramApp.Domain.Enums;
+
+namespace PeriodisationProgramApp.Domain.Entities
 {
     public class MuscleGroup : Entity
     {
-        public string? Name { get; set; }
+        public MuscleGroupType Type { get; set; }
 
         public int MaintenanceVolume { get; set; }
 
@@ -18,7 +20,7 @@
 
         public void Update(MuscleGroup other)
         {
-            Name = other.Name;
+            Type = other.Type;
             MaintenanceVolume = other.MaintenanceVolume;
             MinimumEffectiveVolume = other.MinimumEffectiveVolume;
             MaximumRecoverableVolume = other.MaximumRecoverableVolume;

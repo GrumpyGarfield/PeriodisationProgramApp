@@ -10,16 +10,16 @@ namespace PeriodisationProgramApp.Domain.Comparers
 
             if (exerciseMuscleGroup == null || otherExerciseMuscleGroup == null) return false;
 
-            if (exerciseMuscleGroup.MuscleGroup!.Name != otherExerciseMuscleGroup.MuscleGroup!.Name) return false;
+            if (exerciseMuscleGroup.MuscleGroup!.Type != otherExerciseMuscleGroup.MuscleGroup!.Type) return false;
 
-            if (exerciseMuscleGroup.MuscleGroupKind != otherExerciseMuscleGroup.MuscleGroupKind) return false;
+            if (exerciseMuscleGroup.MuscleGroupRole != otherExerciseMuscleGroup.MuscleGroupRole) return false;
 
             return true;
         }
 
         public int GetHashCode(ExerciseMuscleGroup exerciseMuscleGroup)
         {
-            int code = exerciseMuscleGroup.MuscleGroup!.Name!.GetHashCode() + (int)exerciseMuscleGroup.MuscleGroupKind;
+            int code = exerciseMuscleGroup.MuscleGroup!.Type!.GetHashCode() + (int)exerciseMuscleGroup.MuscleGroupRole;
             return code.GetHashCode();
         }
     }

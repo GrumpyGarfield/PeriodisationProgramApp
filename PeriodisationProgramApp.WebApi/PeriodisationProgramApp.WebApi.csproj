@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\PeriodisationProgramApp.BusinessLogic\PeriodisationProgramApp.BusinessLogic.csproj" />
     <ProjectReference Include="..\PeriodisationProgramApp.Configuration\PeriodisationProgramApp.Configuration.csproj" />
     <ProjectReference Include="..\PeriodisationProgramApp.DataAccess\PeriodisationProgramApp.DataAccess.csproj" />
   </ItemGroup>
