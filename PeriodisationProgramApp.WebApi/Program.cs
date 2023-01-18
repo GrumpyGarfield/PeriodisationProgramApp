@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+using PeriodisationProgramApp.BusinessLogic.Extensions;
+using PeriodisationProgramApp.BusinessLogic.Factories;
+using PeriodisationProgramApp.BusinessLogic.Factories.Interfaces;
 using PeriodisationProgramApp.Configuration.Interfaces;
 using PeriodisationProgramApp.DataAccess;
 using PeriodisationProgramApp.DataAccess.Repositories;
@@ -18,8 +20,13 @@ builder.Services.AddDbContext<ApplicationContext>(options =>
 
 builder.Services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>))
                 .AddTransient<IUnitOfWork, UnitOfWork>()
+                .AddScoped<ITrainingSessionFactory, TrainingSessionFactory>()
+                .AddScoped<ITrainingProgramFactory, TrainingProgramFactory>()
                 .AddSingleton<IAppSettings, AppSettings>()
                 .AddSingleton(x => x.GetService<IAppSettings>()!.DefaultDataSettings);
+
+builder.Services.AddTrainingSessionBuilders();
+builder.Services.AddTrainingProgramBuilders();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using PeriodisationProgramApp.BusinessLogic.Factories.TrainingProgramFactories;
+using PeriodisationProgramApp.BusinessLogic.Builders.TrainingProgramBuilders;
+using PeriodisationProgramApp.BusinessLogic.Enums;
+using PeriodisationProgramApp.BusinessLogic.Factories.Interfaces;
 using PeriodisationProgramApp.DataAccess;
 using PeriodisationProgramApp.Domain.Enums;
 using PeriodisationProgramApp.Domain.Interfaces;
@@ -13,13 +15,13 @@ namespace PeriodisationProgramApp.WebApi.Controllers
     {
         private readonly ILogger<UserController> _logger;
         private readonly IUnitOfWork _unitOfWork;
-        private readonly ApplicationContext _db;
+        private readonly ITrainingProgramFactory _trainingProgramFactory;
 
-        public UserController(ILogger<UserController> logger, IUnitOfWork unitOfWork, ApplicationContext db)
+        public UserController(ILogger<UserController> logger, IUnitOfWork unitOfWork, ITrainingProgramFactory trainingProgramFactory)
         {
             _logger = logger;
             _unitOfWork = unitOfWork;
-            _db = db;
+            _trainingProgramFactory = trainingProgramFactory;
         }
 
         [HttpGet(Name = "GetDefaultMuscleGroups")]
@@ -41,6 +43,14 @@ namespace PeriodisationProgramApp.WebApi.Controllers
         {
             var exercises = _unitOfWork.Exercises.GetRandomExercisesOfType(MuscleGroupType.Chest, number);
             return Ok(exercises);
+        }
+
+        [HttpGet(Name = "GetPushPullLegsProgram")]
+        public IActionResult GetPushPullLegsProgram()
+        {
+            var trainingProgramBuilder = _trainingProgramFactory.GetInstance(TrainingProgramType.PushPullLegs);
+            var trainingProgram = trainingProgramBuilder.GetProgram();
+            return Ok(trainingProgram);
         }
     }
 }

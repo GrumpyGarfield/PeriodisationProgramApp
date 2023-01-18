@@ -1,17 +1,18 @@
-﻿using PeriodisationProgramApp.BusinessLogic.Factories.Interfaces;
+﻿using PeriodisationProgramApp.BusinessLogic.Builders.Interfaces;
+using PeriodisationProgramApp.BusinessLogic.Factories.Interfaces;
 using PeriodisationProgramApp.Domain.Entities;
 using PeriodisationProgramApp.Domain.Enums;
 using PeriodisationProgramApp.Domain.Interfaces;
 
-namespace PeriodisationProgramApp.BusinessLogic.Factories.TrainingProgramFactories
+namespace PeriodisationProgramApp.BusinessLogic.Builders.TrainingProgramBuilders
 {
-    public abstract class BaseTrainingProgramFactory
+    public abstract class BaseTrainingProgramBuilder : ITrainingProgramBuilder
     {
         protected readonly IUnitOfWork _unitOfWork;
         protected readonly ITrainingSessionFactory _trainingSessionFactory;
         protected List<Exercise> _exercises;
 
-        public BaseTrainingProgramFactory(IUnitOfWork unitOfWork, ITrainingSessionFactory trainingSessionFactory)
+        public BaseTrainingProgramBuilder(IUnitOfWork unitOfWork, ITrainingSessionFactory trainingSessionFactory)
         {
             _unitOfWork = unitOfWork;
             _trainingSessionFactory = trainingSessionFactory;

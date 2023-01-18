@@ -2,6 +2,13 @@
 {
     public class TrainingSession : Entity
     {
+        public TrainingSession(int week, DayOfWeek dayOfWeek, int repsInReserve)
+        {
+            Week = week;
+            DayOfWeek = dayOfWeek;
+            RepsInReserve = repsInReserve;
+        }
+
         public int Week { get; set; }
 
         public DayOfWeek DayOfWeek { get; set; }

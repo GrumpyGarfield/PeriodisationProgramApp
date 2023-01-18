@@ -4,6 +4,10 @@ namespace PeriodisationProgramApp.BusinessLogic.Builders.Interfaces
 {
     public interface ITrainingSessionBuilder
     {
-        TrainingSession GetTrainingSession(List<Exercise> exercises);
+        void SetExercises(List<Exercise> exercises);
+
+        void SetMaxWeeks(int maxWeeks);
+
+        TrainingSession GetTrainingSession(int week, DayOfWeek dayOfWeek, int repsInReserve);
     }
 }

@@ -1,5 +1,5 @@
-﻿using PeriodisationProgramApp.BusinessLogic.Builders;
-using PeriodisationProgramApp.BusinessLogic.Builders.Interfaces;
+﻿using PeriodisationProgramApp.BusinessLogic.Builders.Interfaces;
+using PeriodisationProgramApp.BusinessLogic.Builders.TrainingSessionBuilders;
 using PeriodisationProgramApp.BusinessLogic.Enums;
 using PeriodisationProgramApp.BusinessLogic.Factories.Interfaces;
 
@@ -18,14 +18,14 @@ namespace PeriodisationProgramApp.BusinessLogic.Factories
         {
             return type switch
             {
-                TrainingSessionType.Push => this.GetBuilder(typeof(PushTrainingSessionBuilder)),
+                TrainingSessionType.Push => GetBuilder(typeof(PushTrainingSessionBuilder)),
                 _ => throw new InvalidOperationException()
             }; ;
         }
 
         public ITrainingSessionBuilder GetBuilder(Type type)
         {
-            return this._trainingSessionBuilders.FirstOrDefault(x => x.GetType() == type)!;
+            return _trainingSessionBuilders.FirstOrDefault(x => x.GetType() == type)!;
         }
     }
 }
