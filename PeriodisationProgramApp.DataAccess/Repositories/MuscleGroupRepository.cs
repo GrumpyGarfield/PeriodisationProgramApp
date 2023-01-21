@@ -16,7 +16,8 @@ namespace PeriodisationProgramApp.DataAccess.Repositories
 
         public IEnumerable<MuscleGroup> GetDefaultMuscleGroups() 
         {
-            return _context.MuscleGroups.Where(m => m.UserId == _defaultDataSettings.DefaultUser!.Id);
+            return _context.MuscleGroups.Where(m => m.UserId == _defaultDataSettings.DefaultUser!.Id)
+                                        .OrderBy(m => m.Type);
         }
 
         public MuscleGroup GetMuscleGroupByType(MuscleGroupType type)

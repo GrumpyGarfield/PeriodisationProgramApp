@@ -6,8 +6,10 @@ namespace PeriodisationProgramApp.BusinessLogic.Builders.Interfaces
     {
         void SetExercises(List<Exercise> exercises);
 
-        void SetMaxWeeks(int maxWeeks);
+        void SetMesocycleLength(int maxWeeks);
 
-        TrainingSession GetTrainingSession(int week, DayOfWeek dayOfWeek, int repsInReserve);
+        void SetNumberOfWeekSessions(int numberOfWeekSessions);
+
+        TrainingSession GetTrainingSession(int week, DayOfWeek dayOfWeek, int repsInReserve, bool roundUp);
     }
 }

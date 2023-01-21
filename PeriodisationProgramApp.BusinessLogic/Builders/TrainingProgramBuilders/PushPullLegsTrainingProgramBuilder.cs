@@ -15,7 +15,9 @@ namespace PeriodisationProgramApp.BusinessLogic.Builders.TrainingProgramBuilders
             var trainingSessionBuilder = _trainingSessionFactory.GetInstance(TrainingSessionType.Push);
 
             trainingSessionBuilder.SetExercises(_exercises);
-            var trainingSession = trainingSessionBuilder.GetTrainingSession(1, DayOfWeek.Monday, 3);
+            trainingSessionBuilder.SetMesocycleLength(6);
+            trainingSessionBuilder.SetNumberOfWeekSessions(2);
+            var trainingSession = trainingSessionBuilder.GetTrainingSession(1, DayOfWeek.Monday, 3, true);
 
             trainingProgram.Sessions.Add(trainingSession);
 

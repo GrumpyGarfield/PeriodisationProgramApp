@@ -295,6 +295,26 @@
               "MuscleGroupRole": 3
             }
           ]
+        },
+        {
+          "Name": "Lateral Raise",
+          "RawStimulusMagnitude": 9,
+          "FatigueMagnitude": 3,
+          "IsPublic": true,
+          "ExerciseMuscleGroups": [
+            {
+              "MuscleGroup": {
+                "Type": 12
+              },
+              "MuscleGroupRole": 1
+            },
+            {
+              "MuscleGroup": {
+                "Type": 13
+              },
+              "MuscleGroupRole": 3
+            }
+          ]
         }
       ]
     }

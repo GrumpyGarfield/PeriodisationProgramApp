@@ -1,11 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PeriodisationProgramApp.BusinessLogic.Builders.TrainingProgramBuilders;
 using PeriodisationProgramApp.BusinessLogic.Enums;
 using PeriodisationProgramApp.BusinessLogic.Factories.Interfaces;
 using PeriodisationProgramApp.DataAccess;
+using PeriodisationProgramApp.Domain.Entities;
 using PeriodisationProgramApp.Domain.Enums;
 using PeriodisationProgramApp.Domain.Interfaces;
+using PeriodisationProgramApp.WebApi.Dto;
 
 namespace PeriodisationProgramApp.WebApi.Controllers
 {
@@ -16,12 +19,14 @@ namespace PeriodisationProgramApp.WebApi.Controllers
         private readonly ILogger<UserController> _logger;
         private readonly IUnitOfWork _unitOfWork;
         private readonly ITrainingProgramFactory _trainingProgramFactory;
+        private readonly IMapper _mapper;
 
-        public UserController(ILogger<UserController> logger, IUnitOfWork unitOfWork, ITrainingProgramFactory trainingProgramFactory)
+        public UserController(ILogger<UserController> logger, IUnitOfWork unitOfWork, ITrainingProgramFactory trainingProgramFactory, IMapper mapper)
         {
             _logger = logger;
             _unitOfWork = unitOfWork;
             _trainingProgramFactory = trainingProgramFactory;
+            _mapper = mapper;
         }
 
         [HttpGet(Name = "GetDefaultMuscleGroups")]
@@ -50,7 +55,9 @@ namespace PeriodisationProgramApp.WebApi.Controllers
         {
             var trainingProgramBuilder = _trainingProgramFactory.GetInstance(TrainingProgramType.PushPullLegs);
             var trainingProgram = trainingProgramBuilder.GetProgram();
-            return Ok(trainingProgram);
+            var trainingProgramDto = _mapper.Map<TrainingProgramDto>(trainingProgram);
+
+            return Ok(trainingProgramDto);
         }
     }
 }
