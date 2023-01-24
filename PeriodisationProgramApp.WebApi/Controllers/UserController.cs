@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PeriodisationProgramApp.BusinessLogic.Builders.TrainingProgramBuilders;
 using PeriodisationProgramApp.BusinessLogic.Enums;
+using PeriodisationProgramApp.BusinessLogic.Extensions;
 using PeriodisationProgramApp.BusinessLogic.Factories.Interfaces;
 using PeriodisationProgramApp.DataAccess;
 using PeriodisationProgramApp.Domain.Entities;
@@ -46,16 +47,17 @@ namespace PeriodisationProgramApp.WebApi.Controllers
         [HttpGet(Name = "GetRandomChestExercises")]
         public IActionResult GetRandomChestExercises(int number)
         {
-            var exercises = _unitOfWork.Exercises.GetRandomExercisesOfType(MuscleGroupType.Chest, number);
+            var exercises = _unitOfWork.Exercises.GetRandomExercisesForMuscleGroup(MuscleGroupType.Chest, number);
             return Ok(exercises);
         }
 
         [HttpGet(Name = "GetPushPullLegsProgram")]
-        public IActionResult GetPushPullLegsProgram()
+        public IActionResult GetPushPullLegsProgram(int numberOfWeekSessions, int mesocycleLength)
         {
             var trainingProgramBuilder = _trainingProgramFactory.GetInstance(TrainingProgramType.PushPullLegs);
-            var trainingProgram = trainingProgramBuilder.GetProgram();
+            var trainingProgram = trainingProgramBuilder.GetProgram(numberOfWeekSessions, mesocycleLength, TrainingLevel.Intermediate);
             var trainingProgramDto = _mapper.Map<TrainingProgramDto>(trainingProgram);
+            var trainingProgramVolume = trainingProgram.GetVolume();
 
             return Ok(trainingProgramDto);
         }

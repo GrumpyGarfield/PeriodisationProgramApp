@@ -9,7 +9,9 @@ namespace PeriodisationProgramApp.BusinessLogic.Extensions
         public static void AddTrainingSessionBuilders(this IServiceCollection services)
         {
             services
-                .AddScoped<ITrainingSessionBuilder, PushTrainingSessionBuilder>();
+                .AddScoped<ITrainingSessionBuilder, PushTrainingSessionBuilder>()
+                .AddScoped<ITrainingSessionBuilder, PullTrainingSessionBuilder>()
+                .AddScoped<ITrainingSessionBuilder, LegsTrainingSessionBuilder>();
         }
     }
 }

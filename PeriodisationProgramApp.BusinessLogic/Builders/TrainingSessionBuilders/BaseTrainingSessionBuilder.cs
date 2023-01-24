@@ -11,6 +11,7 @@ namespace PeriodisationProgramApp.BusinessLogic.Builders.TrainingSessionBuilders
         protected readonly IUnitOfWork _unitOfWork;
         protected int _mesocycleLength;
         protected int _numberOfWeekSessions;
+        protected TrainingLevel _trainingLevel;
         protected List<Exercise> _exercises = new List<Exercise>();
         protected List<MuscleGroupType> _muscleGroupTypes = new List<MuscleGroupType>();
 
@@ -19,9 +20,12 @@ namespace PeriodisationProgramApp.BusinessLogic.Builders.TrainingSessionBuilders
             _unitOfWork = unitOfWork;
         }
 
-        public void SetExercises(List<Exercise> exercises)
+        public void SetExercises()
         {
-            _exercises = exercises;
+            foreach (var muscleGroupType in (_muscleGroupTypes))
+            {
+                _exercises.AddRange(_unitOfWork.Exercises.GetRandomExercisesForMuscleGroup(muscleGroupType, 5));
+            }
         }
 
         public void SetMesocycleLength(int mesocycleLength)
@@ -34,8 +38,14 @@ namespace PeriodisationProgramApp.BusinessLogic.Builders.TrainingSessionBuilders
             _numberOfWeekSessions = numberOfWeekSessions;
         }
 
-        public virtual TrainingSession GetTrainingSession(int week, DayOfWeek dayOfWeek, int repsInReserve, bool roundUp)
+        public void SetTrainingLevel(TrainingLevel trainingLevel)
         {
+            _trainingLevel = trainingLevel;
+        }
+
+        public virtual TrainingSession GetTrainingSession(int week, DayOfWeek dayOfWeek, bool roundUp)
+        {
+            var repsInReserve = GetRepsInReserve(week);
             var trainingSession = new TrainingSession(week, dayOfWeek, repsInReserve);
 
             foreach (var muscleGroupType in _muscleGroupTypes)
@@ -43,8 +53,6 @@ namespace PeriodisationProgramApp.BusinessLogic.Builders.TrainingSessionBuilders
                 var muscleGroupExercises = GetTrainingSessionExercises(muscleGroupType, week, roundUp);
                 trainingSession.Exercises.AddRange(muscleGroupExercises);
             }
-
-            RegulateVolume(trainingSession.Exercises);
 
             return trainingSession;
         }
@@ -58,27 +66,44 @@ namespace PeriodisationProgramApp.BusinessLogic.Builders.TrainingSessionBuilders
             var muscleGroupExercisesNumber = (int)Math.Ceiling((double)muscleGroupSets / 4);
             var selectedMuscleGroupExercises = _exercises.TargetExercises(muscleGroupType).Take(muscleGroupExercisesNumber).ToList();
 
+            if (!selectedMuscleGroupExercises.Any())
+            {
+                return trainingSessionExercises;
+            }
+
             for (var i = 0; i < muscleGroupExercisesNumber; i++)
             {
-                var trainingSessionExercise = new TrainingSessionExercise(selectedMuscleGroupExercises[i]);
-                trainingSessionExercise.Sets = muscleGroupSets / muscleGroupExercisesNumber + (int)Math.Ceiling((muscleGroupSets % muscleGroupExercisesNumber - i) / (double)muscleGroupExercisesNumber);
-                trainingSessionExercises.Add(trainingSessionExercise);
+                var trainingSessionExercise = new TrainingSessionExercise();
+
+                try
+                {
+                    trainingSessionExercise.Exercise = selectedMuscleGroupExercises[i];
+                }
+                catch
+                {
+                    trainingSessionExercise.Exercise = selectedMuscleGroupExercises.Last();
+                }
+
+                var existingExercise = trainingSessionExercises.Any() ? trainingSessionExercises.First(t => t.Exercise!.Id == trainingSessionExercise!.Exercise!.Id) : null;
+                var trainingSessionExerciseSets = muscleGroupSets / muscleGroupExercisesNumber + (int)Math.Ceiling((muscleGroupSets % muscleGroupExercisesNumber - i) / (double)muscleGroupExercisesNumber);
+                
+                if (existingExercise != null)
+                {
+                    existingExercise.Sets += trainingSessionExerciseSets;
+                }
+                else
+                {
+                    trainingSessionExercise.Sets = trainingSessionExerciseSets;
+                    trainingSessionExercises.Add(trainingSessionExercise);
+                }
             }
 
             return trainingSessionExercises;
         }
 
-        protected void RegulateVolume(List<TrainingSessionExercise> trainingSessionExercises)
+        private int GetRepsInReserve(int week)
         {
-            foreach (var muscleGroupType in _muscleGroupTypes)
-            {
-                var targetVolume = trainingSessionExercises.GetTargetVolume(muscleGroupType) * 1.1;
-
-                while (trainingSessionExercises.GetVolume(muscleGroupType) > targetVolume)
-                {
-                    trainingSessionExercises.FirstOrDefault(t => t.Exercise!.HasTargetMuscleGroup(muscleGroupType))!.Sets--;
-                }
-            }
+            return (int)Math.Round(3 - 3 * ((double)(week - 1) / (_mesocycleLength - 1)));
         }
     }
 }

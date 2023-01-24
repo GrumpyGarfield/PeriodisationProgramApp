@@ -19,6 +19,8 @@ namespace PeriodisationProgramApp.BusinessLogic.Factories
             return type switch
             {
                 TrainingSessionType.Push => GetBuilder(typeof(PushTrainingSessionBuilder)),
+                TrainingSessionType.Pull => GetBuilder(typeof(PullTrainingSessionBuilder)),
+                TrainingSessionType.Legs => GetBuilder(typeof(LegsTrainingSessionBuilder)),
                 _ => throw new InvalidOperationException()
             }; ;
         }

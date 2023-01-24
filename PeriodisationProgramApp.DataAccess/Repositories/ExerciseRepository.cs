@@ -2,6 +2,7 @@
 using PeriodisationProgramApp.Configuration.Interfaces;
 using PeriodisationProgramApp.Domain.Entities;
 using PeriodisationProgramApp.Domain.Enums;
+using PeriodisationProgramApp.Domain.Extensions;
 using PeriodisationProgramApp.Domain.Interfaces;
 using System.Linq.Expressions;
 
@@ -23,12 +24,20 @@ namespace PeriodisationProgramApp.DataAccess.Repositories
                                         .ThenInclude(e => e.MuscleGroup);
         }
 
-        public IEnumerable<Exercise> GetRandomExercisesOfType(MuscleGroupType type, int number)
+        public IEnumerable<Exercise> GetRandomExercisesForMuscleGroup(MuscleGroupType muscleGroupType, int number)
         {
             return _context.Exercises.Include(e => e.ExerciseMuscleGroups)
                                      .ThenInclude(e => e.MuscleGroup)
-                                     .Where(e => e.ExerciseMuscleGroups.Where(m => m.MuscleGroup!.Type == type && m.MuscleGroupRole == MuscleGroupRole.Target)
-                                                                        .Any())
+                                     .Where(e => e.ExerciseMuscleGroups.Where(m => m.MuscleGroup!.Type == muscleGroupType && m.MuscleGroupRole == MuscleGroupRole.Target).Any())
+                                     .OrderBy(r => EF.Functions.Random())
+                                     .Take(number);
+        }
+
+        public IEnumerable<Exercise> GetRandomExercisesOfTypeForMuscleGroup(MuscleGroupType muscleGroupType, ExerciseType exerciseType, int number)
+        {
+            return _context.Exercises.Include(e => e.ExerciseMuscleGroups)
+                                     .ThenInclude(e => e.MuscleGroup)
+                                     .Where(e => e.ExerciseMuscleGroups.Where(m => m.MuscleGroup!.Type == muscleGroupType && m.MuscleGroupRole == MuscleGroupRole.Target).Any() && e.Type == exerciseType)
                                      .OrderBy(r => EF.Functions.Random())
                                      .Take(number);
         }

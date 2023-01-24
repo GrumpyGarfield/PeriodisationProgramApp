@@ -1,5 +1,4 @@
-﻿using PeriodisationProgramApp.Domain.Entities;
-using PeriodisationProgramApp.Domain.Interfaces;
+﻿using PeriodisationProgramApp.Domain.Interfaces;
 using PeriodisationProgramApp.Domain.Enums;
 
 namespace PeriodisationProgramApp.BusinessLogic.Builders.TrainingSessionBuilders

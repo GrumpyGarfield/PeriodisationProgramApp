@@ -1,5 +1,6 @@
 ﻿using PeriodisationProgramApp.Domain.Entities;
 using PeriodisationProgramApp.Domain.Enums;
+using System.Linq.Expressions;
 
 namespace PeriodisationProgramApp.Domain.Interfaces
 {
@@ -7,6 +8,8 @@ namespace PeriodisationProgramApp.Domain.Interfaces
     {
         IEnumerable<Exercise> GetDefaultExercises();
 
-        IEnumerable<Exercise> GetRandomExercisesOfType(MuscleGroupType type, int number);
+        IEnumerable<Exercise> GetRandomExercisesForMuscleGroup(MuscleGroupType muscleGroupType, int number);
+
+        IEnumerable<Exercise> GetRandomExercisesOfTypeForMuscleGroup(MuscleGroupType muscleGroupType, ExerciseType exerciseType, int number);
     }
 }

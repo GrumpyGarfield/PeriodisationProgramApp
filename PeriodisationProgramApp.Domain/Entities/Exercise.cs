@@ -1,8 +1,12 @@
-﻿namespace PeriodisationProgramApp.Domain.Entities
+﻿using PeriodisationProgramApp.Domain.Enums;
+
+namespace PeriodisationProgramApp.Domain.Entities
 {
     public class Exercise : Entity
     {
         public string? Name { get; set; }
+
+        public ExerciseType Type { get; set; }
 
         public List<ExerciseMuscleGroup> ExerciseMuscleGroups { get; set; } = new();
 

@@ -124,6 +124,7 @@
       "Exercises": [
         {
           "Name": "Bench Press",
+          "Type": 1,
           "RawStimulusMagnitude": 8,
           "FatigueMagnitude": 5,
           "IsPublic": true,
@@ -150,6 +151,7 @@
         },
         {
           "Name": "Pull-Up",
+          "Type": 1,
           "RawStimulusMagnitude": 9,
           "FatigueMagnitude": 5,
           "IsPublic": true,
@@ -188,6 +190,7 @@
         },
         {
           "Name": "Squats",
+          "Type": 1,
           "RawStimulusMagnitude": 9,
           "FatigueMagnitude": 6,
           "IsPublic": true,
@@ -214,6 +217,7 @@
         },
         {
           "Name": "Romanian Deadlift",
+          "Type": 1,
           "RawStimulusMagnitude": 9,
           "FatigueMagnitude": 5,
           "IsPublic": true,
@@ -246,6 +250,7 @@
         },
         {
           "Name": "Dumbbell Biceps Curl",
+          "Type": 2,
           "RawStimulusMagnitude": 9,
           "FatigueMagnitude": 3,
           "IsPublic": true,
@@ -266,6 +271,7 @@
         },
         {
           "Name": "Dips",
+          "Type": 1,
           "RawStimulusMagnitude": 9,
           "FatigueMagnitude": 5,
           "IsPublic": true,
@@ -298,6 +304,7 @@
         },
         {
           "Name": "Lateral Raise",
+          "Type": 2,
           "RawStimulusMagnitude": 9,
           "FatigueMagnitude": 3,
           "IsPublic": true,
@@ -311,6 +318,39 @@
             {
               "MuscleGroup": {
                 "Type": 13
+              },
+              "MuscleGroupRole": 3
+            }
+          ]
+        },
+        {
+          "Name": "Standing Barbell Shoulder Press",
+          "Type": 1,
+          "RawStimulusMagnitude": 9,
+          "FatigueMagnitude": 3,
+          "IsPublic": true,
+          "ExerciseMuscleGroups": [
+            {
+              "MuscleGroup": {
+                "Type": 7
+              },
+              "MuscleGroupRole": 1
+            },
+            {
+              "MuscleGroup": {
+                "Type": 12
+              },
+              "MuscleGroupRole": 2
+            },
+            {
+              "MuscleGroup": {
+                "Type": 14
+              },
+              "MuscleGroupRole": 2
+            },
+            {
+              "MuscleGroup": {
+                "Type": 1
               },
               "MuscleGroupRole": 3
             }

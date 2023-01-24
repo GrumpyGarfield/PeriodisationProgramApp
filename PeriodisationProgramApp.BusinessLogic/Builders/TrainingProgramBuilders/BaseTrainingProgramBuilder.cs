@@ -10,27 +10,23 @@ namespace PeriodisationProgramApp.BusinessLogic.Builders.TrainingProgramBuilders
     {
         protected readonly IUnitOfWork _unitOfWork;
         protected readonly ITrainingSessionFactory _trainingSessionFactory;
-        protected List<Exercise> _exercises;
 
         public BaseTrainingProgramBuilder(IUnitOfWork unitOfWork, ITrainingSessionFactory trainingSessionFactory)
         {
             _unitOfWork = unitOfWork;
             _trainingSessionFactory = trainingSessionFactory;
-            _exercises = GetExercises();
         }
 
-        protected List<Exercise> GetExercises()
+        public abstract TrainingProgram GetProgram(int numberOfWeekSessions, int mesocycleLength, TrainingLevel trainingLevel);
+
+        protected void ConfigureTrainingSessionBuilders(List<ITrainingSessionBuilder> trainingSessionBuilders) 
         {
-            var exercises = new List<Exercise>();
-
-            foreach (var muscleGroupType in (MuscleGroupType[])Enum.GetValues(typeof(MuscleGroupType)))
+            foreach (var trainingSessionBuilder in trainingSessionBuilders)
             {
-                exercises.AddRange(_unitOfWork.Exercises.GetRandomExercisesOfType(muscleGroupType, 5));
+                trainingSessionBuilder.SetExercises();
+                trainingSessionBuilder.SetMesocycleLength(6);
+                trainingSessionBuilder.SetNumberOfWeekSessions(2);
             }
-
-            return exercises;
         }
-
-        public abstract TrainingProgram GetProgram();
     }
 }
