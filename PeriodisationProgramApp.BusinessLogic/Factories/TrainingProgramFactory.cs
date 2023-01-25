@@ -20,6 +20,7 @@ namespace PeriodisationProgramApp.BusinessLogic.Factories
             {
                 TrainingProgramType.PushPullLegs => GetBuilder(typeof(PushPullLegsTrainingProgramBuilder)),
                 TrainingProgramType.UpperLower => GetBuilder(typeof(UpperLowerTrainingProgramBuilder)),
+                TrainingProgramType.FullBody => GetBuilder(typeof(FullBodyTrainingProgramBuilder)),
                 _ => throw new InvalidOperationException()
             }; ;
         }

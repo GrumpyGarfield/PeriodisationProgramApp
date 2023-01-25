@@ -15,12 +15,22 @@ namespace PeriodisationProgramApp.Domain.Extensions
             return trainingWeekSets;
         }
 
-        public static int GetTrainingSessionSets(this MuscleGroup muscleGroup, int week, int mesocycleLength, int numberOfSessions = 2, bool roundUp = true, TrainingLevel trainingLevel = TrainingLevel.Intermediate)
+        public static int GetTrainingSessionSets(this MuscleGroup muscleGroup, int week, int mesocycleLength, int numberOfSessions = 2, bool isEven = true, TrainingLevel trainingLevel = TrainingLevel.Intermediate)
         {
-            Round roundingMethod = roundUp ? Math.Ceiling : Math.Floor;
+            var roundingMethod = GetRoundingMethod(isEven);
 
             var trainingWeekSets = GetTrainingWeekSets(muscleGroup, week, mesocycleLength, numberOfSessions, trainingLevel);
             var trainingSessionSets = (int)roundingMethod(trainingWeekSets / numberOfSessions);
+
+            //Maximum adaptive volume of any muscle group per session is generally no lower than 4 sets
+            //So we combining lower every two volume sessions to a single session
+            //Could lead to slightly more volume, but not to extreme extend
+            if (trainingSessionSets < 3)
+            {
+                var oppositeRoundingMethod = GetRoundingMethod(!isEven);
+                var nextTrainingSessionSets = (int)oppositeRoundingMethod(trainingWeekSets / numberOfSessions);
+                trainingSessionSets = isEven ? trainingSessionSets + nextTrainingSessionSets : 0;
+            }
 
             return trainingSessionSets;
         }
@@ -34,6 +44,11 @@ namespace PeriodisationProgramApp.Domain.Extensions
                 TrainingLevel.Advanced => 1,
                 _ => 0.8
             };
+        }
+
+        private static Round GetRoundingMethod(bool isEven)
+        {
+            return isEven ? Math.Ceiling : Math.Floor;
         }
     }
 }

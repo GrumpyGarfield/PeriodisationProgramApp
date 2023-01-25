@@ -44,26 +44,26 @@ namespace PeriodisationProgramApp.BusinessLogic.Builders.TrainingSessionBuilders
             }
         }
 
-        public virtual TrainingSession GetTrainingSession(int week, DayOfWeek dayOfWeek, bool roundUp)
+        public virtual TrainingSession GetTrainingSession(int week, DayOfWeek dayOfWeek, bool isEven)
         {
             var repsInReserve = GetRepsInReserve(week);
             var trainingSession = new TrainingSession(week, dayOfWeek, repsInReserve);
 
             foreach (var muscleGroupType in _muscleGroupTypes)
             {
-                var muscleGroupExercises = GetTrainingSessionExercises(muscleGroupType, week, roundUp);
+                var muscleGroupExercises = GetTrainingSessionExercises(muscleGroupType, week, isEven);
                 trainingSession.Exercises.AddRange(muscleGroupExercises);
             }
 
             return trainingSession;
         }
 
-        protected List<TrainingSessionExercise> GetTrainingSessionExercises(MuscleGroupType muscleGroupType, int week, bool roundUp)
+        protected List<TrainingSessionExercise> GetTrainingSessionExercises(MuscleGroupType muscleGroupType, int week, bool isEven)
         {
             var trainingSessionExercises = new List<TrainingSessionExercise>();
 
             var muscleGroup = _unitOfWork.MuscleGroups.GetMuscleGroupByType(muscleGroupType);
-            var muscleGroupSets = muscleGroup.GetTrainingSessionSets(week, _mesocycleLength, _numberOfWeekSessions, roundUp);
+            var muscleGroupSets = muscleGroup.GetTrainingSessionSets(week, _mesocycleLength, _numberOfWeekSessions, isEven);
             var muscleGroupExercisesNumber = (int)Math.Ceiling((double)muscleGroupSets / 4);
             var selectedMuscleGroupExercises = _exercises.TargetExercises(muscleGroupType).Take(muscleGroupExercisesNumber).ToList();
 

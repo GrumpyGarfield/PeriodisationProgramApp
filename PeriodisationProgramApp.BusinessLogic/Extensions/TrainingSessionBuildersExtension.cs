@@ -13,7 +13,8 @@ namespace PeriodisationProgramApp.BusinessLogic.Extensions
                 .AddScoped<ITrainingSessionBuilder, PullTrainingSessionBuilder>()
                 .AddScoped<ITrainingSessionBuilder, LegsTrainingSessionBuilder>()
                 .AddScoped<ITrainingSessionBuilder, UpperTrainingSessionBuilder>()
-                .AddScoped<ITrainingSessionBuilder, LowerTrainingSessionBuilder>();
+                .AddScoped<ITrainingSessionBuilder, LowerTrainingSessionBuilder>()
+                .AddScoped<ITrainingSessionBuilder, FullBodyTrainingSessionBuilder>();
         }
     }
 }

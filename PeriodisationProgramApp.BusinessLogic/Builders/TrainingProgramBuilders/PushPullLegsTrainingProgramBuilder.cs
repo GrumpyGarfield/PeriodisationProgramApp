@@ -32,11 +32,11 @@ namespace PeriodisationProgramApp.BusinessLogic.Builders.TrainingProgramBuilders
 
             for (var i = 1; i <= mesocycleLength; i++)
             {
-                for (var j = 0; j < trainingDays.Count / 3; j++)
+                for (var j = 0; j < trainingDays.Count; j+=3)
                 {
-                    trainingProgram.Sessions.Add(pushTainingSessionBuilder.GetTrainingSession(i, trainingDays[j * 2], j % 2 == 0));
-                    trainingProgram.Sessions.Add(pullTainingSessionBuilder.GetTrainingSession(i, trainingDays[j * 2 + 1], j % 2 == 0));
-                    trainingProgram.Sessions.Add(legsTainingSessionBuilder.GetTrainingSession(i, trainingDays[j * 2 + 2], j % 2 == 0));
+                    trainingProgram.Sessions.Add(pushTainingSessionBuilder.GetTrainingSession(i, trainingDays[j], j % 2 == 0));
+                    trainingProgram.Sessions.Add(pullTainingSessionBuilder.GetTrainingSession(i, trainingDays[j + 1], j % 2 == 0));
+                    trainingProgram.Sessions.Add(legsTainingSessionBuilder.GetTrainingSession(i, trainingDays[j + 2], j % 2 == 0));
                 }
             }
 

@@ -13,6 +13,6 @@ namespace PeriodisationProgramApp.BusinessLogic.Builders.Interfaces
 
         void SetTrainingLevel(TrainingLevel trainingLevel);
 
-        TrainingSession GetTrainingSession(int week, DayOfWeek dayOfWeek, bool roundUp);
+        TrainingSession GetTrainingSession(int week, DayOfWeek dayOfWeek, bool isEven);
     }
 }

@@ -72,5 +72,16 @@ namespace PeriodisationProgramApp.WebApi.Controllers
 
             return Ok(trainingProgramDto);
         }
+
+        [HttpGet(Name = "GetFullBodyProgram")]
+        public IActionResult GetFullBodyProgram(int numberOfWeekSessions, int mesocycleLength)
+        {
+            var trainingProgramBuilder = _trainingProgramFactory.GetInstance(TrainingProgramType.FullBody);
+            var trainingProgram = trainingProgramBuilder.GetProgram(numberOfWeekSessions, mesocycleLength, TrainingLevel.Intermediate);
+            var trainingProgramDto = _mapper.Map<TrainingProgramDto>(trainingProgram);
+            var trainingProgramVolume = trainingProgram.GetVolume();
+
+            return Ok(trainingProgramDto);
+        }
     }
 }

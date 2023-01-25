@@ -10,7 +10,8 @@ namespace PeriodisationProgramApp.BusinessLogic.Extensions
         {
             services
                 .AddScoped<ITrainingProgramBuilder, PushPullLegsTrainingProgramBuilder>()
-                .AddScoped<ITrainingProgramBuilder, UpperLowerTrainingProgramBuilder>();
+                .AddScoped<ITrainingProgramBuilder, UpperLowerTrainingProgramBuilder>()
+                .AddScoped<ITrainingProgramBuilder, FullBodyTrainingProgramBuilder>();
         }
     }
 }

@@ -29,10 +29,10 @@ namespace PeriodisationProgramApp.BusinessLogic.Builders.TrainingProgramBuilders
 
             for (var i = 1; i <= mesocycleLength; i++)
             {
-                for (var j = 0; j < trainingDays.Count / 2; j++)
+                for (var j = 0; j < trainingDays.Count; j+=2)
                 {
-                    trainingProgram.Sessions.Add(upperTainingSessionBuilder.GetTrainingSession(i, trainingDays[j * 2], j % 2 == 0));
-                    trainingProgram.Sessions.Add(lowerTainingSessionBuilder.GetTrainingSession(i, trainingDays[j * 2 + 1], j % 2 == 0));
+                    trainingProgram.Sessions.Add(upperTainingSessionBuilder.GetTrainingSession(i, trainingDays[j], j % 2 == 0));
+                    trainingProgram.Sessions.Add(lowerTainingSessionBuilder.GetTrainingSession(i, trainingDays[j + 1], j % 2 == 0));
                 }
             }
 

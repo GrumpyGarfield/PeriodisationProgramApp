@@ -23,6 +23,7 @@ namespace PeriodisationProgramApp.BusinessLogic.Factories
                 TrainingSessionType.Legs => GetBuilder(typeof(LegsTrainingSessionBuilder)),
                 TrainingSessionType.Upper => GetBuilder(typeof(UpperTrainingSessionBuilder)),
                 TrainingSessionType.Lower => GetBuilder(typeof(LowerTrainingSessionBuilder)),
+                TrainingSessionType.FullBody => GetBuilder(typeof(FullBodyTrainingSessionBuilder)),
                 _ => throw new InvalidOperationException()
             }; ;
         }
