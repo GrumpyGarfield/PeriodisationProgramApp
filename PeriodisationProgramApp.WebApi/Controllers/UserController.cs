@@ -61,5 +61,16 @@ namespace PeriodisationProgramApp.WebApi.Controllers
 
             return Ok(trainingProgramDto);
         }
+
+        [HttpGet(Name = "GetUpperLowerProgram")]
+        public IActionResult GetUpperLowerProgram(int numberOfWeekSessions, int mesocycleLength)
+        {
+            var trainingProgramBuilder = _trainingProgramFactory.GetInstance(TrainingProgramType.UpperLower);
+            var trainingProgram = trainingProgramBuilder.GetProgram(numberOfWeekSessions, mesocycleLength, TrainingLevel.Intermediate);
+            var trainingProgramDto = _mapper.Map<TrainingProgramDto>(trainingProgram);
+            var trainingProgramVolume = trainingProgram.GetVolume();
+
+            return Ok(trainingProgramDto);
+        }
     }
 }

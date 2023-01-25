@@ -1,4 +1,5 @@
 ﻿using PeriodisationProgramApp.BusinessLogic.Builders.Interfaces;
+using PeriodisationProgramApp.BusinessLogic.Builders.TrainingSessionBuilders;
 using PeriodisationProgramApp.BusinessLogic.Enums;
 using PeriodisationProgramApp.BusinessLogic.Factories.Interfaces;
 using PeriodisationProgramApp.Domain.Entities;
@@ -25,16 +26,18 @@ namespace PeriodisationProgramApp.BusinessLogic.Builders.TrainingProgramBuilders
                 legsTainingSessionBuilder
             };
 
-            ConfigureTrainingSessionBuilders(trainingSessionBuilders);
+            ConfigureTrainingSessionBuilders(trainingSessionBuilders, numberOfWeekSessions / 3, mesocycleLength);
 
-            for (var i = 1; i <= 6; i++)
+            var trainingDays = GetTrainingDays(numberOfWeekSessions);
+
+            for (var i = 1; i <= mesocycleLength; i++)
             {
-                trainingProgram.Sessions.Add(pushTainingSessionBuilder.GetTrainingSession(i, DayOfWeek.Monday, true));
-                trainingProgram.Sessions.Add(pullTainingSessionBuilder.GetTrainingSession(i, DayOfWeek.Tuesday, true));
-                trainingProgram.Sessions.Add(legsTainingSessionBuilder.GetTrainingSession(i, DayOfWeek.Wednesday, true));
-                trainingProgram.Sessions.Add(pushTainingSessionBuilder.GetTrainingSession(i, DayOfWeek.Thursday, false));
-                trainingProgram.Sessions.Add(pullTainingSessionBuilder.GetTrainingSession(i, DayOfWeek.Friday, false));
-                trainingProgram.Sessions.Add(legsTainingSessionBuilder.GetTrainingSession(i, DayOfWeek.Saturday, false));
+                for (var j = 0; j < trainingDays.Count / 3; j++)
+                {
+                    trainingProgram.Sessions.Add(pushTainingSessionBuilder.GetTrainingSession(i, trainingDays[j * 2], j % 2 == 0));
+                    trainingProgram.Sessions.Add(pullTainingSessionBuilder.GetTrainingSession(i, trainingDays[j * 2 + 1], j % 2 == 0));
+                    trainingProgram.Sessions.Add(legsTainingSessionBuilder.GetTrainingSession(i, trainingDays[j * 2 + 2], j % 2 == 0));
+                }
             }
 
             return trainingProgram;

@@ -23,6 +23,7 @@ namespace PeriodisationProgramApp.Domain.Entities
         public void Update(Exercise other)
         {
             Name = other.Name;
+            Type = other.Type;
             RawStimulusMagnitude = other.RawStimulusMagnitude;
             FatigueMagnitude = other.FatigueMagnitude;
             StimulusToFatigueRatio = other.StimulusToFatigueRatio;

@@ -20,6 +20,8 @@ namespace PeriodisationProgramApp.Domain.Comparers
 
             if (exercise.Name != otherExercise.Name) return false;
 
+            if (exercise.Type != otherExercise.Type) return false;
+
             if (exercise.RawStimulusMagnitude != otherExercise.RawStimulusMagnitude) return false;
 
             if (exercise.FatigueMagnitude != otherExercise.FatigueMagnitude) return false;

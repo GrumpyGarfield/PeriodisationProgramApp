@@ -20,14 +20,6 @@ namespace PeriodisationProgramApp.BusinessLogic.Builders.TrainingSessionBuilders
             _unitOfWork = unitOfWork;
         }
 
-        public void SetExercises()
-        {
-            foreach (var muscleGroupType in (_muscleGroupTypes))
-            {
-                _exercises.AddRange(_unitOfWork.Exercises.GetRandomExercisesForMuscleGroup(muscleGroupType, 5));
-            }
-        }
-
         public void SetMesocycleLength(int mesocycleLength)
         {
             _mesocycleLength = mesocycleLength;
@@ -41,6 +33,15 @@ namespace PeriodisationProgramApp.BusinessLogic.Builders.TrainingSessionBuilders
         public void SetTrainingLevel(TrainingLevel trainingLevel)
         {
             _trainingLevel = trainingLevel;
+        }
+
+        public virtual void SetExercises()
+        {
+            foreach (var muscleGroupType in _muscleGroupTypes)
+            {
+                _exercises.AddRange(_unitOfWork.Exercises.GetRandomExercisesOfTypeForMuscleGroup(muscleGroupType, ExerciseType.Compound, 2));
+                _exercises.AddRange(_unitOfWork.Exercises.GetRandomExercisesOfTypeForMuscleGroup(muscleGroupType, ExerciseType.Isolation, 2));
+            }
         }
 
         public virtual TrainingSession GetTrainingSession(int week, DayOfWeek dayOfWeek, bool roundUp)
@@ -71,31 +72,13 @@ namespace PeriodisationProgramApp.BusinessLogic.Builders.TrainingSessionBuilders
                 return trainingSessionExercises;
             }
 
+            muscleGroupExercisesNumber = selectedMuscleGroupExercises.Count;
+
             for (var i = 0; i < muscleGroupExercisesNumber; i++)
             {
-                var trainingSessionExercise = new TrainingSessionExercise();
-
-                try
-                {
-                    trainingSessionExercise.Exercise = selectedMuscleGroupExercises[i];
-                }
-                catch
-                {
-                    trainingSessionExercise.Exercise = selectedMuscleGroupExercises.Last();
-                }
-
-                var existingExercise = trainingSessionExercises.Any() ? trainingSessionExercises.First(t => t.Exercise!.Id == trainingSessionExercise!.Exercise!.Id) : null;
                 var trainingSessionExerciseSets = muscleGroupSets / muscleGroupExercisesNumber + (int)Math.Ceiling((muscleGroupSets % muscleGroupExercisesNumber - i) / (double)muscleGroupExercisesNumber);
-                
-                if (existingExercise != null)
-                {
-                    existingExercise.Sets += trainingSessionExerciseSets;
-                }
-                else
-                {
-                    trainingSessionExercise.Sets = trainingSessionExerciseSets;
-                    trainingSessionExercises.Add(trainingSessionExercise);
-                }
+                var trainingSessionExercise = new TrainingSessionExercise(selectedMuscleGroupExercises[i], trainingSessionExerciseSets);
+                trainingSessionExercises.Add(trainingSessionExercise);
             }
 
             return trainingSessionExercises;
