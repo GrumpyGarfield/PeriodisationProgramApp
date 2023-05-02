@@ -1,4 +1,4 @@
-﻿namespace PeriodisationProgramApp.BusinessLogic.Enums
+﻿namespace PeriodisationProgramApp.Domain.Enums
 {
     public enum TrainingProgramType
     {

@@ -16,6 +16,10 @@
 
         public List<MuscleGroup> MuscleGroups { get; set; } = new();
 
+        public List<UserTrainingProgramLike> UserTrainingProgramLikes { get; set; } = new();
+
+        public List<UserTrainingProgramRating> UserTrainingProgramRatings { get; set; } = new();
+
         public bool Equals(User? other)
         {
             if (other == null) { return false; }

@@ -1,0 +1,39 @@
+{
+  "testtest": "Test Test",
+  "ExerciseType.Compound": "Compound",
+  "ExerciseType.Isolation": "Isolation",
+
+  "MuscleGroupRole.Target": "Target",
+  "MuscleGroupRole.MajorSynergist": "Major Synergist",
+  "MuscleGroupRole.MinorSynergist": "Minor Synergist",
+
+  "MuscleGroupType.Abs": "Abs",
+  "MuscleGroupType.Back": "Back",
+  "MuscleGroupType.Biceps": "Biceps",
+  "MuscleGroupType.Calves": "Calves",
+  "MuscleGroupType.Chest": "Chest",
+  "MuscleGroupType.Forearms": "Forearms",
+  "MuscleGroupType.FrontDelts": "Front Delts",
+  "MuscleGroupType.Glutes": "Glutes",
+  "MuscleGroupType.Hamstrings": "Hamstrings",
+  "MuscleGroupType.Quads": "Quads",
+  "MuscleGroupType.RearDelts": "Rear Delts",
+  "MuscleGroupType.SideDelts": "Side Delts",
+  "MuscleGroupType.Traps": "Traps",
+  "MuscleGroupType.Triceps": "Triceps",
+
+  "TrainingLevel.Beginner": "Beginner",
+  "TrainingLevel.Intermediate": "Intermediate",
+  "TrainingLevel.Advanced": "Advanced",
+
+  "TrainingProgramType.UpperLower": "Upper/Lower",
+  "TrainingProgramType.PushPullLegs": "Push/Pull/Legs",
+  "TrainingProgramType.FullBody": "Full Body",
+
+  "TrainingSessionType.Push": "Push",
+  "TrainingSessionType.Pull": "Pull",
+  "TrainingSessionType.Legs": "Legs",
+  "TrainingSessionType.Upper": "Upper",
+  "TrainingSessionType.Lower": "Lower",
+  "TrainingSessionType.FullBody": "FullBody"
+}

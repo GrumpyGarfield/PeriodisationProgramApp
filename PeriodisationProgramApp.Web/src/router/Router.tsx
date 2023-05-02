@@ -1,6 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "../components/app/App";
-import { TrainingProgramsPage } from "../pages/TrainingProgramsPage/TrainingProgramsPage";
+import { TrainingProgramsPage } from "../components/trainingPrograms/trainingProgramsPage/TrainingProgramsPage";
 import { ExercisesPage } from "../pages/ExercisesPage";
 import { MuscleGroupsPage } from "../pages/MuscleGroupsPage";
 import { AboutPage } from "../pages/AboutPage";

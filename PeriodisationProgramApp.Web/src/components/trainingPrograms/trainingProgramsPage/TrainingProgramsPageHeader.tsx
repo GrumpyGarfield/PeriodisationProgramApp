@@ -1,5 +1,5 @@
 import { Tabs, Tab, Box, Button } from "@mui/material";
-import { PageHeader } from "../../components/common/pageHeader/PageHeader";
+import { PageHeader } from "../../../components/common/pageHeader/PageHeader";
 import React from "react";
 
 export function TrainingProgramsPageHeader() {
@@ -30,7 +30,9 @@ export function TrainingProgramsPageHeader() {
         </Box>
       </div>
       <Box className="absolute top-0 right-0" sx={{ p: 3 }}>
-        <Button variant="contained">Create New</Button>
+        <Button variant="contained" color="secondary">
+          Create New
+        </Button>
       </Box>
     </Box>
   );

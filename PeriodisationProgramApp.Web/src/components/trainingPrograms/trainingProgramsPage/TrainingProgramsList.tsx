@@ -1,5 +1,5 @@
 import { Grid, GridProps } from "@mui/material";
-import TrainingProgramsCard from "./TrainingProgramsCard";
+import TrainingProgramsCard from "./trainingProgramsCard/TrainingProgramsCard";
 import { TrainingProgram } from "./TrainingProgramProps";
 
 type Props = {

@@ -7,31 +7,42 @@ import TrainingProgramsFilterSidebar from "./TrainingProgramsFilterSidebar";
 import { useState } from "react";
 import TrainingProgramsSearch from "./TrainingProgramsSearch";
 import React from "react";
+import { TrainingProgramType } from "../../../enums/TrainingProgramType";
+import { TrainingLevel } from "../../../enums/TrainingLevel";
 
 const trainingPrograms: TrainingProgram[] = [
   {
     id: "0",
     name: "Program1",
     description: "Description1",
-    type: "Upper/Lower",
+    type: TrainingProgramType.UpperLower,
     numberOfSessions: 4,
-    trainingLevels: ["Beginner", "Intermediate"],
+    trainingLevel: TrainingLevel.Beginner,
+    author: "Greg",
+    rating: 3.7,
+    likes: 57,
   },
   {
     id: "1",
     name: "Program2",
     description: "Description2",
-    type: "Push/Pull/Legs",
+    type: TrainingProgramType.PushPullLegs,
     numberOfSessions: 6,
-    trainingLevels: ["Intermediate", "Advanced"],
+    trainingLevel: TrainingLevel.Intermediate,
+    author: "Bob",
+    rating: 4.2,
+    likes: 13,
   },
   {
     id: "2",
     name: "Program3",
     description: "Description3",
-    type: "Full Body",
+    type: TrainingProgramType.FullBody,
     numberOfSessions: 3,
-    trainingLevels: ["Beginner"],
+    trainingLevel: TrainingLevel.Advanced,
+    author: "Tom",
+    rating: 4.9,
+    likes: 457,
   },
 ];
 

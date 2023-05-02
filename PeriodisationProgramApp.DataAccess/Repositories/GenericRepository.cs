@@ -1,7 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using PeriodisationProgramApp.Common.Filtering;
+using PeriodisationProgramApp.Common.Sorting;
+using PeriodisationProgramApp.DataAccess.Extensions;
 using PeriodisationProgramApp.Domain.Entities;
+using PeriodisationProgramApp.Domain.Extensions;
 using PeriodisationProgramApp.Domain.Interfaces;
+using PeriodisationProgramApp.Domain.Pagination;
 using System.Linq.Expressions;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace PeriodisationProgramApp.DataAccess.Repositories
 {
@@ -79,6 +85,16 @@ namespace PeriodisationProgramApp.DataAccess.Repositories
         {
             entity.IsDeleted = true;
             _context.Set<T>().Update(entity);
+        }
+
+        public PagedResult<T> GetPaginatedResult(IPageableQueryContext context)
+        {
+            return _context.Set<T>().FilterBy(context.Filters).SortBy(context.SortField, context.SortDirection).GetPaged(context.Page, context.PageSize);
+        }
+
+        public async Task<PagedResult<T>> GetPaginatedResultAsync(IPageableQueryContext context)
+        {
+            return await _context.Set<T>().FilterBy(context.Filters).SortBy(context.SortField, context.SortDirection).GetPagedAsync(context.Page, context.PageSize);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Linq.Expressions;
+﻿using PeriodisationProgramApp.Domain.Pagination;
+using System.Linq.Expressions;
 
 namespace PeriodisationProgramApp.Domain.Interfaces
 {
@@ -29,5 +30,9 @@ namespace PeriodisationProgramApp.Domain.Interfaces
         void RemoveRange(IEnumerable<T> entities);
 
         void MarkAsDeleted(T entity);
+
+        PagedResult<T> GetPaginatedResult(IPageableQueryContext context);
+
+        Task<PagedResult<T>> GetPaginatedResultAsync(IPageableQueryContext context);
     }
 }

@@ -12,20 +12,16 @@ import {
   Typography,
   RadioGroup,
   FormControlLabel,
+  Slider,
 } from "@mui/material";
 // components
-import Iconify from "../../components/common/iconify/Iconify";
-import Scrollbar from "../../components/common/scrollbar/Scrollbar";
+import Iconify from "../../../components/common/iconify/Iconify";
+import Scrollbar from "../../../components/common/scrollbar/Scrollbar";
+import { EnumHelper } from "../../../helpers/EnumHelper";
+import { TrainingProgramType } from "../../../enums/TrainingProgramType";
+import React from "react";
+import { TrainingLevel } from "../../../enums/TrainingLevel";
 
-// ----------------------------------------------------------------------
-
-export const SORT_BY_OPTIONS = [
-  { value: "featured", label: "Featured" },
-  { value: "newest", label: "Newest" },
-  { value: "priceDesc", label: "Price: High-Low" },
-  { value: "priceAsc", label: "Price: Low-High" },
-];
-export const FILTER_GENDER_OPTIONS = ["Men", "Women", "Kids"];
 export const FILTER_CATEGORY_OPTIONS = [
   "All",
   "Shose",
@@ -50,11 +46,39 @@ type Props = {
   onCloseFilter: () => void;
 };
 
+const marks: number[] = [2, 3, 4, 5, 6];
+
 export default function TrainingProgramsFilterSidebar({
   openFilter,
   onOpenFilter,
   onCloseFilter,
 }: Props) {
+  const [numberOfSessions, setNumberOfSessions] = React.useState<number[]>([
+    2, 6,
+  ]);
+
+  const handleNumberOfSessionsChange = (
+    event: Event,
+    newValue: number | number[],
+    activeThumb: number
+  ) => {
+    if (!Array.isArray(newValue)) {
+      return;
+    }
+
+    if (activeThumb === 0) {
+      setNumberOfSessions([
+        Math.min(newValue[0], numberOfSessions[1]),
+        numberOfSessions[1],
+      ]);
+    } else {
+      setNumberOfSessions([
+        numberOfSessions[0],
+        Math.max(newValue[1], numberOfSessions[0]),
+      ]);
+    }
+  };
+
   return (
     <>
       <Button
@@ -94,49 +118,55 @@ export default function TrainingProgramsFilterSidebar({
           <Stack spacing={3} sx={{ p: 3 }}>
             <div>
               <Typography variant="subtitle1" gutterBottom>
-                Gender
+                Split Type
               </Typography>
               <FormGroup>
-                {FILTER_GENDER_OPTIONS.map((item) => (
+                {EnumHelper.getKeysOfEnum(TrainingProgramType).map((item) => (
                   <FormControlLabel
                     key={item}
                     control={<Checkbox />}
-                    label={item}
+                    label={EnumHelper.translate("TrainingProgramType", item)}
                   />
                 ))}
               </FormGroup>
             </div>
 
             <div>
-              <Typography variant="subtitle1" gutterBottom>
-                Category
+              <Typography
+                id="non-linear-slider"
+                variant="subtitle1"
+                gutterBottom
+              >
+                Number of Weekly Sessions
               </Typography>
-              <RadioGroup>
-                {FILTER_CATEGORY_OPTIONS.map((item) => (
-                  <FormControlLabel
-                    key={item}
-                    value={item}
-                    control={<Radio />}
-                    label={item}
-                  />
-                ))}
-              </RadioGroup>
+              <Slider
+                min={2}
+                max={6}
+                step={1}
+                getAriaLabel={() => "Number of sessions"}
+                value={numberOfSessions}
+                onChange={handleNumberOfSessionsChange}
+                valueLabelDisplay="off"
+                marks={marks.map((mark) => ({
+                  label: mark.toString(),
+                  value: mark,
+                }))}
+              />
             </div>
 
             <div>
               <Typography variant="subtitle1" gutterBottom>
-                Price
+                Training Level
               </Typography>
-              <RadioGroup>
-                {FILTER_PRICE_OPTIONS.map((item) => (
+              <FormGroup>
+                {EnumHelper.getKeysOfEnum(TrainingLevel).map((item) => (
                   <FormControlLabel
-                    key={item.value}
-                    value={item.value}
-                    control={<Radio />}
-                    label={item.label}
+                    key={item}
+                    control={<Checkbox />}
+                    label={EnumHelper.translate("TrainingLevel", item)}
                   />
                 ))}
-              </RadioGroup>
+              </FormGroup>
             </div>
 
             <div>

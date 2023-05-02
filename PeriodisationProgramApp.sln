@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PeriodisationProgramApp.Bus
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "PeriodisationProgramApp.Web", "PeriodisationProgramApp.Web\PeriodisationProgramApp.Web.esproj", "{D1211620-B90E-484C-87CD-634DE9EE9D4D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeriodisationProgramApp.Common", "PeriodisationProgramApp.Common\PeriodisationProgramApp.Common.csproj", "{5951AA9F-94B0-409F-919D-0229479D0F0E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +49,10 @@ Global
 		{D1211620-B90E-484C-87CD-634DE9EE9D4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D1211620-B90E-484C-87CD-634DE9EE9D4D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D1211620-B90E-484C-87CD-634DE9EE9D4D}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{5951AA9F-94B0-409F-919D-0229479D0F0E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5951AA9F-94B0-409F-919D-0229479D0F0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5951AA9F-94B0-409F-919D-0229479D0F0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5951AA9F-94B0-409F-919D-0229479D0F0E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

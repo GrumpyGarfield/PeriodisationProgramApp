@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { Menu, Button, MenuItem, Typography } from "@mui/material";
-import Iconify from "../../components/common/iconify/Iconify";
+import Iconify from "../../../components/common/iconify/Iconify";
 
-// ----------------------------------------------------------------------
 type Option = {
   value: string;
   label: string;
@@ -15,7 +14,7 @@ const SORT_BY_OPTIONS: Option[] = [
   { value: "name", label: "Name" },
 ];
 
-export default function ShopProductSort() {
+export default function TrainingProgramsSort() {
   const [open, setOpen] = useState<
     Element | ((element: Element) => Element) | null | undefined
   >(null);

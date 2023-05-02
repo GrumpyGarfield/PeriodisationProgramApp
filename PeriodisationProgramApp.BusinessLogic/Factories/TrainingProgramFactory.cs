@@ -1,7 +1,7 @@
 ﻿using PeriodisationProgramApp.BusinessLogic.Builders.Interfaces;
 using PeriodisationProgramApp.BusinessLogic.Builders.TrainingProgramBuilders;
-using PeriodisationProgramApp.BusinessLogic.Enums;
 using PeriodisationProgramApp.BusinessLogic.Factories.Interfaces;
+using PeriodisationProgramApp.Domain.Enums;
 
 namespace PeriodisationProgramApp.BusinessLogic.Factories
 {

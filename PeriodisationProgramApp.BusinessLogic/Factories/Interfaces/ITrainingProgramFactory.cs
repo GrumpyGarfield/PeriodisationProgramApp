@@ -1,5 +1,5 @@
 ﻿using PeriodisationProgramApp.BusinessLogic.Builders.Interfaces;
-using PeriodisationProgramApp.BusinessLogic.Enums;
+using PeriodisationProgramApp.Domain.Enums;
 
 namespace PeriodisationProgramApp.BusinessLogic.Factories.Interfaces
 {

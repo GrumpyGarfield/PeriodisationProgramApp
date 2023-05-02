@@ -14,7 +14,7 @@ using PeriodisationProgramApp.WebApi.Dto;
 namespace PeriodisationProgramApp.WebApi.Controllers
 {
     [ApiController]
-    [Route("[controller]/[action]")]
+    [Route("api/[controller]/[action]")]
     public class UserController : ControllerBase
     {
         private readonly ILogger<UserController> _logger;

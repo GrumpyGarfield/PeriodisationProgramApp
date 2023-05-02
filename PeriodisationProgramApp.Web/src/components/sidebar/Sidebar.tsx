@@ -10,7 +10,9 @@ import {
   ListItemText,
 } from "@mui/material";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
+import SummarizeIcon from "@mui/icons-material/Summarize";
+import FitnessCenterIcon from "@mui/icons-material/FitnessCenter";
+import HelpIcon from "@mui/icons-material/Help";
 import React from "react";
 import { ListItemLink } from "../common/ListItemLink";
 
@@ -42,7 +44,7 @@ export function Sidebar() {
               onClick={() => setSelectedIndex(0)}
             >
               <ListItemIcon>
-                <InboxIcon />
+                <SummarizeIcon />
               </ListItemIcon>
               <ListItemText
                 primary={"Training Programs"}
@@ -61,7 +63,7 @@ export function Sidebar() {
               onClick={() => setSelectedIndex(1)}
             >
               <ListItemIcon>
-                <InboxIcon />
+                <FitnessCenterIcon />
               </ListItemIcon>
               <ListItemText primary={"Exercises"} />
             </ListItemButton>
@@ -96,7 +98,7 @@ export function Sidebar() {
               onClick={() => setSelectedIndex(3)}
             >
               <ListItemIcon>
-                <MailIcon />
+                <HelpIcon />
               </ListItemIcon>
               <ListItemText primary={"About"} />
             </ListItemButton>
