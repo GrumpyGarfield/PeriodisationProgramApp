@@ -5,9 +5,9 @@ namespace PeriodisationProgramApp.DataAccess.QueryContext
 {
     public class PageableQueryContext : IPageableQueryContext
     {
-        public int Page { get; set; }
+        public int Offset { get; set; }
 
-        public int PageSize { get; set; }
+        public int Limit { get; set; }
 
         public SortDirection SortDirection { get; set; }
 

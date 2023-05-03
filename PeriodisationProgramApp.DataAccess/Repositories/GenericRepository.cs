@@ -89,12 +89,12 @@ namespace PeriodisationProgramApp.DataAccess.Repositories
 
         public PagedResult<T> GetPaginatedResult(IPageableQueryContext context)
         {
-            return _context.Set<T>().FilterBy(context.Filters).SortBy(context.SortField, context.SortDirection).GetPaged(context.Page, context.PageSize);
+            return _context.Set<T>().FilterBy(context.Filters).SortBy(context.SortField, context.SortDirection).GetPaged(context.Offset, context.Limit);
         }
 
         public async Task<PagedResult<T>> GetPaginatedResultAsync(IPageableQueryContext context)
         {
-            return await _context.Set<T>().FilterBy(context.Filters).SortBy(context.SortField, context.SortDirection).GetPagedAsync(context.Page, context.PageSize);
+            return await _context.Set<T>().FilterBy(context.Filters).SortBy(context.SortField, context.SortDirection).GetPagedAsync(context.Offset, context.Limit);
         }
     }
 }

@@ -2,11 +2,11 @@
 {
     public class PagedResult<T> : PagedResultBase where T : class
     {
-        public IList<T> Results { get; set; }
+        public IList<T> Items { get; set; }
 
         public PagedResult()
         {
-            Results = new List<T>();
+            Items = new List<T>();
         }
     }
 }

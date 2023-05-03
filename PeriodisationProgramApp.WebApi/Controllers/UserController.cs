@@ -9,7 +9,8 @@ using PeriodisationProgramApp.DataAccess;
 using PeriodisationProgramApp.Domain.Entities;
 using PeriodisationProgramApp.Domain.Enums;
 using PeriodisationProgramApp.Domain.Interfaces;
-using PeriodisationProgramApp.WebApi.Dto;
+using PeriodisationProgramApp.BusinessLogic.Dto;
+using PeriodisationProgramApp.BusinessLogic.Domain.Dto;
 
 namespace PeriodisationProgramApp.WebApi.Controllers
 {

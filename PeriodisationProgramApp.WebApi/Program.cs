@@ -27,6 +27,7 @@ builder.Services.AddTransient(typeof(IGenericRepository<>), typeof(GenericReposi
 
 builder.Services.AddTrainingSessionBuilders();
 builder.Services.AddTrainingProgramBuilders();
+builder.Services.AddBusinessLogicServices();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
@@ -57,6 +58,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors(builder => builder
+    .AllowAnyHeader()
+    .AllowAnyMethod()
+    .AllowAnyOrigin()
+);
 
 app.UseHttpsRedirection();
 

@@ -24,10 +24,7 @@ export function CardMenu({ raised, setRaised, cardMenuItems }: Props) {
   };
 
   return (
-    <Box
-      className="absolute top-0 right-0"
-      sx={{ px: 3, visibility: raised ? "visible" : "hidden" }}
-    >
+    <Box sx={{ pl: 3, visibility: raised ? "visible" : "hidden" }}>
       <IconButton
         size="large"
         color="inherit"

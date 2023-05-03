@@ -39,35 +39,25 @@ namespace PeriodisationProgramApp.DataAccess.Extensions
         }
 
         public static PagedResult<T> GetPaged<T>(this IQueryable<T> query,
-                                         int page, int pageSize) where T : class
+                                         int offset, int limit) where T : class
         {
             var result = new PagedResult<T>();
-            result.CurrentPage = page;
-            result.PageSize = pageSize;
-            result.RowCount = query.Count();
-
-            var pageCount = (double)result.RowCount / pageSize;
-            result.PageCount = (int)Math.Ceiling(pageCount);
-
-            var skip = (page - 1) * pageSize;
-            result.Results = query.Skip(skip).Take(pageSize).ToList();
+            result.Offset = offset;
+            result.Limit = limit;
+            result.TotalItems = query.Count();
+            result.Items = query.Skip(offset).Take(limit).ToList();
 
             return result;
         }
 
         public static async Task<PagedResult<T>> GetPagedAsync<T>(this IQueryable<T> query,
-                                         int page, int pageSize) where T : class
+                                         int offset, int limit) where T : class
         {
             var result = new PagedResult<T>();
-            result.CurrentPage = page;
-            result.PageSize = pageSize;
-            result.RowCount = await query.CountAsync();
-
-            var pageCount = (double)result.RowCount / pageSize;
-            result.PageCount = (int)Math.Ceiling(pageCount);
-
-            var skip = (page - 1) * pageSize;
-            result.Results = await query.Skip(skip).Take(pageSize).ToListAsync();
+            result.Offset = offset;
+            result.Limit = limit;
+            result.TotalItems = await query.CountAsync();
+            result.Items = await query.Skip(offset).Take(limit).ToListAsync();
 
             return result;
         }

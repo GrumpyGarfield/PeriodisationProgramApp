@@ -1,5 +1,5 @@
 import { Card, Stack, Divider } from "@mui/material";
-import { TrainingProgram } from "../TrainingProgramProps";
+import { TrainingProgram } from "../../../../types/enitities/TrainingProgram";
 import React from "react";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import AccessibilityNewIcon from "@mui/icons-material/AccessibilityNew";
@@ -49,7 +49,13 @@ export default function TrainingProgramsCard({ trainingProgram }: Props) {
       className="block relative"
     >
       <Stack spacing={2} sx={{ p: 3 }}>
-        <CardHeader id={trainingProgram.id} text={trainingProgram.name} />
+        <CardHeader
+          id={trainingProgram.id}
+          text={trainingProgram.name}
+          menu={
+            <TrainingProgramsCardMenu raised={raised} setRaised={setRaised} />
+          }
+        />
         <CardList items={trainingProgramsCardListItems} />
         <Divider />
         <CardFooter
@@ -57,7 +63,7 @@ export default function TrainingProgramsCard({ trainingProgram }: Props) {
           rating={trainingProgram.rating}
           likes={trainingProgram.likes}
         />
-        <TrainingProgramsCardMenu raised={raised} setRaised={setRaised} />
+        {/*<TrainingProgramsCardMenu raised={raised} setRaised={setRaised} />*/}
       </Stack>
     </Card>
   );

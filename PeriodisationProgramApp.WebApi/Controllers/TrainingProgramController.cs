@@ -5,6 +5,7 @@ using PeriodisationProgramApp.Domain.Interfaces;
 using PeriodisationProgramApp.Domain.Entities;
 using PeriodisationProgramApp.WebApi.Extensions;
 using Microsoft.AspNetCore.Http;
+using PeriodisationProgramApp.BusinessLogic.Services.Interfaces;
 
 namespace PeriodisationProgramApp.WebApi.Controllers
 {
@@ -14,13 +15,13 @@ namespace PeriodisationProgramApp.WebApi.Controllers
     {
         private readonly ILogger<TrainingProgramController> _logger;
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
+        private readonly ITrainingProgramService _trainingProgramService;
 
-        public TrainingProgramController(ILogger<TrainingProgramController> logger, IUnitOfWork unitOfWork, IMapper mapper)
+        public TrainingProgramController(ILogger<TrainingProgramController> logger, IUnitOfWork unitOfWork, ITrainingProgramService trainingProgramService)
         {
             _logger = logger;
             _unitOfWork = unitOfWork;
-            _mapper = mapper;
+            _trainingProgramService = trainingProgramService;
         }
 
         [HttpGet(Name = "InsertTestPrograms")]
@@ -49,16 +50,16 @@ namespace PeriodisationProgramApp.WebApi.Controllers
 
 
         [HttpGet(Name = "GetTrainingPrograms")]
-        public async Task<IActionResult> GetTrainingPrograms(int page = 1, int pageSize = 24)
+        public async Task<IActionResult> GetTrainingPrograms(int offset, int limit)
         {
             var filters = this.CreateFilters();
             var sortBy = this.GetSortField();
             var sortDir = this.GetSortDirection();
 
-            var trainingPrograms = await _unitOfWork.TrainingProgramRepository.GetPaginatedResultAsync(new PageableQueryContext()
+            var trainingPrograms = await _trainingProgramService.GetTrainingPrograms(new PageableQueryContext()
             {
-                Page = page,
-                PageSize = pageSize,
+                Offset = offset,
+                Limit = limit,
                 SortField = sortBy,
                 SortDirection = sortDir,
                 Filters = filters

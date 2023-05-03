@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
+using PeriodisationProgramApp.BusinessLogic.Domain.Dto;
 using PeriodisationProgramApp.Domain.Entities;
-using PeriodisationProgramApp.WebApi.Dto;
 
-namespace PeriodisationProgramApp.WebApi.Mapper
+namespace PeriodisationProgramApp.BusinessLogic.Mapper
 {
     public class TrainingProgramToTrainingProgramDtoMapper : Profile
     {

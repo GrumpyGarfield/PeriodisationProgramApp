@@ -1,4 +1,4 @@
-﻿namespace PeriodisationProgramApp.WebApi.Dto
+﻿namespace PeriodisationProgramApp.BusinessLogic.Domain.Dto
 {
     public class ExerciseDto
     {

@@ -1,6 +1,6 @@
-﻿using PeriodisationProgramApp.Domain.Entities;
+﻿using PeriodisationProgramApp.BusinessLogic.Domain.Dto;
 
-namespace PeriodisationProgramApp.WebApi.Dto
+namespace PeriodisationProgramApp.BusinessLogic.Dto
 {
     public class TrainingSessionExerciseDto
     {

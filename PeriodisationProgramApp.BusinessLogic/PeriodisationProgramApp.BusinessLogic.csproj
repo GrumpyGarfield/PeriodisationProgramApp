@@ -7,11 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\PeriodisationProgramApp.DataAccess\PeriodisationProgramApp.DataAccess.csproj" />
+    <PackageReference Include="AutoMapper" Version="12.0.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Services\" />
+    <ProjectReference Include="..\PeriodisationProgramApp.DataAccess\PeriodisationProgramApp.DataAccess.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,5 +1,5 @@
-import { TrainingLevel } from "../../../enums/TrainingLevel";
-import { TrainingProgramType } from "../../../enums/TrainingProgramType";
+import { TrainingLevel } from "../../enums/TrainingLevel";
+import { TrainingProgramType } from "../../enums/TrainingProgramType";
 
 export type TrainingProgram = {
   id: string;

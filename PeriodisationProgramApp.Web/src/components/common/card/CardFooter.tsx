@@ -33,7 +33,7 @@ export function CardFooter({ author, likes, rating }: Props) {
               sx={{ p: 1 }}
             />
           }
-          label={rating}
+          label={rating.toFixed(1)}
         />
         <FormControlLabel
           control={

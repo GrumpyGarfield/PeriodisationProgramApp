@@ -4,9 +4,9 @@ namespace PeriodisationProgramApp.Domain.Interfaces
 {
     public interface IPageableQueryContext
     {
-        int Page { get; set; }
+        int Offset { get; set; }
 
-        int PageSize { get; set; }
+        int Limit { get; set; }
 
         SortDirection SortDirection { get; set; }
 
