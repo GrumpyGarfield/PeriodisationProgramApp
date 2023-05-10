@@ -1,19 +1,27 @@
 import { OutlinedInput, InputAdornment } from "@mui/material";
 import Iconify from "../../../components/common/iconify/Iconify";
+import { useState } from "react";
+import useTrainingPrograms from "../../../context/entities/useTrainingPrograms";
 
-type Props = {
-  filterName: string;
-  onFilterName: (event: React.ChangeEvent<HTMLInputElement>) => void;
-};
+export default function TrainingProgramsSearch() {
+  const [filter, setFilter] = useState<string>("");
+  const { filterTrainingPrograms } = useTrainingPrograms();
 
-export default function TrainingProgramsSearch({
-  filterName,
-  onFilterName,
-}: Props) {
+  const handleFilterByName = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    setFilter(value);
+    filterTrainingPrograms([
+      {
+        name: "name",
+        value: value,
+      },
+    ]);
+  };
+
   return (
     <OutlinedInput
-      value={filterName}
-      onChange={onFilterName}
+      value={filter}
+      onChange={handleFilterByName}
       placeholder="Search program..."
       startAdornment={
         <InputAdornment position="start">

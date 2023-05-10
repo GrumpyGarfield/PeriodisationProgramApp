@@ -1,8 +1,8 @@
 import { TrainingLevel } from "../../enums/TrainingLevel";
 import { TrainingProgramType } from "../../enums/TrainingProgramType";
+import { BaseEntity } from "./BaseEntity";
 
 export type TrainingProgram = {
-  id: string;
   name: string;
   description?: string;
   type: TrainingProgramType;
@@ -11,4 +11,4 @@ export type TrainingProgram = {
   rating: number;
   likes: number;
   author: string;
-};
+} & BaseEntity;

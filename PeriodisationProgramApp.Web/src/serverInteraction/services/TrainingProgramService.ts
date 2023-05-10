@@ -1,10 +1,11 @@
+import { EntityFilter } from "../../types/EntityFilter";
 import { TrainingProgram } from "../../types/enitities/TrainingProgram";
 import BaseServerInteractionService from "../BaseServerInteractionService";
 
 const getAll = async (
   offset: number,
   limit?: number,
-  filters?: any,
+  filters?: EntityFilter[] | undefined,
   sortParams?: any
 ) => {
   return BaseServerInteractionService.GetPage<TrainingProgram>(

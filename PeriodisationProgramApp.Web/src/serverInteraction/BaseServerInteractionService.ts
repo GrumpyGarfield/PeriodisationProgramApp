@@ -2,6 +2,7 @@ import axios, { AxiosRequestConfig } from "axios";
 import queryString from "query-string";
 import { getFiltersWithPrefix } from "../utils/Utils";
 import { PagedResult } from "../types/PagedResult";
+import { EntityFilter } from "../types/EntityFilter";
 
 const apiClient = axios.create({
   baseURL: "https://localhost:44326/api",
@@ -42,7 +43,7 @@ const GetPage = async <T>(
   url: string,
   offset: number,
   limit = 9,
-  filters?: any,
+  filters?: EntityFilter[] | undefined,
   sortParams?: any
 ) => {
   const params = {

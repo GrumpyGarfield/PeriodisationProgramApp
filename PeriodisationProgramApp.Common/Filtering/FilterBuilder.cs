@@ -169,42 +169,35 @@
         private static Expression GetEnumFilter(ParameterExpression exprParam, PropertyInfo property, string filterValue)
         {
             var propertyGetter = Expression.Property(exprParam, property);
+            var filterValues = filterValue.Split(',').Select(value => Enum.Parse(property.PropertyType, value)).ToList();
+            var expression = Expression.Equal(propertyGetter, Expression.Constant(filterValues[0]));
+            
+            for (var i = 1; i < filterValues.Count; i++)
+            {
+                expression = Expression.OrElse(expression, Expression.Equal(propertyGetter, Expression.Constant(filterValues[i])));
+            }
 
-            ConstantExpression targetValueExpression;
-            targetValueExpression = Expression.Constant(Enum.ToObject(property.PropertyType, int.Parse(filterValue)));
-            return Expression.Equal(propertyGetter, targetValueExpression);
+            return expression;
         }
 
         private static Expression GetNumberFilter<T>(ParameterExpression exprParam, PropertyInfo property, string filterValue)
         {
             var propertyGetter = Expression.Property(exprParam, property);
-            var targetValueExpression = Expression.Constant(0);
-            var filterCondition = FilterCondition.Equal;
+            var filterValues = filterValue.Split(':');
 
-            if (!string.IsNullOrEmpty(filterValue))
+            if (filterValues.Length == 1)
             {
-                filterCondition = GetFilterCondition(filterValue[0]);
-                filterValue = filterValue.TrimStart('<', '>', '!');
-
-                if (typeof(T) == typeof(int))
-                {
-                    targetValueExpression = Expression.Constant(int.Parse(filterValue));
-                }
-                else if (typeof(T) == typeof(double))
-                {
-                    targetValueExpression = Expression.Constant(double.Parse(filterValue));
-                }
-                else if (typeof(T) == typeof(decimal))
-                {
-                    targetValueExpression = Expression.Constant(decimal.Parse(filterValue));
-                }
-                else if (typeof(T) == typeof(float))
-                {
-                    targetValueExpression = Expression.Constant(float.Parse(filterValue));
-                }
+                return Expression.Equal(propertyGetter, GetNumericConstantExpression<T>(filterValues[0]));
             }
 
-            return GetExpression(propertyGetter, targetValueExpression, filterCondition);
+            var expression = Expression.GreaterThanOrEqual(propertyGetter, string.IsNullOrEmpty(filterValues[0]) ? Expression.Constant(0) : GetNumericConstantExpression<T>(filterValues[0]));
+            
+            if (string.IsNullOrEmpty(filterValues[1]))
+            {
+                return expression;
+            }
+
+            return Expression.And(expression, Expression.LessThanOrEqual(propertyGetter, GetNumericConstantExpression<T>(filterValues[1])));
         }
 
         private static Expression GetBoolFilter(ParameterExpression exprParam, PropertyInfo property, string filterValue)
@@ -310,26 +303,28 @@
             return new Tuple<DateTime?, DateTime?>(from, to);
         }
 
-        private static FilterCondition GetFilterCondition(char prefix)
+        private static ConstantExpression GetNumericConstantExpression<T>(string value)
         {
-            return prefix switch
+            if (typeof(T) == typeof(int))
             {
-                '<' => FilterCondition.LessThan,
-                '>' => FilterCondition.GreaterThan,
-                '!' => FilterCondition.NotEqual,
-                _ => FilterCondition.Equal
-            };
-        }
-
-        private static Expression GetExpression(MemberExpression memberExpression, ConstantExpression constantExpression, FilterCondition filterCondition)
-        {
-            return filterCondition switch
+                return Expression.Constant(int.Parse(value));
+            }
+            else if (typeof(T) == typeof(double))
             {
-                FilterCondition.LessThan => Expression.LessThan(memberExpression, constantExpression),
-                FilterCondition.GreaterThan => Expression.GreaterThan(memberExpression, constantExpression),
-                FilterCondition.NotEqual => Expression.NotEqual(memberExpression, constantExpression),
-                _ => Expression.Equal(memberExpression, constantExpression)
-            };
+                return Expression.Constant(double.Parse(value));
+            }
+            else if (typeof(T) == typeof(decimal))
+            {
+                return Expression.Constant(decimal.Parse(value));
+            }
+            else if (typeof(T) == typeof(float))
+            {
+                return Expression.Constant(float.Parse(value));
+            }
+            else
+            {
+                throw new Exception($"Type {typeof(T)} doesn't have parsing path");
+            }
         }
     }
 }

@@ -12,4 +12,10 @@ export class EnumHelper {
       ? keys.map((item) => EnumHelper.translate(enumName, item))
       : keys;
   };
+
+  public static getEnumValuesString = (keys: string[], enumObject: any) => {
+    return keys
+      .map((item) => enumObject[item as keyof typeof enumObject])
+      .join(",");
+  };
 }

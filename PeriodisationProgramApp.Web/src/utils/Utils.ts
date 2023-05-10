@@ -1,4 +1,4 @@
-export const getFiltersWithPrefix = (filters: any): any => {
+export const getFiltersWithPrefix = (filters: any): {} => {
   const newFilters: any = {};
 
   for (const k in filters) {

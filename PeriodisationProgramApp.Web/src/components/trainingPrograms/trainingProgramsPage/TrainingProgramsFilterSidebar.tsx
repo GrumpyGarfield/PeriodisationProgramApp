@@ -6,94 +6,102 @@ import {
   Drawer,
   Rating,
   Divider,
-  Checkbox,
-  FormGroup,
   IconButton,
   Typography,
   RadioGroup,
   FormControlLabel,
-  Slider,
+  Badge,
 } from "@mui/material";
-// components
 import Iconify from "../../../components/common/iconify/Iconify";
 import Scrollbar from "../../../components/common/scrollbar/Scrollbar";
-import { EnumHelper } from "../../../helpers/EnumHelper";
 import { TrainingProgramType } from "../../../enums/TrainingProgramType";
-import React from "react";
+import React, { useState } from "react";
 import { TrainingLevel } from "../../../enums/TrainingLevel";
+import useTrainingPrograms from "../../../context/entities/useTrainingPrograms";
+import { EnumFilter } from "../../common/filter/EnumFilter";
+import useCheckboxFilter from "../../../hooks/useCheckboxFilter";
+import { EnumHelper } from "../../../helpers/EnumHelper";
+import { NumberRangeFilter } from "../../common/filter/NumberRangeFilter";
+import useNumberRangeFilter from "../../../hooks/useNumberRangeFilter";
 
-export const FILTER_CATEGORY_OPTIONS = [
-  "All",
-  "Shose",
-  "Apparel",
-  "Accessories",
-];
 export const FILTER_RATING_OPTIONS = [
   "up4Star",
   "up3Star",
   "up2Star",
   "up1Star",
 ];
-export const FILTER_PRICE_OPTIONS = [
-  { value: "below", label: "Below $25" },
-  { value: "between", label: "Between $25 - $75" },
-  { value: "above", label: "Above $75" },
-];
-
-type Props = {
-  openFilter: boolean;
-  onOpenFilter: () => void;
-  onCloseFilter: () => void;
-};
 
 const marks: number[] = [2, 3, 4, 5, 6];
 
-export default function TrainingProgramsFilterSidebar({
-  openFilter,
-  onOpenFilter,
-  onCloseFilter,
-}: Props) {
-  const [numberOfSessions, setNumberOfSessions] = React.useState<number[]>([
-    2, 6,
-  ]);
+export default function TrainingProgramsFilterSidebar() {
+  const [activeFilter, setActiveFilter] = useState(false);
+  const [openFilter, setOpenFilter] = useState(false);
+  const { filterTrainingPrograms } = useTrainingPrograms();
+  const trainingProgramTypesFilter = useCheckboxFilter();
+  const trainingLevelsFilter = useCheckboxFilter();
+  const numberOfSessionsFilter = useNumberRangeFilter(
+    marks[0],
+    marks[marks.length - 1]
+  );
 
-  const handleNumberOfSessionsChange = (
-    event: Event,
-    newValue: number | number[],
-    activeThumb: number
-  ) => {
-    if (!Array.isArray(newValue)) {
-      return;
-    }
+  const handleOpenFilter = () => {
+    setOpenFilter(true);
+  };
 
-    if (activeThumb === 0) {
-      setNumberOfSessions([
-        Math.min(newValue[0], numberOfSessions[1]),
-        numberOfSessions[1],
-      ]);
-    } else {
-      setNumberOfSessions([
-        numberOfSessions[0],
-        Math.max(newValue[1], numberOfSessions[0]),
-      ]);
-    }
+  const handleCloseFilter = () => {
+    trainingProgramTypesFilter.isActive() ||
+    trainingLevelsFilter.isActive() ||
+    numberOfSessionsFilter.isActive()
+      ? setActiveFilter(true)
+      : setActiveFilter(false);
+
+    setOpenFilter(false);
+
+    filterTrainingPrograms([
+      {
+        name: "type",
+        value: EnumHelper.getEnumValuesString(
+          trainingProgramTypesFilter.selected,
+          TrainingProgramType
+        ),
+      },
+      {
+        name: "trainingLevel",
+        value: EnumHelper.getEnumValuesString(
+          trainingLevelsFilter.selected,
+          TrainingLevel
+        ),
+      },
+      {
+        name: "numberOfSessions",
+        value: numberOfSessionsFilter.getValueString(),
+      },
+    ]);
+  };
+
+  const handleClearAllButtonClick = () => {
+    numberOfSessionsFilter.setValue([2, 6]);
+    trainingProgramTypesFilter.setSelected([]);
+    trainingLevelsFilter.setSelected([]);
   };
 
   return (
     <>
-      <Button
-        disableRipple
-        color="inherit"
-        endIcon={<Iconify icon="ic:round-filter-list" />}
-        onClick={onOpenFilter}
-      >
-        Filters&nbsp;
-      </Button>
+      <Badge color="secondary" variant="dot" invisible={!activeFilter}>
+        <Button
+          disableRipple
+          color="inherit"
+          endIcon={<Iconify icon="ic:round-filter-list" />}
+          onClick={handleOpenFilter}
+        >
+          Filters&nbsp;
+        </Button>
+      </Badge>
 
       <Drawer
         anchor="right"
         open={openFilter}
-        onClose={onCloseFilter}
+        onClose={handleCloseFilter}
         PaperProps={{
           sx: { width: 280, border: "none", overflow: "hidden" },
         }}
@@ -107,7 +115,7 @@ export default function TrainingProgramsFilterSidebar({
           <Typography variant="subtitle1" sx={{ ml: 1 }}>
             Filters
           </Typography>
-          <IconButton onClick={onCloseFilter}>
+          <IconButton onClick={handleCloseFilter}>
             <Iconify icon="eva:close-fill" />
           </IconButton>
         </Stack>
@@ -116,58 +124,26 @@ export default function TrainingProgramsFilterSidebar({
 
         <Scrollbar>
           <Stack spacing={3} sx={{ p: 3 }}>
-            <div>
-              <Typography variant="subtitle1" gutterBottom>
-                Split Type
-              </Typography>
-              <FormGroup>
-                {EnumHelper.getKeysOfEnum(TrainingProgramType).map((item) => (
-                  <FormControlLabel
-                    key={item}
-                    control={<Checkbox />}
-                    label={EnumHelper.translate("TrainingProgramType", item)}
-                  />
-                ))}
-              </FormGroup>
-            </div>
+            <EnumFilter
+              label="Split Type"
+              enumName="TrainingProgramType"
+              enumObject={TrainingProgramType}
+              inputFilter={trainingProgramTypesFilter}
+            />
 
-            <div>
-              <Typography
-                id="non-linear-slider"
-                variant="subtitle1"
-                gutterBottom
-              >
-                Number of Weekly Sessions
-              </Typography>
-              <Slider
-                min={2}
-                max={6}
-                step={1}
-                getAriaLabel={() => "Number of sessions"}
-                value={numberOfSessions}
-                onChange={handleNumberOfSessionsChange}
-                valueLabelDisplay="off"
-                marks={marks.map((mark) => ({
-                  label: mark.toString(),
-                  value: mark,
-                }))}
-              />
-            </div>
+            <NumberRangeFilter
+              label="Number of Weekly Sessions"
+              range={marks}
+              value={numberOfSessionsFilter.value}
+              onChange={numberOfSessionsFilter.handleChange}
+            />
 
-            <div>
-              <Typography variant="subtitle1" gutterBottom>
-                Training Level
-              </Typography>
-              <FormGroup>
-                {EnumHelper.getKeysOfEnum(TrainingLevel).map((item) => (
-                  <FormControlLabel
-                    key={item}
-                    control={<Checkbox />}
-                    label={EnumHelper.translate("TrainingLevel", item)}
-                  />
-                ))}
-              </FormGroup>
-            </div>
+            <EnumFilter
+              label="Training Level"
+              enumName="TrainingLevel"
+              enumObject={TrainingLevel}
+              inputFilter={trainingLevelsFilter}
+            />
 
             <div>
               <Typography variant="subtitle1" gutterBottom>
@@ -210,6 +186,7 @@ export default function TrainingProgramsFilterSidebar({
             color="inherit"
             variant="outlined"
             startIcon={<Iconify icon="ic:round-clear-all" />}
+            onClick={handleClearAllButtonClick}
           >
             Clear All
           </Button>
