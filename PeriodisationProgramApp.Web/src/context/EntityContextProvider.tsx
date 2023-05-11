@@ -8,6 +8,7 @@ import {
 
 import { IEntityContext } from "./IEntityContext";
 import { BaseEntity } from "../types/enitities/BaseEntity";
+import { EntitySorting } from "../types/EntitySorting";
 
 const EntityContext = createContext<IEntityContext<any> | undefined>(undefined);
 
@@ -28,6 +29,7 @@ const EntityProvider: FC<PropsWithChildren> = <T extends BaseEntity>(
   const [isFetching, setIsFetching] = useState(false);
   const [enitities, setEntities] = useState<T[]>([]);
   const [filters, setFilters] = useState<{}>({});
+  const [sortParams, setSortParams] = useState<EntitySorting>();
 
   const EntityContextValue: IEntityContext<T> = {
     isFetching,
@@ -36,6 +38,8 @@ const EntityProvider: FC<PropsWithChildren> = <T extends BaseEntity>(
     setEntities,
     filters,
     setFilters,
+    sortParams,
+    setSortParams,
   };
 
   return <EntityContext.Provider value={EntityContextValue} {...props} />;

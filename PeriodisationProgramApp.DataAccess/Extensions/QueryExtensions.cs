@@ -15,13 +15,15 @@ namespace PeriodisationProgramApp.DataAccess.Extensions
                 sortField = "Created";
             }
 
+            var prop = typeof(T).GetProperties().FirstOrDefault(x => string.Equals(x.Name, sortField, StringComparison.InvariantCultureIgnoreCase));
+
             if (sortDirection == SortDirection.Asc)
             {
-                return query.OrderBy(p => EF.Property<object>(p, sortField));
+                return query.OrderBy(p => EF.Property<object>(p, prop.Name));
             }
             else
             {
-                return query.OrderByDescending(p => EF.Property<object>(p, sortField));
+                return query.OrderByDescending(p => EF.Property<object>(p, prop.Name));
             }
         }
 

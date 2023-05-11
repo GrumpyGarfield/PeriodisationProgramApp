@@ -1,4 +1,4 @@
-import { Tabs, Tab, Box, Button } from "@mui/material";
+import { Tabs, Tab, Box, Button, Stack } from "@mui/material";
 import { PageHeader } from "../../../components/common/pageHeader/PageHeader";
 import React from "react";
 
@@ -9,7 +9,13 @@ export function TrainingProgramsPageHeader() {
   };
 
   return (
-    <Box className="block relative">
+    <Stack
+      direction="row"
+      flexWrap="wrap-reverse"
+      alignItems="flex-end"
+      justifyContent="space-between"
+      sx={{ mb: 5 }}
+    >
       <div>
         <PageHeader
           text="Training Programs"
@@ -29,11 +35,11 @@ export function TrainingProgramsPageHeader() {
           </Tabs>
         </Box>
       </div>
-      <Box className="absolute top-0 right-0" sx={{ p: 3 }}>
+      <Box sx={{ p: 3 }}>
         <Button variant="contained" color="secondary">
           Create New
         </Button>
       </Box>
-    </Box>
+    </Stack>
   );
 }

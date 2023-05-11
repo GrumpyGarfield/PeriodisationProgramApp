@@ -15,11 +15,18 @@ const useTrainingPrograms = () => {
     hasNextPage,
     filterEntities,
     filters,
+    sortParams,
+    setSortParams,
     refetch,
   } = useEntities<TrainingProgram>(
     ["trainingPrograms"],
     async ({ pageParam = 0 }): Promise<PagedResult<TrainingProgram>> => {
-      return await TrainingProgramService.getAll(pageParam, 9, filters);
+      return await TrainingProgramService.getAll(
+        pageParam,
+        9,
+        filters,
+        sortParams === undefined ? { sortBy: "rating" } : sortParams
+      );
     }
   );
 
@@ -34,6 +41,8 @@ const useTrainingPrograms = () => {
     hasNextPage,
     filterTrainingPrograms: filterEntities,
     filters,
+    sortParams,
+    setSortParams,
     refetch,
   };
 };

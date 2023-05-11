@@ -1,15 +1,11 @@
 import {
   Box,
-  Radio,
   Stack,
   Button,
   Drawer,
-  Rating,
   Divider,
   IconButton,
   Typography,
-  RadioGroup,
-  FormControlLabel,
   Badge,
 } from "@mui/material";
 import Iconify from "../../../components/common/iconify/Iconify";
@@ -18,71 +14,60 @@ import { TrainingProgramType } from "../../../enums/TrainingProgramType";
 import React, { useState } from "react";
 import { TrainingLevel } from "../../../enums/TrainingLevel";
 import useTrainingPrograms from "../../../context/entities/useTrainingPrograms";
-import { EnumFilter } from "../../common/filter/EnumFilter";
-import useCheckboxFilter from "../../../hooks/useCheckboxFilter";
-import { EnumHelper } from "../../../helpers/EnumHelper";
-import { NumberRangeFilter } from "../../common/filter/NumberRangeFilter";
-import useNumberRangeFilter from "../../../hooks/useNumberRangeFilter";
-
-export const FILTER_RATING_OPTIONS = [
-  "up4Star",
-  "up3Star",
-  "up2Star",
-  "up1Star",
-];
+import { EnumFilter } from "../../common/filter/enumCheckboxFilter/EnumCheckboxFilter";
+import { NumberRangeFilter } from "../../common/filter/numberRangeFilter/NumberRangeFilter";
+import useNumberRangeFilter from "../../common/filter/numberRangeFilter/useNumberRangeFilter";
+import { RatingFilter } from "../../common/filter/ratingFilter/RatingFilter";
+import { IFilter } from "../../../types/IFilter";
+import useEnumCheckboxFilter from "../../common/filter/enumCheckboxFilter/useEnumCheckboxFilter";
+import useRatingFilter from "../../common/filter/ratingFilter/useRatingFilter";
 
 const marks: number[] = [2, 3, 4, 5, 6];
 
 export default function TrainingProgramsFilterSidebar() {
   const [activeFilter, setActiveFilter] = useState(false);
   const [openFilter, setOpenFilter] = useState(false);
+
   const { filterTrainingPrograms } = useTrainingPrograms();
-  const trainingProgramTypesFilter = useCheckboxFilter();
-  const trainingLevelsFilter = useCheckboxFilter();
+
+  const trainingProgramTypesFilter = useEnumCheckboxFilter(
+    "type",
+    TrainingProgramType
+  );
+  const trainingLevelsFilter = useEnumCheckboxFilter(
+    "trainingLevel",
+    TrainingLevel
+  );
   const numberOfSessionsFilter = useNumberRangeFilter(
+    "numberOfSessions",
     marks[0],
     marks[marks.length - 1]
   );
+  const ratingFilter = useRatingFilter("rating");
+
+  const filters: IFilter[] = [
+    trainingProgramTypesFilter,
+    trainingLevelsFilter,
+    numberOfSessionsFilter,
+    ratingFilter,
+  ];
 
   const handleOpenFilter = () => {
     setOpenFilter(true);
   };
 
   const handleCloseFilter = () => {
-    trainingProgramTypesFilter.isActive() ||
-    trainingLevelsFilter.isActive() ||
-    numberOfSessionsFilter.isActive()
+    filters.map((filter) => filter.isActive()).filter((x) => x).length > 0
       ? setActiveFilter(true)
       : setActiveFilter(false);
 
     setOpenFilter(false);
 
-    filterTrainingPrograms([
-      {
-        name: "type",
-        value: EnumHelper.getEnumValuesString(
-          trainingProgramTypesFilter.selected,
-          TrainingProgramType
-        ),
-      },
-      {
-        name: "trainingLevel",
-        value: EnumHelper.getEnumValuesString(
-          trainingLevelsFilter.selected,
-          TrainingLevel
-        ),
-      },
-      {
-        name: "numberOfSessions",
-        value: numberOfSessionsFilter.getValueString(),
-      },
-    ]);
+    filterTrainingPrograms(filters.map((filter) => filter.getFilter()));
   };
 
   const handleClearAllButtonClick = () => {
-    numberOfSessionsFilter.setValue([2, 6]);
-    trainingProgramTypesFilter.setSelected([]);
-    trainingLevelsFilter.setSelected([]);
+    filters.forEach((filter) => filter.clear());
   };
 
   return (
@@ -128,7 +113,8 @@ export default function TrainingProgramsFilterSidebar() {
               label="Split Type"
               enumName="TrainingProgramType"
               enumObject={TrainingProgramType}
-              inputFilter={trainingProgramTypesFilter}
+              handleChange={trainingProgramTypesFilter.handleChange}
+              checked={trainingProgramTypesFilter.hasSelected}
             />
 
             <NumberRangeFilter
@@ -142,39 +128,14 @@ export default function TrainingProgramsFilterSidebar() {
               label="Training Level"
               enumName="TrainingLevel"
               enumObject={TrainingLevel}
-              inputFilter={trainingLevelsFilter}
+              handleChange={trainingLevelsFilter.handleChange}
+              checked={trainingLevelsFilter.hasSelected}
             />
 
-            <div>
-              <Typography variant="subtitle1" gutterBottom>
-                Rating
-              </Typography>
-              <RadioGroup>
-                {FILTER_RATING_OPTIONS.map((item, index) => (
-                  <FormControlLabel
-                    key={item}
-                    value={item}
-                    control={
-                      <Radio
-                        disableRipple
-                        color="default"
-                        icon={<Rating readOnly value={4 - index} />}
-                        checkedIcon={<Rating readOnly value={4 - index} />}
-                        sx={{
-                          "&:hover": { bgcolor: "transparent" },
-                        }}
-                      />
-                    }
-                    label="& Up"
-                    sx={{
-                      my: 0.5,
-                      borderRadius: 1,
-                      "&:hover": { opacity: 0.48 },
-                    }}
-                  />
-                ))}
-              </RadioGroup>
-            </div>
+            <RatingFilter
+              value={ratingFilter.value}
+              onChange={ratingFilter.handleChange}
+            />
           </Stack>
         </Scrollbar>
 

@@ -5,5 +5,4 @@ export interface IInputFilter<T> {
   setSelected: Dispatch<SetStateAction<T[]>>;
   changeEvent: (event: ChangeEvent<HTMLInputElement>, checked: boolean) => void;
   hasSelected: (item: T) => boolean;
-  isActive: () => boolean;
 }
