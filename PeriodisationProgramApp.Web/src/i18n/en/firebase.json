@@ -1,0 +1,5 @@
+{
+  "auth/wrong-password": "Invalid email or password",
+  "auth/too-many-requests": "Too many request. Please try again later",
+  "unknown": "Unknown error"
+}

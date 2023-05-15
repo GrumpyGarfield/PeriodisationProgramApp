@@ -10,7 +10,7 @@
 
         IExerciseMuscleGroupRepository ExerciseMuscleGroups { get; }
 
-        ITrainingProgramRepository TrainingProgramRepository { get; }
+        ITrainingProgramRepository TrainingPrograms { get; }
 
         int Complete();
 

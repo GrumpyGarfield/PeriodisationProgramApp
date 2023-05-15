@@ -28,5 +28,10 @@ namespace PeriodisationProgramApp.DataAccess.Repositories
                                         .ThenInclude(e => e.MuscleGroup)
                                  .FirstOrDefaultAsync(u => u.Id == _defaultDataSettings.DefaultUser!.Id);
         }
+
+        public async Task<User?> GetUserByFirebaseId(string firebaseId)
+        {
+            return await _context.Users.FirstOrDefaultAsync(u => u.FirebaseId == firebaseId);
+        }
     }
 }

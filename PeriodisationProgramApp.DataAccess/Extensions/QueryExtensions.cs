@@ -17,6 +17,11 @@ namespace PeriodisationProgramApp.DataAccess.Extensions
 
             var prop = typeof(T).GetProperties().FirstOrDefault(x => string.Equals(x.Name, sortField, StringComparison.InvariantCultureIgnoreCase));
 
+            if (prop == null)
+            {
+                throw new InvalidOperationException($"Property {sortField} not found");
+            }
+
             if (sortDirection == SortDirection.Asc)
             {
                 return query.OrderBy(p => EF.Property<object>(p, prop.Name));
@@ -43,11 +48,13 @@ namespace PeriodisationProgramApp.DataAccess.Extensions
         public static PagedResult<T> GetPaged<T>(this IQueryable<T> query,
                                          int offset, int limit) where T : class
         {
-            var result = new PagedResult<T>();
-            result.Offset = offset;
-            result.Limit = limit;
-            result.TotalItems = query.Count();
-            result.Items = query.Skip(offset).Take(limit).ToList();
+            var result = new PagedResult<T>
+            {
+                Offset = offset,
+                Limit = limit,
+                TotalItems = query.Count(),
+                Items = query.Skip(offset).Take(limit).ToList()
+            };
 
             return result;
         }

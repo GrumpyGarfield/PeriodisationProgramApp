@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using PeriodisationProgramApp.DataAccess;
@@ -11,9 +12,11 @@ using PeriodisationProgramApp.DataAccess;
 namespace PeriodisationProgramApp.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20230515090834_UsersTableUselessColumnsRemoved")]
+    partial class UsersTableUselessColumnsRemoved
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -328,9 +331,6 @@ namespace PeriodisationProgramApp.DataAccess.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("text");
 
-                    b.Property<string>("FirebaseId")
-                        .HasColumnType("text");
-
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
@@ -372,7 +372,7 @@ namespace PeriodisationProgramApp.DataAccess.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserTrainingProgramLikes");
+                    b.ToTable("UserTrainingProgramLike");
                 });
 
             modelBuilder.Entity("PeriodisationProgramApp.Domain.Entities.UserTrainingProgramRating", b =>
@@ -405,7 +405,7 @@ namespace PeriodisationProgramApp.DataAccess.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserTrainingProgramRatings");
+                    b.ToTable("UserTrainingProgramRating");
                 });
 
             modelBuilder.Entity("PeriodisationProgramApp.Domain.Entities.Exercise", b =>

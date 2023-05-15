@@ -2,7 +2,7 @@
 
 namespace PeriodisationProgramApp.BusinessLogic.Dto
 {
-    public class TrainingSessionExerciseDto
+    public class TrainingSessionExerciseDto : BaseEntityDto
     {
         public ExerciseDto? Exercise { get; set; }
 

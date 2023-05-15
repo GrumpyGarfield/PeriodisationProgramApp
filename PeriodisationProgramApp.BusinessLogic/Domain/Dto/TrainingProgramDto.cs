@@ -2,11 +2,8 @@
 
 namespace PeriodisationProgramApp.BusinessLogic.Domain.Dto
 {
-    public class TrainingProgramDto
+    public class TrainingProgramDto : BaseEntityDto
     {
-        public Guid Id { get; set; }
-
-        public DateTime Created { get; set; }
 
         public string? Name { get; set; }
 

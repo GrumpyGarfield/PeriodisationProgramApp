@@ -1,8 +1,9 @@
-﻿using PeriodisationProgramApp.Domain.Entities;
+﻿using PeriodisationProgramApp.BusinessLogic.Domain.Dto;
+using PeriodisationProgramApp.Domain.Entities;
 
 namespace PeriodisationProgramApp.BusinessLogic.Dto
 {
-    public class TrainingSessionDto
+    public class TrainingSessionDto : BaseEntityDto
     {
         public int Week { get; set; }
 

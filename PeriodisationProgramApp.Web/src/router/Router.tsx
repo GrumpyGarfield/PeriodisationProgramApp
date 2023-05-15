@@ -4,6 +4,7 @@ import { TrainingProgramsPage } from "../components/trainingPrograms/trainingPro
 import { ExercisesPage } from "../pages/ExercisesPage";
 import { MuscleGroupsPage } from "../pages/MuscleGroupsPage";
 import { AboutPage } from "../pages/AboutPage";
+import SignIn from "../components/authorization/SignIn";
 
 const router = createBrowserRouter([
   {
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
         element: <AboutPage />,
       },
     ],
+  },
+  {
+    path: "/signin",
+    element: <SignIn />,
   },
 ]);
 

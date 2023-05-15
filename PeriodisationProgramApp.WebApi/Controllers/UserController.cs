@@ -11,6 +11,9 @@ using PeriodisationProgramApp.Domain.Enums;
 using PeriodisationProgramApp.Domain.Interfaces;
 using PeriodisationProgramApp.BusinessLogic.Dto;
 using PeriodisationProgramApp.BusinessLogic.Domain.Dto;
+using FirebaseAdmin.Auth;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace PeriodisationProgramApp.WebApi.Controllers
 {
@@ -83,6 +86,75 @@ namespace PeriodisationProgramApp.WebApi.Controllers
             var trainingProgramVolume = trainingProgram.GetVolume();
 
             return Ok(trainingProgramDto);
+        }
+
+        [HttpGet(Name = "InsertTestUsers")]
+        public IActionResult InsertTestUsers(int count = 1)
+        {
+            for (var i = 0; i < count; i++)
+            {
+                var guid = Guid.NewGuid();
+                var rnd = new Random();
+
+                _unitOfWork.Users.Add(new User()
+                {
+                    Id = guid,
+                    Username = $"User {guid}",
+                    Email = $"testuser{count}@gmail.com",                    
+                });
+            }
+
+            return Ok(_unitOfWork.Complete());
+        }
+
+        [HttpGet(Name = "AddUser")]
+        public async Task<IActionResult> AddUserAsync(string username, string email, string password)
+        {
+            var args = new UserRecordArgs()
+            {
+                Email = email,
+                EmailVerified = true,
+                Password = password,
+                DisplayName = username,
+                PhotoUrl = "https://s5o.ru/storage/simple/ru/ugc/50/59/29/95/ruueab4b8ab2d.113.150x300.jpg",
+                Disabled = false
+            };
+
+            var userRecord = await FirebaseAuth.DefaultInstance.CreateUserAsync(args);
+
+            return Ok(userRecord);
+        }
+
+        [Authorize]
+        [HttpGet(Name = "Login")]
+        public async Task<IActionResult> Login()
+        {
+            var uid = User.FindFirstValue("user_id");
+            var firebaseUser = await FirebaseAuth.DefaultInstance.GetUserAsync(uid);
+            var user = await _unitOfWork.Users.GetUserByFirebaseId(uid);
+
+            if (user == null)
+            {
+                await _unitOfWork.Users.AddAsync(new User()
+                {
+                    Id = Guid.NewGuid(),
+                    FirebaseId = uid,
+                    Email = firebaseUser.Email,
+                    Username = firebaseUser.DisplayName
+                });
+
+                await _unitOfWork.CompleteAsync();
+
+                return Ok(true);
+            }
+
+            user.Email = firebaseUser.Email;
+            user.Username = firebaseUser.DisplayName;
+
+            _unitOfWork.Users.Update(user);
+            await _unitOfWork.CompleteAsync();
+
+            return Ok(true);
         }
     }
 }

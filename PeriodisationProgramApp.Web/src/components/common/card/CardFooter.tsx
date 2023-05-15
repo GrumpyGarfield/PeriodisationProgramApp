@@ -21,7 +21,12 @@ export function CardFooter({ author, likes, rating }: Props) {
       justifyContent="space-between"
       sx={{ mb: 5 }}
     >
-      <Typography variant="subtitle2" sx={{ fontStyle: "italic" }}>
+      <Typography
+        variant="subtitle2"
+        sx={{ fontStyle: "italic" }}
+        maxWidth={"50%"}
+        noWrap
+      >
         {author}
       </Typography>
       <Stack direction="row" spacing={1} flexShrink={0}>

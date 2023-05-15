@@ -1,9 +1,7 @@
 ﻿namespace PeriodisationProgramApp.BusinessLogic.Domain.Dto
 {
-    public class UserDto
+    public class UserDto : BaseEntityDto
     {
-        public Guid Id { get; set; }
-
         public string? Username { get; set; }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace PeriodisationProgramApp.BusinessLogic.Domain.Dto
 {
-    public class ExerciseDto
+    public class ExerciseDto : BaseEntityDto
     {
         public string? Name { get; set; }
 

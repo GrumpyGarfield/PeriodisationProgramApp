@@ -4,6 +4,7 @@ import { getFiltersWithPrefix } from "../utils/Utils";
 import { PagedResult } from "../types/PagedResult";
 import { EntityFilter } from "../types/EntityFilter";
 import { EntitySorting } from "../types/EntitySorting";
+import { auth } from "../components/common/authorization/Firebase";
 
 const apiClient = axios.create({
   baseURL: "https://localhost:44326/api",
@@ -11,6 +12,22 @@ const apiClient = axios.create({
     "Content-type": "application/json",
   },
 });
+
+apiClient.interceptors.request.use(
+  async (request) => {
+    if (auth.currentUser === null) {
+      return request;
+    }
+
+    const accessToken = await auth.currentUser.getIdToken();
+    request.headers["Authorization"] = `Bearer ${accessToken}`;
+
+    return request;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
 const Get = async <T>(url: string, axiosConfig?: AxiosRequestConfig) => {
   const response = await apiClient.get<T>(url, axiosConfig);

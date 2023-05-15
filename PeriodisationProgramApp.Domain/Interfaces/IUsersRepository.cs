@@ -7,5 +7,7 @@ namespace PeriodisationProgramApp.Domain.Interfaces
         Task<User?> GetDefaultUser();
 
         Task<User?> GetDefaultUserWithData();
+
+        Task<User?> GetUserByFirebaseId(string firebaseId);
     }
 }

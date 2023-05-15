@@ -59,11 +59,10 @@ export default function TrainingProgramsCard({ trainingProgram }: Props) {
         <CardList items={trainingProgramsCardListItems} />
         <Divider />
         <CardFooter
-          author={trainingProgram.author}
+          author={trainingProgram.user.username}
           rating={trainingProgram.rating}
           likes={trainingProgram.likes}
         />
-        {/*<TrainingProgramsCardMenu raised={raised} setRaised={setRaised} />*/}
       </Stack>
     </Card>
   );

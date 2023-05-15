@@ -17,6 +17,7 @@ namespace PeriodisationProgramApp.DataAccess.Configurations
         {
             base.Configure(builder);
 
+            builder.Property(u => u.FirebaseId).IsRequired();
             builder.Property(u => u.Username).IsRequired().HasMaxLength(50);
             builder.Property(u => u.Email).IsRequired().HasMaxLength(100);
         }

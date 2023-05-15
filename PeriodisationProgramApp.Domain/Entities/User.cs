@@ -2,13 +2,11 @@
 {
     public class User : Entity, IEquatable<User>
     {
+        public string? FirebaseId { get; set; }
+
         public string? Username { get; set; }
 
         public string? Email { get; set; }
-
-        public string? Hash { get; set; }
-
-        public string? Salt { get; set; }
 
         public List<TrainingProgram> TrainingPrograms { get; set; } = new();
 
@@ -28,10 +26,6 @@
 
             if (Email != other.Email) return false;
 
-            if (Hash != other.Hash) return false;
-
-            if (Salt != other.Salt) return false;
-
             return true;
         }
 
@@ -39,8 +33,6 @@
         {
             Username = other.Username;
             Email = other.Email;
-            Hash = other.Hash;
-            Salt = other.Salt;
         }
     }
 }

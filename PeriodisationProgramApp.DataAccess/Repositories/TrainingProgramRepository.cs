@@ -1,6 +1,9 @@
-﻿using PeriodisationProgramApp.Configuration.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using PeriodisationProgramApp.Configuration.Interfaces;
+using PeriodisationProgramApp.DataAccess.Extensions;
 using PeriodisationProgramApp.Domain.Entities;
 using PeriodisationProgramApp.Domain.Interfaces;
+using PeriodisationProgramApp.Domain.Pagination;
 
 namespace PeriodisationProgramApp.DataAccess.Repositories
 {
@@ -21,6 +24,11 @@ namespace PeriodisationProgramApp.DataAccess.Repositories
         public void SetRating(TrainingProgram program, bool isRated, int rating)
         {
 
+        }
+
+        public new async Task<PagedResult<TrainingProgram>> GetPaginatedResultAsync(IPageableQueryContext context)
+        {
+            return await _context.TrainingPrograms.Include(t => t.User).FilterBy(context.Filters).SortBy(context.SortField, context.SortDirection).GetPagedAsync(context.Offset, context.Limit);
         }
     }
 }

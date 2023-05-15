@@ -22,11 +22,13 @@ namespace PeriodisationProgramApp.DataAccess.Repositories
 
         public void Add(T entity)
         {
+            entity.MarkAsCreated();
             _context.Set<T>().Add(entity);
         }
 
         public async Task AddAsync(T entity)
         {
+            entity.MarkAsCreated();
             await _context.Set<T>().AddAsync(entity);
         }
 
@@ -55,19 +57,19 @@ namespace PeriodisationProgramApp.DataAccess.Repositories
             return await _context.Set<T>().ToListAsync();
         }
 
-        public T? GetById(int id)
+        public T? GetById(Guid id)
         {
             return _context.Set<T>().Find(id);
         }
 
-        public async Task<T?> GetByIdAsync(int id)
+        public async Task<T?> GetByIdAsync(Guid id)
         {
             return await _context.Set<T>().FindAsync(id);
         }
 
         public void Update(T entity)
         {
-            entity.Updated = DateTime.UtcNow;
+            entity.MarkAsUpdated();
             _context.Set<T>().Update(entity);
         }
 

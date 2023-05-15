@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using PeriodisationProgramApp.BusinessLogic.Domain.Dto;
 using PeriodisationProgramApp.BusinessLogic.Extensions;
 using PeriodisationProgramApp.BusinessLogic.Services.Interfaces;
@@ -22,7 +23,7 @@ namespace PeriodisationProgramApp.BusinessLogic.Services
 
         public async Task<PagedResult<TrainingProgramDto>> GetTrainingPrograms(PageableQueryContext context)
         {
-            var trainingPrograms = await _unitOfWork.TrainingProgramRepository.GetPaginatedResultAsync(context);
+            var trainingPrograms = await _unitOfWork.TrainingPrograms.GetPaginatedResultAsync(context);
             return trainingPrograms.Translate<TrainingProgram, TrainingProgramDto>(_mapper);
         }
     }

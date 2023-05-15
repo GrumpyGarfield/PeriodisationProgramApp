@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "periodisationprogramapp",
+  "private_key_id": "55d42bef0114733305d778096651d726cf7a7f61",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCiLfdgjImoyM/d\nCZULAmfUICdPVWabHHaBns+Sw0KrgNkDMLpfyjLszgIyIWWFhNrQOTajRFhL5wnz\nYkLY5fW3exIw+eIzYCPy6JFPXXYk8u1Sro18gEeEiLyygO7BOFQ5i9I6nVvgGLle\nIStEr/hj5JUb7OD5Y9wXuQ20xmfJpLLGM0uJ+c3g10Z9oqHoExDRAzBJgFYv196S\nPzS60OdnnZ2T+MeSJmYnUA88/ESNLhVvMfIz3FJMVSxm1Ie2cCDPL78Fko7fD94R\nluRZ1+nAHGvOnGXW1OdZQjO1rRpGIgyDW741nPTP2JZwkHU9Euoztq5mS8s/LcGD\nMhsI8UytAgMBAAECggEAEa7PXStASzNHWW4VCR6ZsYr785jNLOESmW7Lv9B4cXiw\nBhAHEjCwEsUiKihysvcvCysMe7VqUdmpamxupiA/WrfEM6uF8Adt2VYQRJtdKV7a\nD3zRbR9o14ONMi1VWvidqP9Hdx/3MjJKln/UAZOU6AIMBqpyRomOfYEDhJAUJZZv\nadyBNiTiIwlwG4yWchmBtm8nsYwCnkRbWBjJdHQfM0wJ9sbQxAU8tq8Qa7czsre3\nB/TJCZIsW7hNGrrnP+1A9CXR3/K83yn2xI7I9xQVayX/Hgu+93nWt1RwjBm2comC\nw3YPeWku8PDs0ZONHTjHzbyi5U4BhfdNAJmvFkXaRQKBgQDYqxvur4eQMhAsiQi/\nBRpP6sCAcsa/pWBXD3ouvVBaGD5w4Sd7JO5v8jqEULzOQ7oMNoSu9eV7nWit/9ey\nlJ866Y6forMFnyYuBT0LQKwGNdBtdP/jzN5gORezJE4i+P1+qlvaEe4yRRTpusn6\nfD1g9a93t6Nhys8+duVMEpFg2wKBgQC/nq7IxgWnjRe9hmxpVByS/yPuhVneA/1B\n66/j5jTjXF41u7XWIqcgi2KBQfsadMCCa5eNaa0chhUgavnZCADZbViWFfT3avgz\nGsfsHWWrj1VbxULb8SqfrypgEPxIJsZVR5CL60sCC4P5DI5pPhXUrFIE8jF20ZIU\nFjkdisebFwKBgQCyFIkDt997A7rJb+PxZJdIwhBwQmXaVGmHhOAOlGj7c9u2WUhi\n7WrQNc4kvFtCSOYcbZ7GUrLH1Auan6JAU+k/uYEQ8d+kKjduMb4HhqMdA5QIstYy\n/Ep12dcB1UAnfHCVcB3IcV5OkPrsVCr4Jq8oByauBhBSKygFFiHGUaiNawKBgQCV\nyRe9j7VJ1Ouy1coWx44Shehzgb/O4XVtuythzUiYVVK7VAD+41WbBfm5Knd7pbn5\n+NqdyvZr7o/DKHwnX68yRtxRbdZwNSjQ4eVXN1+LLN6/fsIVpT35Vvab44shZ1Xv\nwaJHDWUzswa1flAwCj0MYqs2fI+X3pf+paR96EbBfwKBgDiE6oqqrJ++c++hu3gB\ne7WROb74AJ2ex1aDjGeMuEvqKQUdAsZoL9v+jVismZ4Lzt+GwwmeglsGgjLeGQjU\nSzjdYuNJk+aq5i/5hWV+NdiM3Vtbi1HTez4sVfyQ46HbXqvtPkM/xVeB6gln8qyC\nJbEw8KQaF43kFMEpFreOlBvY\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-7sozd@periodisationprogramapp.iam.gserviceaccount.com",
+  "client_id": "105253997813015343058",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-7sozd%40periodisationprogramapp.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

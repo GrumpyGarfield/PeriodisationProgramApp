@@ -1,4 +1,8 @@
+using FirebaseAdmin;
+using Google.Apis.Auth.OAuth2;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using PeriodisationProgramApp.BusinessLogic.Extensions;
 using PeriodisationProgramApp.BusinessLogic.Factories;
 using PeriodisationProgramApp.BusinessLogic.Factories.Interfaces;
@@ -29,12 +33,31 @@ builder.Services.AddTrainingSessionBuilders();
 builder.Services.AddTrainingProgramBuilders();
 builder.Services.AddBusinessLogicServices();
 
+builder.Services.AddSingleton(FirebaseApp.Create(new AppOptions()
+{
+    Credential = GoogleCredential.FromFile("Configs\\firebase.json"),
+}));
+
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.Authority = "https://securetoken.google.com/periodisationprogramapp";
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidIssuer = "https://securetoken.google.com/periodisationprogramapp",
+            ValidateAudience = true,
+            ValidAudience = "periodisationprogramapp",
+            ValidateLifetime = true
+        };
+    });
 
 var app = builder.Build();
 
@@ -67,6 +90,7 @@ app.UseCors(builder => builder
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

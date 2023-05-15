@@ -6,6 +6,10 @@ using PeriodisationProgramApp.Domain.Entities;
 using PeriodisationProgramApp.WebApi.Extensions;
 using Microsoft.AspNetCore.Http;
 using PeriodisationProgramApp.BusinessLogic.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.Net.Http.Headers;
+using FirebaseAdmin.Auth;
+using System.Security.Claims;
 
 namespace PeriodisationProgramApp.WebApi.Controllers
 {
@@ -32,7 +36,7 @@ namespace PeriodisationProgramApp.WebApi.Controllers
                 var guid = Guid.NewGuid();
                 var rnd = new Random();
 
-                _unitOfWork.TrainingProgramRepository.Add(new TrainingProgram()
+                _unitOfWork.TrainingPrograms.Add(new TrainingProgram()
                 {
                     Name = $"TP {guid}",
                     Sessions = new List<TrainingSession>(),
@@ -47,7 +51,6 @@ namespace PeriodisationProgramApp.WebApi.Controllers
 
             return Ok(_unitOfWork.Complete());
         }
-
 
         [HttpGet(Name = "GetTrainingPrograms")]
         public async Task<IActionResult> GetTrainingPrograms(int offset, int limit)
