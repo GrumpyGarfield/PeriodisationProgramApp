@@ -4,7 +4,7 @@ import { getFiltersWithPrefix } from "../utils/Utils";
 import { PagedResult } from "../types/PagedResult";
 import { EntityFilter } from "../types/EntityFilter";
 import { EntitySorting } from "../types/EntitySorting";
-import { auth } from "../components/common/authorization/Firebase";
+import { auth } from "../firebase/Firebase";
 
 const apiClient = axios.create({
   baseURL: "https://localhost:44326/api",
@@ -62,13 +62,15 @@ const GetPage = async <T>(
   offset: number,
   limit = 9,
   filters?: EntityFilter[],
-  sortParams?: EntitySorting
+  sortParams?: EntitySorting,
+  optionalParams?: any
 ) => {
   const params = {
     offset,
     limit,
     ...getFiltersWithPrefix(filters),
     ...sortParams,
+    ...optionalParams,
   };
   return List<PagedResult<T>>(url, params);
 };

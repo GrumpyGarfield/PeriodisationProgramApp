@@ -30,6 +30,7 @@ const EntityProvider: FC<PropsWithChildren> = <T extends BaseEntity>(
   const [enitities, setEntities] = useState<T[]>([]);
   const [filters, setFilters] = useState<{}>({});
   const [sortParams, setSortParams] = useState<EntitySorting>();
+  const [optionalParams, setOptionalParams] = useState<{}>({});
 
   const EntityContextValue: IEntityContext<T> = {
     isFetching,
@@ -40,6 +41,8 @@ const EntityProvider: FC<PropsWithChildren> = <T extends BaseEntity>(
     setFilters,
     sortParams,
     setSortParams,
+    optionalParams,
+    setOptionalParams,
   };
 
   return <EntityContext.Provider value={EntityContextValue} {...props} />;

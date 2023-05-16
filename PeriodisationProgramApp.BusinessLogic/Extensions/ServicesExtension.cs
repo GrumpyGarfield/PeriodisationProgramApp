@@ -9,7 +9,8 @@ namespace PeriodisationProgramApp.BusinessLogic.Extensions
         public static void AddBusinessLogicServices(this IServiceCollection services)
         {
             services
-                .AddScoped<ITrainingProgramService, TrainingProgramService>();
+                .AddScoped<ITrainingProgramService, TrainingProgramService>()
+                .AddScoped<IUserService, UserService>();
         }
     }
 }

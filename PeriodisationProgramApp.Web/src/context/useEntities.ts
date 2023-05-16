@@ -29,8 +29,14 @@ export const useEntities = <T extends BaseEntity>(
     },
   });
 
-  const { filters, setFilters, sortParams, setSortParams } =
-    useEntityContext<T>();
+  const {
+    filters,
+    setFilters,
+    sortParams,
+    setSortParams,
+    optionalParams,
+    setOptionalParams,
+  } = useEntityContext<T>();
 
   const filterEntities = async (
     entityFilters: EntityFilter[]
@@ -52,7 +58,7 @@ export const useEntities = <T extends BaseEntity>(
 
   useEffect(() => {
     refetch();
-  }, [filters, sortParams, refetch]);
+  }, [filters, sortParams, optionalParams, refetch]);
 
   return {
     status,
@@ -68,6 +74,8 @@ export const useEntities = <T extends BaseEntity>(
     filters,
     sortParams,
     setSortParams,
+    optionalParams,
+    setOptionalParams,
     refetch,
   };
 };

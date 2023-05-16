@@ -10,4 +10,6 @@ export interface IEntityContext<T extends BaseEntity> {
   setFilters(filters: any): void;
   sortParams?: EntitySorting;
   setSortParams(sortParams: EntitySorting | undefined): void;
+  optionalParams: any;
+  setOptionalParams(optionalParams: any): void;
 }

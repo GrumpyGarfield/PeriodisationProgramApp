@@ -26,5 +26,41 @@ namespace PeriodisationProgramApp.BusinessLogic.Services
             var trainingPrograms = await _unitOfWork.TrainingPrograms.GetPaginatedResultAsync(context);
             return trainingPrograms.Translate<TrainingProgram, TrainingProgramDto>(_mapper);
         }
+
+        public async Task<PagedResult<TrainingProgramDto>> GetUserCreatedTrainingPrograms(PageableQueryContext context, Guid userId)
+        {
+            var trainingPrograms = await _unitOfWork.TrainingPrograms.GetUserCreatedTrainingPrograms(context, userId);
+            return trainingPrograms.Translate<TrainingProgram, TrainingProgramDto>(_mapper);
+        }
+
+        public async Task<PagedResult<TrainingProgramDto>> GetUserLikedTrainingPrograms(PageableQueryContext context, Guid userId)
+        {
+            var trainingPrograms = await _unitOfWork.TrainingPrograms.GetUserLikedTrainingPrograms(context, userId);
+            return trainingPrograms.Translate<TrainingProgram, TrainingProgramDto>(_mapper);
+        }
+
+        public async Task<PagedResult<TrainingProgramDto>> GetUserCreatedTrainingProgramsByFirebaseId(PageableQueryContext context, string firebaseId)
+        {
+            var user = await _unitOfWork.Users.GetUserByFirebaseId(firebaseId);
+
+            if (user == null)
+            {
+                throw new Exception($"User with Firebase ID {firebaseId} not found");
+            }
+
+            return await GetUserCreatedTrainingPrograms(context, user.Id);
+        }
+
+        public async Task<PagedResult<TrainingProgramDto>> GetUserLikedTrainingProgramsByFirebaseId(PageableQueryContext context, string firebaseId)
+        {
+            var user = await _unitOfWork.Users.GetUserByFirebaseId(firebaseId);
+
+            if (user == null)
+            {
+                throw new Exception($"User with Firebase ID {firebaseId} not found");
+            }
+
+            return await GetUserLikedTrainingPrograms(context, user.Id);
+        }
     }
 }

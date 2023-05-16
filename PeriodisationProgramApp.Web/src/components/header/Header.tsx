@@ -13,7 +13,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import AdbIcon from "@mui/icons-material/Adb";
 import React from "react";
 import { Profile } from "../common/authorization/Profile";
-import { logout } from "../common/authorization/Firebase";
+import { logout } from "../../firebase/Firebase";
 import { Link } from "react-router-dom";
 import { User } from "firebase/auth";
 

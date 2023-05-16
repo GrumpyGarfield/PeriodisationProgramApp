@@ -20,12 +20,14 @@ namespace PeriodisationProgramApp.WebApi.Controllers
         private readonly ILogger<TrainingProgramController> _logger;
         private readonly IUnitOfWork _unitOfWork;
         private readonly ITrainingProgramService _trainingProgramService;
+        private readonly IUserService _userService;
 
-        public TrainingProgramController(ILogger<TrainingProgramController> logger, IUnitOfWork unitOfWork, ITrainingProgramService trainingProgramService)
+        public TrainingProgramController(ILogger<TrainingProgramController> logger, IUnitOfWork unitOfWork, ITrainingProgramService trainingProgramService, IUserService userService)
         {
             _logger = logger;
             _unitOfWork = unitOfWork;
             _trainingProgramService = trainingProgramService;
+            _userService = userService;
         }
 
         [HttpGet(Name = "InsertTestPrograms")]
@@ -53,22 +55,33 @@ namespace PeriodisationProgramApp.WebApi.Controllers
         }
 
         [HttpGet(Name = "GetTrainingPrograms")]
-        public async Task<IActionResult> GetTrainingPrograms(int offset, int limit)
+        public async Task<IActionResult> GetTrainingPrograms(int offset, int limit, bool isCreated = false, bool isLiked = false)
         {
+            var uid = User.FindFirstValue("user_id");
             var filters = this.CreateFilters();
             var sortBy = this.GetSortField();
             var sortDir = this.GetSortDirection();
 
-            var trainingPrograms = await _trainingProgramService.GetTrainingPrograms(new PageableQueryContext()
+            var context = new PageableQueryContext()
             {
                 Offset = offset,
                 Limit = limit,
                 SortField = sortBy,
                 SortDirection = sortDir,
                 Filters = filters
-            });
+            };
 
-            return Ok(trainingPrograms);
+            if (isCreated)
+            {
+                return Ok(await _trainingProgramService.GetUserCreatedTrainingProgramsByFirebaseId(context, uid));
+            }
+
+            if (isLiked)
+            {
+                return Ok(await _trainingProgramService.GetUserLikedTrainingProgramsByFirebaseId(context, uid));
+            }
+
+            return Ok(await _trainingProgramService.GetTrainingPrograms(context));
         }
     }
 }

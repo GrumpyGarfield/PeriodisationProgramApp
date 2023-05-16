@@ -28,7 +28,29 @@ namespace PeriodisationProgramApp.DataAccess.Repositories
 
         public new async Task<PagedResult<TrainingProgram>> GetPaginatedResultAsync(IPageableQueryContext context)
         {
-            return await _context.TrainingPrograms.Include(t => t.User).FilterBy(context.Filters).SortBy(context.SortField, context.SortDirection).GetPagedAsync(context.Offset, context.Limit);
+            return await _context.TrainingPrograms.Include(t => t.User)
+                                                    .FilterBy(context.Filters)
+                                                    .SortBy(context.SortField, context.SortDirection)
+                                                    .GetPagedAsync(context.Offset, context.Limit);
+        }
+
+        public async Task<PagedResult<TrainingProgram>> GetUserCreatedTrainingPrograms(IPageableQueryContext context, Guid userId)
+        {
+            return await _context.TrainingPrograms.Include(t => t.User)
+                                                    .Where(t => t.UserId == userId)
+                                                    .FilterBy(context.Filters)
+                                                    .SortBy(context.SortField, context.SortDirection)
+                                                    .GetPagedAsync(context.Offset, context.Limit);
+        }
+
+        public async Task<PagedResult<TrainingProgram>> GetUserLikedTrainingPrograms(IPageableQueryContext context, Guid userId)
+        {
+            return await _context.TrainingPrograms.Include(t => t.User)
+                                                    .Include(t => t.UserTrainingProgramLikes)
+                                                    .Where(t => t.UserTrainingProgramLikes.Any(u => u.UserId == userId))
+                                                    .FilterBy(context.Filters)
+                                                    .SortBy(context.SortField, context.SortDirection)
+                                                    .GetPagedAsync(context.Offset, context.Limit);
         }
     }
 }

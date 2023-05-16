@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using PeriodisationProgramApp.DataAccess;
@@ -11,9 +12,11 @@ using PeriodisationProgramApp.DataAccess;
 namespace PeriodisationProgramApp.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20230516144737_TrainingProgramsRelationsUpdated")]
+    partial class TrainingProgramsRelationsUpdated
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -357,13 +360,13 @@ namespace PeriodisationProgramApp.DataAccess.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
-                    b.Property<Guid>("TrainingProgramId")
+                    b.Property<Guid?>("TrainingProgramId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("Updated")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("UserId")
+                    b.Property<Guid?>("UserId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
@@ -390,13 +393,13 @@ namespace PeriodisationProgramApp.DataAccess.Migrations
                     b.Property<int>("Rating")
                         .HasColumnType("integer");
 
-                    b.Property<Guid>("TrainingProgramId")
+                    b.Property<Guid?>("TrainingProgramId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("Updated")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("UserId")
+                    b.Property<Guid?>("UserId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
@@ -476,32 +479,32 @@ namespace PeriodisationProgramApp.DataAccess.Migrations
 
             modelBuilder.Entity("PeriodisationProgramApp.Domain.Entities.UserTrainingProgramLike", b =>
                 {
-                    b.HasOne("PeriodisationProgramApp.Domain.Entities.TrainingProgram", null)
+                    b.HasOne("PeriodisationProgramApp.Domain.Entities.TrainingProgram", "TrainingProgram")
                         .WithMany("UserTrainingProgramLikes")
-                        .HasForeignKey("TrainingProgramId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("TrainingProgramId");
 
-                    b.HasOne("PeriodisationProgramApp.Domain.Entities.User", null)
+                    b.HasOne("PeriodisationProgramApp.Domain.Entities.User", "User")
                         .WithMany("UserTrainingProgramLikes")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("TrainingProgram");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("PeriodisationProgramApp.Domain.Entities.UserTrainingProgramRating", b =>
                 {
-                    b.HasOne("PeriodisationProgramApp.Domain.Entities.TrainingProgram", null)
+                    b.HasOne("PeriodisationProgramApp.Domain.Entities.TrainingProgram", "TrainingProgram")
                         .WithMany("UserTrainingProgramRatings")
-                        .HasForeignKey("TrainingProgramId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("TrainingProgramId");
 
-                    b.HasOne("PeriodisationProgramApp.Domain.Entities.User", null)
+                    b.HasOne("PeriodisationProgramApp.Domain.Entities.User", "User")
                         .WithMany("UserTrainingProgramRatings")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("TrainingProgram");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("PeriodisationProgramApp.Domain.Entities.Exercise", b =>

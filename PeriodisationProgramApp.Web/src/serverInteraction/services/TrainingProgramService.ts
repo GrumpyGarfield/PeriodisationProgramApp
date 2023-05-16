@@ -7,14 +7,16 @@ const getAll = async (
   offset: number,
   limit?: number,
   filters?: EntityFilter[],
-  sortParams?: EntitySorting
+  sortParams?: EntitySorting,
+  optionalParams?: any
 ) => {
   return BaseServerInteractionService.GetPage<TrainingProgram>(
     "/TrainingProgram/GetTrainingPrograms",
     offset,
     limit,
     filters,
-    sortParams
+    sortParams,
+    optionalParams
   );
 };
 

@@ -18,6 +18,8 @@ const useTrainingPrograms = () => {
     filters,
     sortParams,
     setSortParams,
+    optionalParams,
+    setOptionalParams,
     refetch,
   } = useEntities<TrainingProgram>(
     ["trainingPrograms"],
@@ -26,7 +28,8 @@ const useTrainingPrograms = () => {
         pageParam,
         9,
         filters,
-        sortParams === undefined ? { sortBy: "rating" } : sortParams
+        sortParams === undefined ? { sortBy: "rating" } : sortParams,
+        optionalParams
       );
     }
   );
@@ -46,6 +49,8 @@ const useTrainingPrograms = () => {
     sortParams,
     setSortParams,
     refetch,
+    optionalParams,
+    setOptionalParams,
   };
 };
 

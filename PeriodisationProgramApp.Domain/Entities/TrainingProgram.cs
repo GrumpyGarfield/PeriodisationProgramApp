@@ -25,5 +25,9 @@ namespace PeriodisationProgramApp.Domain.Entities
         public TrainingLevel TrainingLevel { get; set; }
 
         public int NumberOfSessions { get; set; }
+
+        public List<UserTrainingProgramLike> UserTrainingProgramLikes { get; set; } = new();
+
+        public List<UserTrainingProgramRating> UserTrainingProgramRatings { get; set; } = new();
     }
 }

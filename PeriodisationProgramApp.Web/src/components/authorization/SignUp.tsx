@@ -1,43 +1,32 @@
-import {
-  Button,
-  TextField,
-  Link,
-  Grid,
-  Typography,
-  Divider,
-} from "@mui/material";
-import GoogleIcon from "@mui/icons-material/Google";
-import FacebookIcon from "@mui/icons-material/Facebook";
-import TwitterIcon from "@mui/icons-material/Twitter";
+import { Button, TextField, Link, Grid, Typography } from "@mui/material";
 import { useState, useEffect } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
-import {
-  auth,
-  logInWithEmailAndPassword,
-  signInWithGoogle,
-} from "../../firebase/Firebase";
+import { auth, registerWithEmailAndPassword } from "../../firebase/Firebase";
 import { FirebaseError } from "firebase/app";
 import { useTranslation } from "react-i18next";
 import { useForm } from "react-hook-form";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { AuthorizationForm } from "../common/authorization/AuthorizationForm";
 
-type SignInData = {
+type SignUpData = {
   email: string;
+  username: string;
   password: string;
+  confirmPassword: string;
 };
 
-export default function SignIn() {
+export default function SignUp() {
   const [user, loading] = useAuthState(auth);
   const navigate = useNavigate();
   const [error, setError] = useState<FirebaseError | undefined>();
   const [t] = useTranslation(["firebase"]);
   const {
     register,
+    watch,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<SignInData>({
+  } = useForm<SignUpData>({
     mode: "onBlur",
     reValidateMode: "onBlur",
   });
@@ -50,8 +39,13 @@ export default function SignIn() {
     if (user) navigate("/");
   }, [user, loading, navigate]);
 
-  const onSubmit = async ({ email, password }: SignInData) => {
-    const result = await logInWithEmailAndPassword(email, password);
+  const onSubmit = async ({ username, email, password }: SignUpData) => {
+    const result = await registerWithEmailAndPassword(
+      username,
+      email,
+      password
+    );
+
     setError(result);
   };
 
@@ -82,15 +76,71 @@ export default function SignIn() {
         margin="normal"
         required
         fullWidth
+        id="username"
+        label="Username"
+        autoComplete="username"
+        {...register("username", {
+          required: "Please enter your username",
+          minLength: {
+            value: 6,
+            message: "Username length must be more than 6 symbols",
+          },
+          maxLength: {
+            value: 50,
+            message: "Username length must be less than 50 symbols",
+          },
+          pattern: {
+            value: /^[a-zA-Z0-9_ ]*$/,
+            message: "Invalid username",
+          },
+        })}
+        helperText={errors.username?.message}
+        error={errors.username !== undefined}
+      />
+      <TextField
+        margin="normal"
+        required
+        fullWidth
         label="Password"
         type="password"
         id="password"
         autoComplete="current-password"
         {...register("password", {
           required: "Please enter your password",
+          minLength: {
+            value: 8,
+            message: "Password length must be more than 8 symbols",
+          },
+          maxLength: {
+            value: 50,
+            message: "Password length must be less than 50 symbols",
+          },
+          pattern: {
+            value: /^(?!.* )(?=.*\d)(?=.*[a-z])/,
+            message:
+              "Password must contain minimum eight characters, at least one letter and one number and no whitespace",
+          },
         })}
         helperText={errors.password?.message}
         error={errors.password !== undefined}
+      />
+      <TextField
+        margin="normal"
+        required
+        fullWidth
+        label="Confirm password"
+        type="password"
+        id="confirmPassword"
+        {...register("confirmPassword", {
+          required: "Please confirm your password",
+          validate: (val: string) => {
+            if (watch("password") !== val) {
+              return "Passwords do not match";
+            }
+          },
+        })}
+        helperText={errors.confirmPassword?.message}
+        error={errors.confirmPassword !== undefined}
       />
       {error === undefined ? null : (
         <Typography variant="subtitle2" color="error" sx={{ p: 1 }}>
@@ -104,48 +154,16 @@ export default function SignIn() {
         color="secondary"
         type="submit"
       >
-        {isSubmitting ? "Signing in..." : "Sign In"}
+        {isSubmitting ? "Signing up..." : "Sign Up"}
       </Button>
       <Grid container>
-        <Grid item xs>
-          <Link href="/resetpassword" variant="body2">
-            Forgot password?
-          </Link>
-        </Grid>
+        <Grid item xs></Grid>
         <Grid item>
-          <Link href="/signup" variant="body2">
-            {"Don't have an account? Sign Up"}
+          <Link href="/signin" variant="body2">
+            {"Already have an account? Sign in"}
           </Link>
         </Grid>
       </Grid>
-      <Divider sx={{ py: 2 }}>OR</Divider>
-      <Button
-        fullWidth
-        variant="contained"
-        sx={{ my: 1 }}
-        startIcon={<GoogleIcon />}
-        onClick={signInWithGoogle}
-      >
-        Sign In With Google
-      </Button>
-      <Button
-        type="submit"
-        fullWidth
-        variant="contained"
-        sx={{ my: 1 }}
-        startIcon={<TwitterIcon />}
-      >
-        Sign In With Twitter
-      </Button>
-      <Button
-        type="submit"
-        fullWidth
-        variant="contained"
-        sx={{ my: 1 }}
-        startIcon={<FacebookIcon />}
-      >
-        Sign In With Facebook
-      </Button>
     </AuthorizationForm>
   );
 }

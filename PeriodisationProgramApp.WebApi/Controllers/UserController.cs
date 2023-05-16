@@ -126,32 +126,20 @@ namespace PeriodisationProgramApp.WebApi.Controllers
         }
 
         [Authorize]
-        [HttpGet(Name = "Login")]
-        public async Task<IActionResult> Login()
+        [HttpGet(Name = "AddThisUser")]
+        public async Task<IActionResult> AddThisUser()
         {
             var uid = User.FindFirstValue("user_id");
             var firebaseUser = await FirebaseAuth.DefaultInstance.GetUserAsync(uid);
-            var user = await _unitOfWork.Users.GetUserByFirebaseId(uid);
 
-            if (user == null)
+            await _unitOfWork.Users.AddAsync(new User()
             {
-                await _unitOfWork.Users.AddAsync(new User()
-                {
-                    Id = Guid.NewGuid(),
-                    FirebaseId = uid,
-                    Email = firebaseUser.Email,
-                    Username = firebaseUser.DisplayName
-                });
+                Id = Guid.NewGuid(),
+                FirebaseId = uid,
+                Email = firebaseUser.Email,
+                Username = firebaseUser.DisplayName
+            });
 
-                await _unitOfWork.CompleteAsync();
-
-                return Ok(true);
-            }
-
-            user.Email = firebaseUser.Email;
-            user.Username = firebaseUser.DisplayName;
-
-            _unitOfWork.Users.Update(user);
             await _unitOfWork.CompleteAsync();
 
             return Ok(true);

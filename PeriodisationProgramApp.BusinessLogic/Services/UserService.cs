@@ -22,5 +22,10 @@ namespace PeriodisationProgramApp.BusinessLogic.Services
         {
             await _unitOfWork.Users.AddAsync(user);
         }
+
+        public async Task<User?> GetUserByFirebaseId(string firebaseId)
+        {
+            return await _unitOfWork.Users.GetUserByFirebaseId(firebaseId);
+        }
     }
 }

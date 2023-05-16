@@ -1,11 +1,11 @@
 import BaseServerInteractionService from "../BaseServerInteractionService";
 
-const login = async () => {
-  return BaseServerInteractionService.Get<boolean>("/User/Login");
+const addThisUser = async () => {
+  return BaseServerInteractionService.Get<boolean>("/User/AddThisUser");
 };
 
 const UserService = {
-  login,
+  addThisUser,
 };
 
 export default UserService;

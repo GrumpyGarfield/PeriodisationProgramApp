@@ -6,16 +6,13 @@ import {
   createUserWithEmailAndPassword,
   sendPasswordResetEmail,
   signOut,
+  getAdditionalUserInfo,
+  updateProfile,
+  confirmPasswordReset,
 } from "firebase/auth";
-import {
-  getFirestore,
-  query,
-  getDocs,
-  collection,
-  where,
-  addDoc,
-} from "firebase/firestore";
+import { getFirestore } from "firebase/firestore";
 import { FirebaseError, initializeApp } from "firebase/app";
+import UserService from "../serverInteraction/services/UserService";
 //import { getAnalytics } from "firebase/analytics";
 
 const firebaseConfig = {
@@ -39,19 +36,22 @@ const signInWithGoogle = async () => {
   try {
     const res = await signInWithPopup(auth, googleProvider);
     const user = res.user;
-    const q = query(collection(db, "users"), where("uid", "==", user.uid));
-    const docs = await getDocs(q);
 
-    if (docs.docs.length === 0) {
-      await addDoc(collection(db, "users"), {
-        uid: user.uid,
-        name: user.displayName,
-        authProvider: "google",
-        email: user.email,
-      });
+    if (user !== null && user !== undefined) {
+      const info = getAdditionalUserInfo(res);
+
+      if (info?.isNewUser) {
+        UserService.addThisUser();
+      }
     }
   } catch (err) {
     console.error(err);
+
+    if (err instanceof FirebaseError) {
+      return err;
+    }
+
+    return new FirebaseError("unknown", "Unknown error");
   }
 };
 
@@ -70,30 +70,54 @@ const logInWithEmailAndPassword = async (email: string, password: string) => {
 };
 
 const registerWithEmailAndPassword = async (
-  name: string,
+  username: string,
   email: string,
   password: string
 ) => {
   try {
     const res = await createUserWithEmailAndPassword(auth, email, password);
     const user = res.user;
-    await addDoc(collection(db, "users"), {
-      uid: user.uid,
-      name,
-      authProvider: "local",
-      email,
-    });
+
+    if (user !== null && user !== undefined) {
+      await updateProfile(user, { displayName: username.trim() });
+      UserService.addThisUser();
+    }
   } catch (err) {
     console.error(err);
+
+    if (err instanceof FirebaseError) {
+      return err;
+    }
+
+    return new FirebaseError("unknown", "Unknown error");
   }
 };
 
 const sendPasswordReset = async (email: string) => {
   try {
     await sendPasswordResetEmail(auth, email);
-    alert("Password reset link sent!");
   } catch (err) {
     console.error(err);
+
+    if (err instanceof FirebaseError) {
+      return err;
+    }
+
+    return new FirebaseError("unknown", "Unknown error");
+  }
+};
+
+const passwordReset = async (code: string, newPassword: string) => {
+  try {
+    await confirmPasswordReset(auth, code, newPassword);
+  } catch (err) {
+    console.error(err);
+
+    if (err instanceof FirebaseError) {
+      return err;
+    }
+
+    return new FirebaseError("unknown", "Unknown error");
   }
 };
 
@@ -108,5 +132,6 @@ export {
   logInWithEmailAndPassword,
   registerWithEmailAndPassword,
   sendPasswordReset,
+  passwordReset,
   logout,
 };
