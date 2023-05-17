@@ -10,10 +10,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.Net.Http.Headers;
 using FirebaseAdmin.Auth;
 using System.Security.Claims;
+using PeriodisationProgramApp.WebApi.Dto;
 
 namespace PeriodisationProgramApp.WebApi.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class TrainingProgramController : ControllerBase
     {
@@ -30,7 +31,8 @@ namespace PeriodisationProgramApp.WebApi.Controllers
             _userService = userService;
         }
 
-        [HttpGet(Name = "InsertTestPrograms")]
+        [HttpGet]
+        [Route("InsertTestPrograms")]
         public IActionResult InsertTestPrograms(int count = 1)
         {
             for (var i = 0; i < count; i++)
@@ -54,7 +56,8 @@ namespace PeriodisationProgramApp.WebApi.Controllers
             return Ok(_unitOfWork.Complete());
         }
 
-        [HttpGet(Name = "GetTrainingPrograms")]
+        [HttpGet]
+        [Route("GetTrainingPrograms")]
         public async Task<IActionResult> GetTrainingPrograms(int offset, int limit, bool isCreated = false, bool isLiked = false)
         {
             var uid = User.FindFirstValue("user_id");
@@ -73,15 +76,32 @@ namespace PeriodisationProgramApp.WebApi.Controllers
 
             if (isCreated)
             {
-                return Ok(await _trainingProgramService.GetUserCreatedTrainingProgramsByFirebaseId(context, uid));
+                return Ok(await _trainingProgramService.GetUserCreatedTrainingPrograms(context, uid));
             }
 
             if (isLiked)
             {
-                return Ok(await _trainingProgramService.GetUserLikedTrainingProgramsByFirebaseId(context, uid));
+                return Ok(await _trainingProgramService.GetUserLikedTrainingPrograms(context, uid));
             }
 
-            return Ok(await _trainingProgramService.GetTrainingPrograms(context));
+            return Ok(await _trainingProgramService.GetTrainingPrograms(context, uid));
+        }
+
+        [Authorize]
+        [HttpPost]
+        [Route("{trainingProgramId}/liked")]
+        public async Task<IActionResult> Liked(Guid trainingProgramId, [FromBody]LikedRequestDto likedRequestDto)
+        {
+            var uid = User.FindFirstValue("user_id");
+
+            if (likedRequestDto.isLiked)
+            {
+                return Ok(await _trainingProgramService.SetLike(trainingProgramId, uid));
+            }
+            else
+            {
+                return Ok(await _trainingProgramService.UnsetLike(trainingProgramId, uid));
+            }
         }
     }
 }

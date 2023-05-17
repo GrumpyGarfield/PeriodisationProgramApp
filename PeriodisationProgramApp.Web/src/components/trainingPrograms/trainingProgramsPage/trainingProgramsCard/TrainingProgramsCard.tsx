@@ -15,9 +15,13 @@ import { EnumHelper } from "../../../../helpers/EnumHelper";
 
 type Props = {
   trainingProgram: TrainingProgram;
+  handleLike: () => void;
 };
 
-export default function TrainingProgramsCard({ trainingProgram }: Props) {
+export default function TrainingProgramsCard({
+  trainingProgram,
+  handleLike,
+}: Props) {
   const [raised, setRaised] = React.useState(false);
 
   const trainingProgramsCardListItems: CardListItemProps[] = [
@@ -62,6 +66,8 @@ export default function TrainingProgramsCard({ trainingProgram }: Props) {
           author={trainingProgram.user.username}
           rating={trainingProgram.rating}
           likes={trainingProgram.likes}
+          isLiked={trainingProgram.isLiked}
+          handleChange={handleLike}
         />
       </Stack>
     </Card>

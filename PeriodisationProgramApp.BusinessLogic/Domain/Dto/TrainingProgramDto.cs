@@ -4,7 +4,6 @@ namespace PeriodisationProgramApp.BusinessLogic.Domain.Dto
 {
     public class TrainingProgramDto : BaseEntityDto
     {
-
         public string? Name { get; set; }
 
         public string? Description { get; set; }
@@ -22,5 +21,7 @@ namespace PeriodisationProgramApp.BusinessLogic.Domain.Dto
         public int NumberOfSessions { get; set; }
 
         public UserDto? User { get; set; }
+
+        public bool IsLiked { get; set; }
     }
 }

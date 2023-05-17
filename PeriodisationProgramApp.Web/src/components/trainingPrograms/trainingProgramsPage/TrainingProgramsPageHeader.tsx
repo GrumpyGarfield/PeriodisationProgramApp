@@ -10,15 +10,15 @@ export function TrainingProgramsPageHeader() {
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
 
-    if (value === "all") {
+    if (newValue === "all") {
       setOptionalParams({});
     }
 
-    if (value === "created") {
+    if (newValue === "created") {
       setOptionalParams({ isCreated: true });
     }
 
-    if (value === "saved") {
+    if (newValue === "saved") {
       setOptionalParams({ isLiked: true });
     }
   };

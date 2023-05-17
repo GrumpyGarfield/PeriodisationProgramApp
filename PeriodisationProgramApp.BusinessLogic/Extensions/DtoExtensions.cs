@@ -17,5 +17,12 @@ namespace PeriodisationProgramApp.BusinessLogic.Extensions
                 Items = result.Items.Select(item => mapper.Map<T2>(item)).ToList()
             };
         }
+
+        public static T2 Translate<T1, T2>(this T1 result, IMapper mapper)
+            where T1 : class
+            where T2 : class
+        {
+            return mapper.Map<T2>(result);
+        }
     }
 }

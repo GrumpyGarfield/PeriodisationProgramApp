@@ -8,7 +8,8 @@ namespace PeriodisationProgramApp.BusinessLogic.Mapper
     {
         public TrainingProgramToTrainingProgramDtoMapper() 
         {
-            CreateMap<TrainingProgram, TrainingProgramDto>();
+            CreateMap<TrainingProgram, TrainingProgramDto>()
+                .ForMember(t => t.IsLiked, opt => opt.Ignore());
         }
     }
 }

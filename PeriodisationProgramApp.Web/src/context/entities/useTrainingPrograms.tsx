@@ -2,8 +2,10 @@ import TrainingProgramService from "../../serverInteraction/services/TrainingPro
 import useEntities from "../useEntities";
 import { TrainingProgram } from "../../types/enitities/TrainingProgram";
 import { PagedResult } from "../../types/PagedResult";
+import { useMutation, useQueryClient } from "react-query";
 
 const useTrainingPrograms = () => {
+  const queryClient = useQueryClient();
   const {
     status,
     data,
@@ -12,6 +14,7 @@ const useTrainingPrograms = () => {
     isFetching,
     isRefetching,
     isFetchingNextPage,
+    isFetchingPreviousPage,
     fetchNextPage,
     hasNextPage,
     filterEntities,
@@ -34,6 +37,15 @@ const useTrainingPrograms = () => {
     }
   );
 
+  const { mutate: like } = useMutation(TrainingProgramService.liked, {
+    onSuccess: (trainingProgram) => {
+      queryClient.setQueryData(["trainingPrograms"], trainingProgram);
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+
   return {
     status,
     data,
@@ -42,6 +54,7 @@ const useTrainingPrograms = () => {
     isFetching,
     isRefetching,
     isFetchingNextPage,
+    isFetchingPreviousPage,
     fetchNextPage,
     hasNextPage,
     filterTrainingPrograms: filterEntities,
@@ -51,6 +64,7 @@ const useTrainingPrograms = () => {
     refetch,
     optionalParams,
     setOptionalParams,
+    like,
   };
 };
 

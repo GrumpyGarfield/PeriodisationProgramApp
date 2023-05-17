@@ -17,6 +17,7 @@ export const useEntities = <T extends BaseEntity>(
     isFetching,
     isRefetching,
     isFetchingNextPage,
+    isFetchingPreviousPage,
     fetchNextPage,
     hasNextPage,
     refetch,
@@ -57,7 +58,11 @@ export const useEntities = <T extends BaseEntity>(
   };
 
   useEffect(() => {
-    refetch();
+    const refetchData = async () => {
+      await refetch();
+    };
+
+    refetchData();
   }, [filters, sortParams, optionalParams, refetch]);
 
   return {
@@ -68,6 +73,7 @@ export const useEntities = <T extends BaseEntity>(
     isFetching,
     isRefetching,
     isFetchingNextPage,
+    isFetchingPreviousPage,
     fetchNextPage,
     hasNextPage,
     filterEntities,

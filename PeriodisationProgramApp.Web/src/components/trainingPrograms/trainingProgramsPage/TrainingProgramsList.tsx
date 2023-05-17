@@ -17,8 +17,10 @@ export default function ProductList({ ...other }: GridProps) {
     error,
     isLoading,
     isFetchingNextPage,
+    isRefetching,
     fetchNextPage,
     hasNextPage,
+    like,
   } = useTrainingPrograms();
 
   React.useEffect(() => {
@@ -27,7 +29,11 @@ export default function ProductList({ ...other }: GridProps) {
     }
   }, [fetchNextPage, inView]);
 
-  if (isLoading || data === undefined) {
+  if (
+    isLoading ||
+    (isRefetching && !isFetchingNextPage) ||
+    data === undefined
+  ) {
     return <Loader />;
   }
 
@@ -45,7 +51,15 @@ export default function ProductList({ ...other }: GridProps) {
         {data.pages.map((page) =>
           page.items.map((trainingProgram: TrainingProgram) => (
             <Grid key={trainingProgram.id} item xs={12} sm={6} md={4}>
-              <TrainingProgramsCard trainingProgram={trainingProgram} />
+              <TrainingProgramsCard
+                trainingProgram={trainingProgram}
+                handleLike={() =>
+                  like({
+                    id: trainingProgram.id,
+                    isLiked: !trainingProgram.isLiked,
+                  })
+                }
+              />
             </Grid>
           ))
         )}

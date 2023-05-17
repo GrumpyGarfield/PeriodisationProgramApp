@@ -12,4 +12,5 @@ export type TrainingProgram = {
   rating: number;
   likes: number;
   user: User;
+  isLiked: boolean;
 } & BaseEntity;

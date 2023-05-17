@@ -10,9 +10,17 @@ type Props = {
   author: string;
   likes: number;
   rating: number;
+  isLiked: boolean;
+  handleChange: () => void;
 };
 
-export function CardFooter({ author, likes, rating }: Props) {
+export function CardFooter({
+  author,
+  likes,
+  rating,
+  isLiked,
+  handleChange,
+}: Props) {
   return (
     <Stack
       direction="row"
@@ -51,6 +59,8 @@ export function CardFooter({ author, likes, rating }: Props) {
                 />
               }
               checkedIcon={<Favorite sx={{ fontSize: 20 }} color="secondary" />}
+              checked={isLiked}
+              onChange={handleChange}
               sx={{ p: 1 }}
             />
           }

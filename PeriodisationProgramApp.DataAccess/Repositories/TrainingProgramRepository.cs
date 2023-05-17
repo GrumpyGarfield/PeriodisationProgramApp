@@ -16,41 +16,65 @@ namespace PeriodisationProgramApp.DataAccess.Repositories
             _defaultDataSettings = defaultDataSettings;
         }
 
-        public void SetLike(TrainingProgram program, bool isLiked)
-        {
-            
-        }
-
-        public void SetRating(TrainingProgram program, bool isRated, int rating)
-        {
-
-        }
-
         public new async Task<PagedResult<TrainingProgram>> GetPaginatedResultAsync(IPageableQueryContext context)
         {
-            return await _context.TrainingPrograms.Include(t => t.User)
-                                                    .FilterBy(context.Filters)
-                                                    .SortBy(context.SortField, context.SortDirection)
+            return await _context.TrainingPrograms.GetAllWithContext(context)
                                                     .GetPagedAsync(context.Offset, context.Limit);
         }
 
         public async Task<PagedResult<TrainingProgram>> GetUserCreatedTrainingPrograms(IPageableQueryContext context, Guid userId)
         {
-            return await _context.TrainingPrograms.Include(t => t.User)
+            return await _context.TrainingPrograms.GetAllWithContext(context)
                                                     .Where(t => t.UserId == userId)
-                                                    .FilterBy(context.Filters)
-                                                    .SortBy(context.SortField, context.SortDirection)
                                                     .GetPagedAsync(context.Offset, context.Limit);
         }
 
         public async Task<PagedResult<TrainingProgram>> GetUserLikedTrainingPrograms(IPageableQueryContext context, Guid userId)
         {
-            return await _context.TrainingPrograms.Include(t => t.User)
-                                                    .Include(t => t.UserTrainingProgramLikes)
+            return await _context.TrainingPrograms.GetAllWithContext(context)
                                                     .Where(t => t.UserTrainingProgramLikes.Any(u => u.UserId == userId))
-                                                    .FilterBy(context.Filters)
-                                                    .SortBy(context.SortField, context.SortDirection)
                                                     .GetPagedAsync(context.Offset, context.Limit);
+        }
+
+        public async Task<TrainingProgram> SetLike(Guid trainingProgramId, Guid userId)
+        {
+            var trainingProgram = await _context.TrainingPrograms.Include(t => t.UserTrainingProgramLikes)
+                                                                    .FirstOrDefaultAsync(t => t.Id == trainingProgramId);
+
+            if (trainingProgram == null)
+            {
+                throw new Exception($"Training program with id {trainingProgramId} not found");
+            }
+
+            trainingProgram.UserTrainingProgramLikes.Add(new UserTrainingProgramLike() { UserId= userId });
+            trainingProgram.Likes++;
+            _context.Update(trainingProgram);
+
+            return trainingProgram;
+        }
+
+        public async Task<TrainingProgram> UnsetLike(Guid trainingProgramId, Guid userId)
+        {
+            var trainingProgram = await _context.TrainingPrograms.Include(t => t.UserTrainingProgramLikes)
+                                                                    .FirstOrDefaultAsync(t => t.Id == trainingProgramId);
+
+            if (trainingProgram == null)
+            {
+                throw new Exception($"Training program with id {trainingProgramId} not found");
+            }
+
+            var like = trainingProgram.UserTrainingProgramLikes.FirstOrDefault(l => l.UserId == userId);
+
+            if (like == null)
+            {
+                return trainingProgram;
+            }
+
+            trainingProgram.UserTrainingProgramLikes.Remove(like);
+            trainingProgram.Likes--;
+            _context.Update(trainingProgram);
+
+            return trainingProgram;
         }
     }
 }

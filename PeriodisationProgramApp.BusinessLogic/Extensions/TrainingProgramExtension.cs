@@ -1,7 +1,10 @@
-﻿using PeriodisationProgramApp.BusinessLogic.Domain;
+﻿using AutoMapper;
+using PeriodisationProgramApp.BusinessLogic.Domain;
+using PeriodisationProgramApp.BusinessLogic.Domain.Dto;
 using PeriodisationProgramApp.Domain.Entities;
 using PeriodisationProgramApp.Domain.Enums;
 using PeriodisationProgramApp.Domain.Extensions;
+using PeriodisationProgramApp.Domain.Pagination;
 
 namespace PeriodisationProgramApp.BusinessLogic.Extensions
 {
@@ -27,6 +30,39 @@ namespace PeriodisationProgramApp.BusinessLogic.Extensions
             }
 
             return trainingWeekVolumes;
+        }
+
+        public static PagedResult<TrainingProgramDto> TranslateToDto(this PagedResult<TrainingProgram> trainingPrograms, IMapper mapper, Guid? userId)
+        {
+            var result = trainingPrograms.Translate<TrainingProgram, TrainingProgramDto>(mapper);
+
+            if (userId != null)
+            {
+                for (var i = 0; i < trainingPrograms.Items.Count; i++)
+                {
+                    if (trainingPrograms.Items[i].UserTrainingProgramLikes.Any(l => l.UserId == userId))
+                    {
+                        result.Items[i].IsLiked = true;
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        public static TrainingProgramDto TranslateToDto(this TrainingProgram trainingProgram, IMapper mapper, Guid? userId)
+        {
+            var result = trainingProgram.Translate<TrainingProgram, TrainingProgramDto>(mapper);
+
+            if (userId != null)
+            {
+                if (trainingProgram.UserTrainingProgramLikes.Any(l => l.UserId == userId))
+                {
+                    result.IsLiked = true;
+                }
+            }
+
+            return result;
         }
     }
 }
