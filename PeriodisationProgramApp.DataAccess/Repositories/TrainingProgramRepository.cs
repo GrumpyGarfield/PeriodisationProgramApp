@@ -38,7 +38,8 @@ namespace PeriodisationProgramApp.DataAccess.Repositories
 
         public async Task<TrainingProgram> SetLike(Guid trainingProgramId, Guid userId)
         {
-            var trainingProgram = await _context.TrainingPrograms.Include(t => t.UserTrainingProgramLikes)
+            var trainingProgram = await _context.TrainingPrograms.Include(t => t.User)
+                                                                    .Include(t => t.UserTrainingProgramLikes)
                                                                     .FirstOrDefaultAsync(t => t.Id == trainingProgramId);
 
             if (trainingProgram == null)
@@ -55,7 +56,8 @@ namespace PeriodisationProgramApp.DataAccess.Repositories
 
         public async Task<TrainingProgram> UnsetLike(Guid trainingProgramId, Guid userId)
         {
-            var trainingProgram = await _context.TrainingPrograms.Include(t => t.UserTrainingProgramLikes)
+            var trainingProgram = await _context.TrainingPrograms.Include(t => t.User)
+                                                                    .Include(t => t.UserTrainingProgramLikes)
                                                                     .FirstOrDefaultAsync(t => t.Id == trainingProgramId);
 
             if (trainingProgram == null)
@@ -72,6 +74,51 @@ namespace PeriodisationProgramApp.DataAccess.Repositories
 
             trainingProgram.UserTrainingProgramLikes.Remove(like);
             trainingProgram.Likes--;
+            _context.Update(trainingProgram);
+
+            return trainingProgram;
+        }
+
+        public async Task<TrainingProgram> SetRating(Guid trainingProgramId, Guid userId, int rating)
+        {
+            var trainingProgram = await _context.TrainingPrograms.Include(t => t.User)
+                                                                    .Include(t => t.UserTrainingProgramRatings)
+                                                                    .FirstOrDefaultAsync(t => t.Id == trainingProgramId);
+
+            if (trainingProgram == null)
+            {
+                throw new Exception($"Training program with id {trainingProgramId} not found");
+            }
+
+            trainingProgram.UserTrainingProgramRatings.Add(new UserTrainingProgramRating() { UserId = userId, Rating = rating });
+            trainingProgram.Rating = (trainingProgram.Rating * trainingProgram.Rates + rating) / trainingProgram.Rates + 1;
+            trainingProgram.Rates++;
+            _context.Update(trainingProgram);
+
+            return trainingProgram;
+        }
+
+        public async Task<TrainingProgram> UnsetRating(Guid trainingProgramId, Guid userId)
+        {
+            var trainingProgram = await _context.TrainingPrograms.Include(t => t.User)
+                                                                    .Include(t => t.UserTrainingProgramRatings)
+                                                                    .FirstOrDefaultAsync(t => t.Id == trainingProgramId);
+
+            if (trainingProgram == null)
+            {
+                throw new Exception($"Training program with id {trainingProgramId} not found");
+            }
+
+            var rating = trainingProgram.UserTrainingProgramRatings.FirstOrDefault(l => l.UserId == userId);
+
+            if (rating == null)
+            {
+                return trainingProgram;
+            }
+
+            trainingProgram.UserTrainingProgramRatings.Remove(rating);
+            trainingProgram.Rating = (trainingProgram.Rating * trainingProgram.Rates - rating.Rating) / trainingProgram.Rates - 1;
+            trainingProgram.Rates--;
             _context.Update(trainingProgram);
 
             return trainingProgram;

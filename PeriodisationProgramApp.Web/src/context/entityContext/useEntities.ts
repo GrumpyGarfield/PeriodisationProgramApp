@@ -1,9 +1,9 @@
 import { QueryFunction, useInfiniteQuery } from "react-query";
 import { useEffect } from "react";
-import { EntityFilter } from "../types/EntityFilter";
-import { PagedResult } from "../types/PagedResult";
+import { EntityFilter } from "../../types/EntityFilter";
+import { PagedResult } from "../../types/PagedResult";
 import { useEntityContext } from "./EntityContextProvider";
-import { BaseEntity } from "../types/enitities/BaseEntity";
+import { BaseEntity } from "../../types/enitities/BaseEntity";
 
 export const useEntities = <T extends BaseEntity>(
   queryKey: string[],

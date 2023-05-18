@@ -1,8 +1,8 @@
-import TrainingProgramService from "../../serverInteraction/services/TrainingProgramService";
+import TrainingProgramService from "../../../serverInteraction/services/TrainingProgramService";
 import useEntities from "../useEntities";
-import { TrainingProgram } from "../../types/enitities/TrainingProgram";
-import { PagedResult } from "../../types/PagedResult";
-import { useMutation, useQueryClient } from "react-query";
+import { TrainingProgram } from "../../../types/enitities/TrainingProgram";
+import { PagedResult } from "../../../types/PagedResult";
+import { InfiniteData, useMutation, useQueryClient } from "react-query";
 
 const useTrainingPrograms = () => {
   const queryClient = useQueryClient();
@@ -37,9 +37,30 @@ const useTrainingPrograms = () => {
     }
   );
 
-  const { mutate: like } = useMutation(TrainingProgramService.liked, {
+  const { mutateAsync: like } = useMutation(TrainingProgramService.like, {
     onSuccess: (trainingProgram) => {
-      queryClient.setQueryData(["trainingPrograms"], trainingProgram);
+      queryClient.setQueryData<InfiniteData<PagedResult<TrainingProgram>>>(
+        ["trainingPrograms"],
+        (data): InfiniteData<PagedResult<TrainingProgram>> => {
+          if (data === undefined) {
+            return { pages: [], pageParams: [] };
+          }
+
+          data.pages = data.pages.map((page) => {
+            page.items = page.items.map((item) =>
+              item.id === trainingProgram.id ? trainingProgram : item
+            );
+
+            if (Object.hasOwn(optionalParams, "isLiked")) {
+              page.items = page.items.filter((item) => item.isLiked);
+            }
+
+            return page;
+          });
+
+          return data;
+        }
+      );
     },
     onError: (error) => {
       console.log(error);

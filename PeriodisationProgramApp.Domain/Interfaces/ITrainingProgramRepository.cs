@@ -13,5 +13,9 @@ namespace PeriodisationProgramApp.Domain.Interfaces
         Task<TrainingProgram> SetLike(Guid trainingProgramId, Guid userId);
 
         Task<TrainingProgram> UnsetLike(Guid trainingProgramId, Guid userId);
+
+        Task<TrainingProgram> SetRating(Guid trainingProgramId, Guid userId, int rating);
+
+        Task<TrainingProgram> UnsetRating(Guid trainingProgramId, Guid userId);
     }
 }

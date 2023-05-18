@@ -27,9 +27,9 @@ type LikedProps = {
   isLiked: boolean;
 };
 
-const liked = async ({ id, isLiked }: LikedProps) => {
+const like = async ({ id, isLiked }: LikedProps) => {
   return BaseServerInteractionService.Post<TrainingProgram>(
-    `/${entity}/${id}/liked`,
+    `/${entity}/${id}/like`,
     {
       isLiked,
     }
@@ -38,7 +38,7 @@ const liked = async ({ id, isLiked }: LikedProps) => {
 
 const TrainingProgramService = {
   getAll,
-  liked,
+  like,
 };
 
 export default TrainingProgramService;

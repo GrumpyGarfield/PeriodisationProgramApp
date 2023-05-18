@@ -13,7 +13,7 @@ import Scrollbar from "../../../components/common/scrollbar/Scrollbar";
 import { TrainingProgramType } from "../../../enums/TrainingProgramType";
 import React, { useState } from "react";
 import { TrainingLevel } from "../../../enums/TrainingLevel";
-import useTrainingPrograms from "../../../context/entities/useTrainingPrograms";
+import useTrainingPrograms from "../../../context/entityContext/entities/useTrainingPrograms";
 import { EnumFilter } from "../../common/filter/enumCheckboxFilter/EnumCheckboxFilter";
 import { NumberRangeFilter } from "../../common/filter/numberRangeFilter/NumberRangeFilter";
 import useNumberRangeFilter from "../../common/filter/numberRangeFilter/useNumberRangeFilter";

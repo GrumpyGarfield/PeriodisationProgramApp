@@ -89,18 +89,35 @@ namespace PeriodisationProgramApp.WebApi.Controllers
 
         [Authorize]
         [HttpPost]
-        [Route("{trainingProgramId}/liked")]
-        public async Task<IActionResult> Liked(Guid trainingProgramId, [FromBody]LikedRequestDto likedRequestDto)
+        [Route("{trainingProgramId}/like")]
+        public async Task<IActionResult> Like(Guid trainingProgramId, [FromBody]LikeRequestDto likeRequestDto)
         {
             var uid = User.FindFirstValue("user_id");
 
-            if (likedRequestDto.isLiked)
+            if (likeRequestDto.isLiked)
             {
                 return Ok(await _trainingProgramService.SetLike(trainingProgramId, uid));
             }
             else
             {
                 return Ok(await _trainingProgramService.UnsetLike(trainingProgramId, uid));
+            }
+        }
+
+        [Authorize]
+        [HttpPost]
+        [Route("{trainingProgramId}/rate")]
+        public async Task<IActionResult> Rate(Guid trainingProgramId, [FromBody] RateRequestDto rateRequestDto)
+        {
+            var uid = User.FindFirstValue("user_id");
+
+            if (rateRequestDto.isRated)
+            {
+                return Ok(await _trainingProgramService.SetRating(trainingProgramId, uid, rateRequestDto.Rating));
+            }
+            else
+            {
+                return Ok(await _trainingProgramService.UnsetRating(trainingProgramId, uid));
             }
         }
     }

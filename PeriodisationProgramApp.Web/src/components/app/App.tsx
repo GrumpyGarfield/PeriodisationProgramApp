@@ -4,17 +4,22 @@ import { Box, CssBaseline } from "@mui/material";
 import { Outlet } from "react-router-dom";
 import { auth } from "../../firebase/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { AlertProvider } from "../../context/alertContext/AlertContextProvider";
+import { AlertSnackbar } from "../common/snackbar/AlertSnackbar";
 
 function App() {
   const [user, loading] = useAuthState(auth);
 
   return (
-    <Box sx={{ display: "flex" }}>
-      <CssBaseline />
-      <Header user={user} loading={loading} />
-      <Sidebar />
-      {loading ? null : <Outlet />}
-    </Box>
+    <AlertProvider>
+      <Box sx={{ display: "flex" }}>
+        <CssBaseline />
+        <Header user={user} loading={loading} />
+        <Sidebar />
+        {loading ? null : <Outlet />}
+        <AlertSnackbar />
+      </Box>
+    </AlertProvider>
   );
 }
 

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Menu, Button, MenuItem, Typography } from "@mui/material";
 import Iconify from "../../../components/common/iconify/Iconify";
-import useTrainingPrograms from "../../../context/entities/useTrainingPrograms";
+import useTrainingPrograms from "../../../context/entityContext/entities/useTrainingPrograms";
 import { EntitySorting } from "../../../types/EntitySorting";
 import { SortDirection } from "../../../enums/SortDirection";
 

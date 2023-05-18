@@ -4,7 +4,7 @@ import TrainingProgramsList from "./TrainingProgramsList";
 import TrainingProgramsSort from "./TrainingProgramsSort";
 import TrainingProgramsFilterSidebar from "./TrainingProgramsFilterSidebar";
 import TrainingProgramsSearch from "./TrainingProgramsSearch";
-import { EntityProvider } from "../../../context/EntityContextProvider";
+import { EntityProvider } from "../../../context/entityContext/EntityContextProvider";
 
 export function TrainingProgramsPage() {
   return (

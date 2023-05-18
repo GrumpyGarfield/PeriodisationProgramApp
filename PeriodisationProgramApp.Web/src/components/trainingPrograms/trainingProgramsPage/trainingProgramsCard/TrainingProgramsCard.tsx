@@ -15,7 +15,7 @@ import { EnumHelper } from "../../../../helpers/EnumHelper";
 
 type Props = {
   trainingProgram: TrainingProgram;
-  handleLike: () => void;
+  handleLike: (id: string, isLiked: boolean) => Promise<boolean>;
 };
 
 export default function TrainingProgramsCard({
@@ -67,7 +67,8 @@ export default function TrainingProgramsCard({
           rating={trainingProgram.rating}
           likes={trainingProgram.likes}
           isLiked={trainingProgram.isLiked}
-          handleChange={handleLike}
+          id={trainingProgram.id}
+          handleLike={handleLike}
         />
       </Stack>
     </Card>

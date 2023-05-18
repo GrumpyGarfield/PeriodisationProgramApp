@@ -7,8 +7,8 @@ import {
 } from "react";
 
 import { IEntityContext } from "./IEntityContext";
-import { BaseEntity } from "../types/enitities/BaseEntity";
-import { EntitySorting } from "../types/EntitySorting";
+import { BaseEntity } from "../../types/enitities/BaseEntity";
+import { EntitySorting } from "../../types/EntitySorting";
 
 const EntityContext = createContext<IEntityContext<any> | undefined>(undefined);
 

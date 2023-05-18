@@ -5,7 +5,7 @@ import { Loader } from "../../common/loader/Loader";
 import { useInView } from "react-intersection-observer";
 import React from "react";
 import { AxiosError } from "axios";
-import useTrainingPrograms from "../../../context/entities/useTrainingPrograms";
+import useTrainingPrograms from "../../../context/entityContext/entities/useTrainingPrograms";
 import { TrainingProgram } from "../../../types/enitities/TrainingProgram";
 
 export default function ProductList({ ...other }: GridProps) {
@@ -22,6 +22,12 @@ export default function ProductList({ ...other }: GridProps) {
     hasNextPage,
     like,
   } = useTrainingPrograms();
+
+  const handleLike = async (id: string, isLiked: boolean) => {
+    return like({ id, isLiked }).then(
+      (trainingProgram) => trainingProgram.isLiked
+    );
+  };
 
   React.useEffect(() => {
     if (inView) {
@@ -53,12 +59,7 @@ export default function ProductList({ ...other }: GridProps) {
             <Grid key={trainingProgram.id} item xs={12} sm={6} md={4}>
               <TrainingProgramsCard
                 trainingProgram={trainingProgram}
-                handleLike={() =>
-                  like({
-                    id: trainingProgram.id,
-                    isLiked: !trainingProgram.isLiked,
-                  })
-                }
+                handleLike={handleLike}
               />
             </Grid>
           ))

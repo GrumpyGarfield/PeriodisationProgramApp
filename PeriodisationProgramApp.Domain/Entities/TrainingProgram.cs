@@ -18,6 +18,8 @@ namespace PeriodisationProgramApp.Domain.Entities
 
         public int Likes { get; set; }
 
+        public int Rates { get; set; }
+
         public double Rating { get; set; }
 
         public TrainingProgramType Type { get; set; }

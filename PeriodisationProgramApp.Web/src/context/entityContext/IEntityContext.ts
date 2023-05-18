@@ -1,5 +1,5 @@
-import { EntitySorting } from "../types/EntitySorting";
-import { BaseEntity } from "../types/enitities/BaseEntity";
+import { EntitySorting } from "../../types/EntitySorting";
+import { BaseEntity } from "../../types/enitities/BaseEntity";
 
 export interface IEntityContext<T extends BaseEntity> {
   isFetching: boolean;

@@ -117,5 +117,45 @@ namespace PeriodisationProgramApp.BusinessLogic.Services
 
             return await UnsetLike(trainingProgramId, user.Id);
         }
+
+        public async Task<TrainingProgramDto> SetRating(Guid trainingProgramId, Guid userId, int rating)
+        {
+            var trainingProgram = await _unitOfWork.TrainingPrograms.SetRating(trainingProgramId, userId, rating);
+            await _unitOfWork.CompleteAsync();
+
+            return trainingProgram.TranslateToDto(_mapper, userId);
+        }
+
+        public async Task<TrainingProgramDto> SetRating(Guid trainingProgramId, string firebaseId, int rating)
+        {
+            var user = await _unitOfWork.Users.GetUserByFirebaseId(firebaseId);
+
+            if (user == null)
+            {
+                throw new Exception($"User with Firebase ID {firebaseId} not found");
+            }
+
+            return await SetRating(trainingProgramId, user.Id, rating);
+        }
+
+        public async Task<TrainingProgramDto> UnsetRating(Guid trainingProgramId, Guid userId)
+        {
+            var trainingProgram = await _unitOfWork.TrainingPrograms.UnsetRating(trainingProgramId, userId);
+            await _unitOfWork.CompleteAsync();
+
+            return trainingProgram.TranslateToDto(_mapper, userId);
+        }
+
+        public async Task<TrainingProgramDto> UnsetRating(Guid trainingProgramId, string firebaseId)
+        {
+            var user = await _unitOfWork.Users.GetUserByFirebaseId(firebaseId);
+
+            if (user == null)
+            {
+                throw new Exception($"User with Firebase ID {firebaseId} not found");
+            }
+
+            return await UnsetRating(trainingProgramId, user.Id);
+        }
     }
 }
