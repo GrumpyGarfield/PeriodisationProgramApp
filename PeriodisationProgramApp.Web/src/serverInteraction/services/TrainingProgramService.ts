@@ -22,12 +22,12 @@ const getAll = async (
   );
 };
 
-type LikedProps = {
+type LikeProps = {
   id: string;
   isLiked: boolean;
 };
 
-const like = async ({ id, isLiked }: LikedProps) => {
+const like = async ({ id, isLiked }: LikeProps) => {
   return BaseServerInteractionService.Post<TrainingProgram>(
     `/${entity}/${id}/like`,
     {
@@ -36,9 +36,26 @@ const like = async ({ id, isLiked }: LikedProps) => {
   );
 };
 
+type RateProps = {
+  id: string;
+  isRated: boolean;
+  rating: number | null;
+};
+
+const rate = async ({ id, isRated, rating }: RateProps) => {
+  return BaseServerInteractionService.Post<TrainingProgram>(
+    `/${entity}/${id}/rate`,
+    {
+      isRated,
+      rating,
+    }
+  );
+};
+
 const TrainingProgramService = {
   getAll,
   like,
+  rate,
 };
 
 export default TrainingProgramService;

@@ -7,6 +7,7 @@ import React from "react";
 import { AxiosError } from "axios";
 import useTrainingPrograms from "../../../context/entityContext/entities/useTrainingPrograms";
 import { TrainingProgram } from "../../../types/enitities/TrainingProgram";
+import { UserRatingProps } from "../../../types/UserRatingProps";
 
 export default function ProductList({ ...other }: GridProps) {
   const { ref, inView } = useInView();
@@ -21,11 +22,28 @@ export default function ProductList({ ...other }: GridProps) {
     fetchNextPage,
     hasNextPage,
     like,
+    rate,
   } = useTrainingPrograms();
 
   const handleLike = async (id: string, isLiked: boolean) => {
     return like({ id, isLiked }).then(
       (trainingProgram) => trainingProgram.isLiked
+    );
+  };
+
+  const handleRate = async (
+    id: string,
+    isRated: boolean,
+    rating: number | null
+  ) => {
+    return rate({ id, isRated, rating }).then(
+      (trainingProgram): UserRatingProps => {
+        const result: UserRatingProps = {
+          isRated: trainingProgram.isRated,
+          rating: trainingProgram.userRating,
+        };
+        return result;
+      }
     );
   };
 
@@ -60,6 +78,7 @@ export default function ProductList({ ...other }: GridProps) {
               <TrainingProgramsCard
                 trainingProgram={trainingProgram}
                 handleLike={handleLike}
+                handleRate={handleRate}
               />
             </Grid>
           ))

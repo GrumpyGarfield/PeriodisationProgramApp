@@ -67,6 +67,32 @@ const useTrainingPrograms = () => {
     },
   });
 
+  const { mutateAsync: rate } = useMutation(TrainingProgramService.rate, {
+    onSuccess: (trainingProgram) => {
+      queryClient.setQueryData<InfiniteData<PagedResult<TrainingProgram>>>(
+        ["trainingPrograms"],
+        (data): InfiniteData<PagedResult<TrainingProgram>> => {
+          if (data === undefined) {
+            return { pages: [], pageParams: [] };
+          }
+
+          data.pages = data.pages.map((page) => {
+            page.items = page.items.map((item) =>
+              item.id === trainingProgram.id ? trainingProgram : item
+            );
+
+            return page;
+          });
+
+          return data;
+        }
+      );
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
+
   return {
     status,
     data,
@@ -86,6 +112,7 @@ const useTrainingPrograms = () => {
     optionalParams,
     setOptionalParams,
     like,
+    rate,
   };
 };
 

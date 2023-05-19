@@ -12,15 +12,22 @@ import { CardList } from "../../../common/card/CardList";
 import { TrainingProgramType } from "../../../../enums/TrainingProgramType";
 import { TrainingLevel } from "../../../../enums/TrainingLevel";
 import { EnumHelper } from "../../../../helpers/EnumHelper";
+import { UserRatingProps } from "../../../../types/UserRatingProps";
 
 type Props = {
   trainingProgram: TrainingProgram;
   handleLike: (id: string, isLiked: boolean) => Promise<boolean>;
+  handleRate: (
+    id: string,
+    isRating: boolean,
+    rating: number | null
+  ) => Promise<UserRatingProps>;
 };
 
 export default function TrainingProgramsCard({
   trainingProgram,
   handleLike,
+  handleRate,
 }: Props) {
   const [raised, setRaised] = React.useState(false);
 
@@ -67,8 +74,13 @@ export default function TrainingProgramsCard({
           rating={trainingProgram.rating}
           likes={trainingProgram.likes}
           isLiked={trainingProgram.isLiked}
+          userRatingInfo={{
+            isRated: trainingProgram.isRated,
+            rating: trainingProgram.userRating,
+          }}
           id={trainingProgram.id}
           handleLike={handleLike}
+          handleRate={handleRate}
         />
       </Stack>
     </Card>

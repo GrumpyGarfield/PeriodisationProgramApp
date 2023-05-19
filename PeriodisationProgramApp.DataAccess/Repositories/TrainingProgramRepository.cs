@@ -9,11 +9,8 @@ namespace PeriodisationProgramApp.DataAccess.Repositories
 {
     public class TrainingProgramRepository : GenericRepository<TrainingProgram>, ITrainingProgramRepository
     {
-        private readonly IDefaultDataSettings _defaultDataSettings;
-
-        public TrainingProgramRepository(ApplicationContext context, IDefaultDataSettings defaultDataSettings) : base(context)
+        public TrainingProgramRepository(ApplicationContext context) : base(context)
         {
-            _defaultDataSettings = defaultDataSettings;
         }
 
         public new async Task<PagedResult<TrainingProgram>> GetPaginatedResultAsync(IPageableQueryContext context)
@@ -38,8 +35,7 @@ namespace PeriodisationProgramApp.DataAccess.Repositories
 
         public async Task<TrainingProgram> SetLike(Guid trainingProgramId, Guid userId)
         {
-            var trainingProgram = await _context.TrainingPrograms.Include(t => t.User)
-                                                                    .Include(t => t.UserTrainingProgramLikes)
+            var trainingProgram = await _context.TrainingPrograms.IncludeUserInfo()
                                                                     .FirstOrDefaultAsync(t => t.Id == trainingProgramId);
 
             if (trainingProgram == null)
@@ -56,8 +52,7 @@ namespace PeriodisationProgramApp.DataAccess.Repositories
 
         public async Task<TrainingProgram> UnsetLike(Guid trainingProgramId, Guid userId)
         {
-            var trainingProgram = await _context.TrainingPrograms.Include(t => t.User)
-                                                                    .Include(t => t.UserTrainingProgramLikes)
+            var trainingProgram = await _context.TrainingPrograms.IncludeUserInfo()
                                                                     .FirstOrDefaultAsync(t => t.Id == trainingProgramId);
 
             if (trainingProgram == null)
@@ -81,8 +76,7 @@ namespace PeriodisationProgramApp.DataAccess.Repositories
 
         public async Task<TrainingProgram> SetRating(Guid trainingProgramId, Guid userId, int rating)
         {
-            var trainingProgram = await _context.TrainingPrograms.Include(t => t.User)
-                                                                    .Include(t => t.UserTrainingProgramRatings)
+            var trainingProgram = await _context.TrainingPrograms.IncludeUserInfo()
                                                                     .FirstOrDefaultAsync(t => t.Id == trainingProgramId);
 
             if (trainingProgram == null)
@@ -90,9 +84,20 @@ namespace PeriodisationProgramApp.DataAccess.Repositories
                 throw new Exception($"Training program with id {trainingProgramId} not found");
             }
 
-            trainingProgram.UserTrainingProgramRatings.Add(new UserTrainingProgramRating() { UserId = userId, Rating = rating });
-            trainingProgram.Rating = (trainingProgram.Rating * trainingProgram.Rates + rating) / trainingProgram.Rates + 1;
-            trainingProgram.Rates++;
+            var currentRating = trainingProgram.UserTrainingProgramRatings.FirstOrDefault(u => u.UserId == userId);
+
+            if (currentRating == null)
+            {
+                trainingProgram.UserTrainingProgramRatings.Add(new UserTrainingProgramRating() { UserId = userId, Rating = rating });
+                trainingProgram.Rating = (trainingProgram.Rating * trainingProgram.Rates + rating) / (trainingProgram.Rates + 1);
+                trainingProgram.Rates++;
+            }
+            else
+            {                
+                trainingProgram.Rating = (trainingProgram.Rating * trainingProgram.Rates - currentRating.Rating + rating) / trainingProgram.Rates;
+                currentRating.Rating = rating;
+            }
+            
             _context.Update(trainingProgram);
 
             return trainingProgram;
@@ -100,8 +105,7 @@ namespace PeriodisationProgramApp.DataAccess.Repositories
 
         public async Task<TrainingProgram> UnsetRating(Guid trainingProgramId, Guid userId)
         {
-            var trainingProgram = await _context.TrainingPrograms.Include(t => t.User)
-                                                                    .Include(t => t.UserTrainingProgramRatings)
+            var trainingProgram = await _context.TrainingPrograms.IncludeUserInfo()
                                                                     .FirstOrDefaultAsync(t => t.Id == trainingProgramId);
 
             if (trainingProgram == null)
@@ -117,7 +121,7 @@ namespace PeriodisationProgramApp.DataAccess.Repositories
             }
 
             trainingProgram.UserTrainingProgramRatings.Remove(rating);
-            trainingProgram.Rating = (trainingProgram.Rating * trainingProgram.Rates - rating.Rating) / trainingProgram.Rates - 1;
+            trainingProgram.Rating = trainingProgram.Rates > 1 ? ((trainingProgram.Rating * trainingProgram.Rates - rating.Rating) / (trainingProgram.Rates - 1)) : 0;
             trainingProgram.Rates--;
             _context.Update(trainingProgram);
 

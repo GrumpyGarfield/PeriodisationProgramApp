@@ -20,6 +20,16 @@ namespace PeriodisationProgramApp.Domain.Entities
 
         public bool IsPublic { get; set; }
 
+        public int Likes { get; set; }
+
+        public int Rates { get; set; }
+
+        public double Rating { get; set; }
+
+        public List<UserExerciseLike> UserExerciseLikes { get; set; } = new();
+
+        public List<UserExerciseRating> UserExerciseRatings { get; set; } = new();
+
         public void Update(Exercise other)
         {
             Name = other.Name;

@@ -1,6 +1,6 @@
 ﻿namespace PeriodisationProgramApp.WebApi.Dto
 {
-    public class LikedRequestDto
+    public class LikeRequestDto
     {
         public bool isLiked { get; set; }
     }

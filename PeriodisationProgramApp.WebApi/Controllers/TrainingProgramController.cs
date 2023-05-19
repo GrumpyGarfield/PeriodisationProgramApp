@@ -113,7 +113,12 @@ namespace PeriodisationProgramApp.WebApi.Controllers
 
             if (rateRequestDto.isRated)
             {
-                return Ok(await _trainingProgramService.SetRating(trainingProgramId, uid, rateRequestDto.Rating));
+                if (rateRequestDto.Rating == null)
+                {
+                    return BadRequest("Rating can't be null");
+                }
+
+                return Ok(await _trainingProgramService.SetRating(trainingProgramId, uid, rateRequestDto.Rating.GetValueOrDefault()));
             }
             else
             {

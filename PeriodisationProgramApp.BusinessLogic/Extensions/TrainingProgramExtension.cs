@@ -44,6 +44,12 @@ namespace PeriodisationProgramApp.BusinessLogic.Extensions
                     {
                         result.Items[i].IsLiked = true;
                     }
+
+                    if (trainingPrograms.Items[i].UserTrainingProgramRatings.Any(l => l.UserId == userId))
+                    {
+                        result.Items[i].IsRated = true;
+                        result.Items[i].UserRating = trainingPrograms.Items[i].UserTrainingProgramRatings.First(l => l.UserId == userId).Rating;
+                    }
                 }
             }
 
@@ -59,6 +65,11 @@ namespace PeriodisationProgramApp.BusinessLogic.Extensions
                 if (trainingProgram.UserTrainingProgramLikes.Any(l => l.UserId == userId))
                 {
                     result.IsLiked = true;
+                }
+
+                if (trainingProgram.UserTrainingProgramRatings.Any(l => l.UserId == userId))
+                {
+                    result.IsRated = true;
                 }
             }
 

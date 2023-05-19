@@ -11,28 +11,47 @@ import {
   StarBorder,
   Star,
 } from "@mui/icons-material";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, SyntheticEvent, useState } from "react";
 import { AxiosError } from "axios";
 import useAlert from "../../../context/alertContext/useAlert";
 import { HoverPopover } from "../popover/HoverPopover";
+import { UserRatingProps } from "../../../types/UserRatingProps";
 
 type Props = {
   author: string;
   likes: number;
-  rating: number;
   isLiked: boolean;
+  rating: number;
+  userRatingInfo: UserRatingProps;
   id: string;
   handleLike: (id: string, isLiked: boolean) => Promise<boolean>;
+  handleRate: (
+    id: string,
+    isRated: boolean,
+    rating: number | null
+  ) => Promise<UserRatingProps>;
 };
 
 export function CardFooter({
   author,
   likes,
-  rating,
   isLiked,
+  rating,
+  userRatingInfo,
   id,
   handleLike,
+  handleRate,
 }: Props) {
+  const [likeChecked, setLikeChecked] = useState(isLiked);
+  const [likeCount, setLikeCount] = useState(likes);
+
+  const [ratingChecked, setRatingChecked] = useState(userRatingInfo.isRated);
+  const [userRating, setUserRating] = useState(userRatingInfo.rating);
+
+  const { showError } = useAlert();
+
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+
   const handleLikeChecked = (
     event: ChangeEvent<HTMLInputElement>,
     checked: boolean
@@ -49,11 +68,49 @@ export function CardFooter({
     );
   };
 
-  const [likeChecked, setLikeChecked] = useState(isLiked);
-  const [likeCount, setLikeCount] = useState(likes);
-  const { showError } = useAlert();
+  const handleUserRatingChecked = (
+    event: ChangeEvent<HTMLInputElement>,
+    checked: boolean
+  ) => {
+    if (checked) {
+      return;
+    }
 
-  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+    var currentValue = userRating;
+
+    setRatingChecked(false);
+    setUserRating(null);
+    handleRate(id, false, null).then(
+      () => {},
+      (reason: AxiosError) => {
+        setRatingChecked(true);
+        setUserRating(currentValue);
+        showError(reason.message);
+      }
+    );
+  };
+
+  const handleUserRatingSet = (
+    event: SyntheticEvent<Element, Event>,
+    value: number | null
+  ) => {
+    if (value === null) {
+      return;
+    }
+
+    var currentValue = userRating;
+
+    setRatingChecked(true);
+    setUserRating(value);
+    handleRate(id, true, value).then(
+      () => {},
+      (reason: AxiosError) => {
+        setRatingChecked(false);
+        setUserRating(currentValue);
+        showError(reason.message);
+      }
+    );
+  };
 
   return (
     <Stack
@@ -78,6 +135,8 @@ export function CardFooter({
               <Checkbox
                 icon={<StarBorder sx={{ fontSize: 20 }} />}
                 checkedIcon={<Star sx={{ fontSize: 20 }} color="secondary" />}
+                checked={ratingChecked}
+                onChange={handleUserRatingChecked}
                 sx={{ p: 1 }}
               />
             }
@@ -94,7 +153,11 @@ export function CardFooter({
             anchorEl={anchorEl}
             setAnchorEl={setAnchorEl}
           >
-            <Rating name="no-value" value={null} />
+            <Rating
+              name="no-value"
+              value={userRating}
+              onChange={handleUserRatingSet}
+            />
           </HoverPopover>
         </div>
         <FormControlLabel

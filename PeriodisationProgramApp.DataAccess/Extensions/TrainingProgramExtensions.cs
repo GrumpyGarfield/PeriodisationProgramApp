@@ -9,10 +9,16 @@ namespace PeriodisationProgramApp.DataAccess.Extensions
         public static IQueryable<TrainingProgram> GetAllWithContext(this IQueryable<TrainingProgram> query,
                                          IPageableQueryContext context)
         {
-            return query.Include(t => t.User)
-                        .Include(t => t.UserTrainingProgramLikes)
+            return query.IncludeUserInfo()
                         .FilterBy(context.Filters)
                         .SortBy(context.SortField, context.SortDirection);
+        }
+
+        public static IQueryable<TrainingProgram> IncludeUserInfo(this IQueryable<TrainingProgram> query)
+        {
+            return query.Include(t => t.User)
+                        .Include(t => t.UserTrainingProgramLikes)
+                        .Include(t => t.UserTrainingProgramRatings);
         }
     }
 }

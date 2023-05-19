@@ -18,7 +18,7 @@ export function TrainingProgramsPageHeader() {
       setOptionalParams({ isCreated: true });
     }
 
-    if (newValue === "saved") {
+    if (newValue === "liked") {
       setOptionalParams({ isLiked: true });
     }
   };
@@ -49,7 +49,7 @@ export function TrainingProgramsPageHeader() {
             >
               <Tab value="all" label="All" />
               <Tab value="created" label="Created" />
-              <Tab value="saved" label="Saved" />
+              <Tab value="liked" label="Liked" />
             </Tabs>
           </Box>
         ) : null}

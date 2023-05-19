@@ -14,6 +14,8 @@ namespace PeriodisationProgramApp.BusinessLogic.Domain.Dto
 
         public double Rating { get; set; }
 
+        public int UserRating { get; set; }
+
         public TrainingProgramType Type { get; set; }
 
         public TrainingLevel TrainingLevel { get; set; }
@@ -23,5 +25,7 @@ namespace PeriodisationProgramApp.BusinessLogic.Domain.Dto
         public UserDto? User { get; set; }
 
         public bool IsLiked { get; set; }
+
+        public bool IsRated { get; set; }
     }
 }

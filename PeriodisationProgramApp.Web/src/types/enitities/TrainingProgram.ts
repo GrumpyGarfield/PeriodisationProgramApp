@@ -10,7 +10,9 @@ export type TrainingProgram = {
   numberOfSessions: number;
   trainingLevel: TrainingLevel;
   rating: number;
+  userRating: number | null;
   likes: number;
   user: User;
   isLiked: boolean;
+  isRated: boolean;
 } & BaseEntity;

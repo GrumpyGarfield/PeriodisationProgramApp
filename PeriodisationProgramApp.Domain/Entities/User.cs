@@ -18,6 +18,10 @@
 
         public List<UserTrainingProgramRating> UserTrainingProgramRatings { get; set; } = new();
 
+        public List<UserExerciseLike> UserExerciseLikes { get; set; } = new();
+
+        public List<UserExerciseRating> UserExerciseRatings { get; set; } = new();
+
         public bool Equals(User? other)
         {
             if (other == null) { return false; }

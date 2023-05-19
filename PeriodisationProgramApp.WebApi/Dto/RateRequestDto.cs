@@ -4,6 +4,6 @@
     {
         public bool isRated { get; set; }
 
-        public int Rating { get; set; }
+        public int? Rating { get; set; }
     }
 }
