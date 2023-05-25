@@ -13,7 +13,7 @@ type Props = {
   checked: (item: string) => boolean;
 };
 
-export function EnumFilter({
+export function EnumCheckboxFilter({
   enumName,
   enumObject,
   label,

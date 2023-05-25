@@ -36,6 +36,11 @@ export function Header({ user, loading }: Props) {
     setAnchorElNav(null);
   };
 
+  const handleLogout = () => {
+    logout();
+    window.location.reload();
+  };
+
   return (
     <AppBar
       position="fixed"
@@ -132,7 +137,7 @@ export function Header({ user, loading }: Props) {
             {loading ? null : user === null || user === undefined ? (
               <Link to="signin">Sign In</Link>
             ) : (
-              <Profile user={user} handleLogout={logout} />
+              <Profile user={user} handleLogout={handleLogout} />
             )}
           </Box>
         </Toolbar>

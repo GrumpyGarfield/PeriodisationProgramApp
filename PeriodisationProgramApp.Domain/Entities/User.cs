@@ -12,7 +12,7 @@
 
         public List<Exercise> Exercises { get; set; } = new();
 
-        public List<MuscleGroup> MuscleGroups { get; set; } = new();
+        public List<MuscleGroupUserData> MuscleGroups { get; set; } = new();
 
         public List<UserTrainingProgramLike> UserTrainingProgramLikes { get; set; } = new();
 

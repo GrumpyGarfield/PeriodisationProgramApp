@@ -34,27 +34,6 @@ namespace PeriodisationProgramApp.WebApi.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet(Name = "GetDefaultMuscleGroups")]
-        public IActionResult GetDefaultMuscleGroups()
-        {
-            var muscleGroups = _unitOfWork.MuscleGroups.GetDefaultMuscleGroups();
-            return Ok(muscleGroups);
-        }
-
-        [HttpGet(Name = "GetDefaultExercises")]
-        public IActionResult GetDefaultExercises()
-        {
-            var exercises = _unitOfWork.Exercises.GetDefaultExercises();
-            return Ok(exercises);
-        }
-
-        [HttpGet(Name = "GetRandomChestExercises")]
-        public IActionResult GetRandomChestExercises(int number)
-        {
-            var exercises = _unitOfWork.Exercises.GetRandomExercisesForMuscleGroup(MuscleGroupType.Chest, number);
-            return Ok(exercises);
-        }
-
         [HttpGet(Name = "GetPushPullLegsProgram")]
         public IActionResult GetPushPullLegsProgram(int numberOfWeekSessions, int mesocycleLength)
         {

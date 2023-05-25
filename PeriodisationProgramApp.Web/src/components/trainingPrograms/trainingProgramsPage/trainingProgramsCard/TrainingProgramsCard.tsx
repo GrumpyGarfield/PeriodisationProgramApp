@@ -33,6 +33,7 @@ export default function TrainingProgramsCard({
 
   const trainingProgramsCardListItems: CardListItemProps[] = [
     {
+      label: "Split type",
       text: EnumHelper.translate(
         "TrainingProgramType",
         TrainingProgramType[trainingProgram.type]
@@ -40,10 +41,12 @@ export default function TrainingProgramsCard({
       icon: <CallSplitIcon />,
     },
     {
+      label: "Number of weekly sessions",
       text: trainingProgram.numberOfSessions + " weekly sessions",
       icon: <CalendarMonthIcon />,
     },
     {
+      label: "Training level",
       text: EnumHelper.translate(
         "TrainingLevel",
         TrainingLevel[trainingProgram.trainingLevel]

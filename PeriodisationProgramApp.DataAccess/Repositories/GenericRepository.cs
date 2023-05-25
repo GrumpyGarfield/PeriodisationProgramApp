@@ -1,13 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PeriodisationProgramApp.Common.Filtering;
-using PeriodisationProgramApp.Common.Sorting;
 using PeriodisationProgramApp.DataAccess.Extensions;
 using PeriodisationProgramApp.Domain.Entities;
-using PeriodisationProgramApp.Domain.Extensions;
 using PeriodisationProgramApp.Domain.Interfaces;
 using PeriodisationProgramApp.Domain.Pagination;
 using System.Linq.Expressions;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace PeriodisationProgramApp.DataAccess.Repositories
 {

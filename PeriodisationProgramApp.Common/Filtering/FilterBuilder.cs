@@ -5,6 +5,7 @@
     using System.Linq;
     using System.Linq.Expressions;
     using System.Reflection;
+    using System.Reflection.Metadata;
     using System.Text.RegularExpressions;
 
     public static class FilterBuilder
@@ -131,7 +132,7 @@
         private static Expression GetStringFilterExpression(ParameterExpression exprParam, PropertyInfo property, string filterValue)
         {
             var containsMethodInfo = typeof(string).GetMethod(nameof(string.Contains), new[] { typeof(string) });
-
+            var toLowerMethodInfo = typeof(string).GetMethod(nameof(string.ToLower), new Type[0] { });
             var propertyGetter = Expression.Property(exprParam, property);
 
             ConstantExpression targetValueExpression;
@@ -143,8 +144,9 @@
             }
             else
             {
-                targetValueExpression = Expression.Constant($"{filterValue}");
-                return Expression.Call(propertyGetter, containsMethodInfo!, targetValueExpression);
+                var lowerExpression = Expression.Call(propertyGetter, toLowerMethodInfo!);
+                targetValueExpression = Expression.Constant($"{filterValue.ToLower()}", typeof(string));
+                return Expression.Call(lowerExpression, containsMethodInfo!, targetValueExpression);
             }
         }
 

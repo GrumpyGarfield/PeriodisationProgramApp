@@ -57,7 +57,7 @@ namespace PeriodisationProgramApp.WebApi.Controllers
         }
 
         [HttpGet]
-        [Route("GetTrainingPrograms")]
+        [Route("items")]
         public async Task<IActionResult> GetTrainingPrograms(int offset, int limit, bool isCreated = false, bool isLiked = false)
         {
             var uid = User.FindFirstValue("user_id");

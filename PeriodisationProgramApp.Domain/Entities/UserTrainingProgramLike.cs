@@ -1,6 +1,8 @@
-﻿namespace PeriodisationProgramApp.Domain.Entities
+﻿using PeriodisationProgramApp.Domain.Interfaces;
+
+namespace PeriodisationProgramApp.Domain.Entities
 {
-    public class UserTrainingProgramLike : Entity
+    public class UserTrainingProgramLike : Entity, IUserLike
     {
         public Guid UserId { get; set; }
 

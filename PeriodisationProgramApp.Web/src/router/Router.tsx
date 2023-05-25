@@ -1,13 +1,13 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "../components/app/App";
 import { TrainingProgramsPage } from "../components/trainingPrograms/trainingProgramsPage/TrainingProgramsPage";
-import { ExercisesPage } from "../pages/ExercisesPage";
-import { MuscleGroupsPage } from "../pages/MuscleGroupsPage";
+import { ExercisesPage } from "../components/exercises/exercisesPage/ExersicesPage";
 import { AboutPage } from "../pages/AboutPage";
 import SignIn from "../components/authorization/SignIn";
 import SignUp from "../components/authorization/SignUp";
 import ResetPassword from "../components/authorization/ResetPassword";
 import ChangePassword from "../components/authorization/ChangePassword";
+import { MuscleGroupsPage } from "../components/muscleGroups/muscleGroupsPage/MuscleGroupsPage";
 
 const router = createBrowserRouter([
   {

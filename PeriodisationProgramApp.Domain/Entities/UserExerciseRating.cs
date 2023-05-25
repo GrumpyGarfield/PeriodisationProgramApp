@@ -1,6 +1,8 @@
-﻿namespace PeriodisationProgramApp.Domain.Entities
+﻿using PeriodisationProgramApp.Domain.Interfaces;
+
+namespace PeriodisationProgramApp.Domain.Entities
 {
-    public class UserExerciseRating : Entity
+    public class UserExerciseRating : Entity, IUserRating
     {
 
         public Guid UserId { get; set; }

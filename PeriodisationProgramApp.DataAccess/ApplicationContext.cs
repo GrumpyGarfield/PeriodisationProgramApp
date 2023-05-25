@@ -16,6 +16,10 @@ namespace PeriodisationProgramApp.DataAccess
         public DbSet<TrainingSessionExercise> TrainingSessionsExercises { get; set; }
         public DbSet<UserTrainingProgramLike> UserTrainingProgramLikes { get; set; }
         public DbSet<UserTrainingProgramRating> UserTrainingProgramRatings { get; set; }
+        public DbSet<UserExerciseLike> UserExerciseLikes { get; set; }
+        public DbSet<UserExerciseRating> UserExerciseRatings { get; set; }
+        public DbSet<ExerciseUserData> ExerciseUsersData { get; set; }
+        public DbSet<MuscleGroupUserData> MuscleGroupUsersData { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

@@ -1,23 +1,24 @@
-﻿using PeriodisationProgramApp.Configuration.Interfaces;
+﻿using PeriodisationProgramApp.DataAccess.Extensions;
 using PeriodisationProgramApp.Domain.Entities;
 using PeriodisationProgramApp.Domain.Enums;
 using PeriodisationProgramApp.Domain.Interfaces;
+using PeriodisationProgramApp.Domain.Pagination;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace PeriodisationProgramApp.DataAccess.Repositories
 {
     public class MuscleGroupRepository : GenericRepository<MuscleGroup>, IMuscleGroupRepository
     {
-        private readonly IDefaultDataSettings _defaultDataSettings;
-
-        public MuscleGroupRepository(ApplicationContext context, IDefaultDataSettings defaultDataSettings) : base(context)
+        public MuscleGroupRepository(ApplicationContext context) : base(context)
         {
-            _defaultDataSettings = defaultDataSettings; 
         }
 
-        public IEnumerable<MuscleGroup> GetDefaultMuscleGroups() 
+        public async Task<PagedResult<MuscleGroup>> GetPaginatedResultAsync(IPageableQueryContext context, Guid? userId = null)
         {
-            return _context.MuscleGroups.Where(m => m.UserId == _defaultDataSettings.DefaultUser!.Id)
-                                        .OrderBy(m => m.Type);
+            return await _context.MuscleGroups.IncludeAll()
+                                            .FilterBy(context.Filters)
+                                            .SortBy(context.SortField, context.SortDirection)
+                                            .GetPagedAsync(context.Offset, context.Limit);
         }
 
         public MuscleGroup GetMuscleGroupByType(MuscleGroupType type)

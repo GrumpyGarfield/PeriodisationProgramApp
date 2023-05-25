@@ -21,7 +21,7 @@ namespace PeriodisationProgramApp.BusinessLogic.Services
 
         public async Task<PagedResult<TrainingProgramDto>> GetTrainingPrograms(PageableQueryContext context, Guid? userId = null)
         {
-            var trainingPrograms = await _unitOfWork.TrainingPrograms.GetPaginatedResultAsync(context);
+            var trainingPrograms = await _unitOfWork.TrainingPrograms.GetPaginatedResultAsync(context, userId);
             return trainingPrograms.TranslateToDto(_mapper, userId);
         }
 
@@ -44,7 +44,7 @@ namespace PeriodisationProgramApp.BusinessLogic.Services
 
         public async Task<PagedResult<TrainingProgramDto>> GetUserCreatedTrainingPrograms(PageableQueryContext context, Guid userId)
         {
-            var trainingPrograms = await _unitOfWork.TrainingPrograms.GetUserCreatedTrainingPrograms(context, userId);
+            var trainingPrograms = await _unitOfWork.TrainingPrograms.GetUserCreated(context, userId);
             return trainingPrograms.TranslateToDto(_mapper, userId);
         }
 
@@ -62,7 +62,7 @@ namespace PeriodisationProgramApp.BusinessLogic.Services
 
         public async Task<PagedResult<TrainingProgramDto>> GetUserLikedTrainingPrograms(PageableQueryContext context, Guid userId)
         {
-            var trainingPrograms = await _unitOfWork.TrainingPrograms.GetUserLikedTrainingPrograms(context, userId);
+            var trainingPrograms = await _unitOfWork.TrainingPrograms.GetUserLiked(context, userId);
             return trainingPrograms.TranslateToDto(_mapper, userId);
         }
 

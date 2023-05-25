@@ -130,21 +130,15 @@
           "IsPublic": true,
           "ExerciseMuscleGroups": [
             {
-              "MuscleGroup": {
-                "Type": 5
-              },
+              "MuscleGroupType": 5,
               "MuscleGroupRole": 1
             },
             {
-              "MuscleGroup": {
-                "Type": 14
-              },
+              "MuscleGroupType": 14,
               "MuscleGroupRole": 2
             },
             {
-              "MuscleGroup": {
-                "Type": 7
-              },
+              "MuscleGroupType": 7,
               "MuscleGroupRole": 2
             }
           ]
@@ -157,33 +151,23 @@
           "IsPublic": true,
           "ExerciseMuscleGroups": [
             {
-              "MuscleGroup": {
-                "Type": 2
-              },
+              "MuscleGroupType": 2,
               "MuscleGroupRole": 1
             },
             {
-              "MuscleGroup": {
-                "Type": 3
-              },
+              "MuscleGroupType": 3,
               "MuscleGroupRole": 2
             },
             {
-              "MuscleGroup": {
-                "Type": 11
-              },
+              "MuscleGroupType": 11,
               "MuscleGroupRole": 2
             },
             {
-              "MuscleGroup": {
-                "Type": 1
-              },
+              "MuscleGroupType": 1,
               "MuscleGroupRole": 3
             },
             {
-              "MuscleGroup": {
-                "Type": 6
-              },
+              "MuscleGroupType": 6,
               "MuscleGroupRole": 3
             }
           ]
@@ -196,21 +180,15 @@
           "IsPublic": true,
           "ExerciseMuscleGroups": [
             {
-              "MuscleGroup": {
-                "Type": 10
-              },
+              "MuscleGroupType": 10,
               "MuscleGroupRole": 1
             },
             {
-              "MuscleGroup": {
-                "Type": 8
-              },
+              "MuscleGroupType": 8,
               "MuscleGroupRole": 2
             },
             {
-              "MuscleGroup": {
-                "Type": 1
-              },
+              "MuscleGroupType": 1,
               "MuscleGroupRole": 3
             }
           ]
@@ -223,27 +201,19 @@
           "IsPublic": true,
           "ExerciseMuscleGroups": [
             {
-              "MuscleGroup": {
-                "Type": 9
-              },
+              "MuscleGroupType": 9,
               "MuscleGroupRole": 1
             },
             {
-              "MuscleGroup": {
-                "Type": 8
-              },
+              "MuscleGroupType": 8,
               "MuscleGroupRole": 2
             },
             {
-              "MuscleGroup": {
-                "Type": 13
-              },
+              "MuscleGroupType": 13,
               "MuscleGroupRole": 2
             },
             {
-              "MuscleGroup": {
-                "Type": 1
-              },
+              "MuscleGroupType": 1,
               "MuscleGroupRole": 3
             }
           ]
@@ -256,15 +226,11 @@
           "IsPublic": true,
           "ExerciseMuscleGroups": [
             {
-              "MuscleGroup": {
-                "Type": 3
-              },
+              "MuscleGroupType": 3,
               "MuscleGroupRole": 1
             },
             {
-              "MuscleGroup": {
-                "Type": 6
-              },
+              "MuscleGroupType": 6,
               "MuscleGroupRole": 3
             }
           ]
@@ -277,27 +243,19 @@
           "IsPublic": true,
           "ExerciseMuscleGroups": [
             {
-              "MuscleGroup": {
-                "Type": 14
-              },
+              "MuscleGroupType": 14,
               "MuscleGroupRole": 1
             },
             {
-              "MuscleGroup": {
-                "Type": 5
-              },
+              "MuscleGroupType": 5,
               "MuscleGroupRole": 2
             },
             {
-              "MuscleGroup": {
-                "Type": 1
-              },
+              "MuscleGroupType": 1,
               "MuscleGroupRole": 3
             },
             {
-              "MuscleGroup": {
-                "Type": 7
-              },
+              "MuscleGroupType": 7,
               "MuscleGroupRole": 3
             }
           ]
@@ -310,15 +268,11 @@
           "IsPublic": true,
           "ExerciseMuscleGroups": [
             {
-              "MuscleGroup": {
-                "Type": 12
-              },
+              "MuscleGroupType": 12,
               "MuscleGroupRole": 1
             },
             {
-              "MuscleGroup": {
-                "Type": 13
-              },
+              "MuscleGroupType": 13,
               "MuscleGroupRole": 3
             }
           ]
@@ -331,27 +285,19 @@
           "IsPublic": true,
           "ExerciseMuscleGroups": [
             {
-              "MuscleGroup": {
-                "Type": 7
-              },
+              "MuscleGroupType": 7,
               "MuscleGroupRole": 1
             },
             {
-              "MuscleGroup": {
-                "Type": 12
-              },
+              "MuscleGroupType": 12,
               "MuscleGroupRole": 2
             },
             {
-              "MuscleGroup": {
-                "Type": 14
-              },
+              "MuscleGroupType": 14,
               "MuscleGroupRole": 2
             },
             {
-              "MuscleGroup": {
-                "Type": 1
-              },
+              "MuscleGroupType": 1,
               "MuscleGroupRole": 3
             }
           ]

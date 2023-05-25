@@ -9,7 +9,7 @@ export function CardList({ items }: Props) {
   return (
     <List disablePadding>
       {items.map((item) => (
-        <CardListItem key={item.text} text={item.text} icon={item.icon} />
+        <CardListItem key={item.label?.toString()} {...item} />
       ))}
     </List>
   );

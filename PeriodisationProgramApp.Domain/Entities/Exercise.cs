@@ -2,7 +2,7 @@
 
 namespace PeriodisationProgramApp.Domain.Entities
 {
-    public class Exercise : Entity
+    public class Exercise : CommunityEntity<UserExerciseLike, UserExerciseRating>
     {
         public string? Name { get; set; }
 
@@ -16,19 +16,7 @@ namespace PeriodisationProgramApp.Domain.Entities
 
         public double StimulusToFatigueRatio { get; set; }
 
-        public Guid UserId { get; set; }
-
-        public bool IsPublic { get; set; }
-
-        public int Likes { get; set; }
-
-        public int Rates { get; set; }
-
-        public double Rating { get; set; }
-
-        public List<UserExerciseLike> UserExerciseLikes { get; set; } = new();
-
-        public List<UserExerciseRating> UserExerciseRatings { get; set; } = new();
+        public List<ExerciseUserData> ExerciseUsersData { get; set; } = new();
 
         public void Update(Exercise other)
         {

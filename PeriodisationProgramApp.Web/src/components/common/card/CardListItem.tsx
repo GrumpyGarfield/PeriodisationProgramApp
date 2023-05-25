@@ -1,24 +1,38 @@
 import {
   ListItem,
   ListItemIcon,
+  ListItemIconProps,
   ListItemText,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import { ReactNode } from "react";
 import { SvgIconProps } from "@mui/material/SvgIcon";
 
 export type CardListItemProps = {
+  label: string | ReactNode;
   text: string;
   icon: ReactNode & SvgIconProps;
-};
+} & ListItemIconProps;
 
-export function CardListItem({ text, icon }: CardListItemProps) {
+export function CardListItem({
+  label,
+  text,
+  icon,
+  ...props
+}: CardListItemProps) {
+  const sxProps = props.sx === undefined ? { minWidth: 0, mr: 3 } : props.sx;
+
   return (
-    <ListItem sx={{ p: 1 }}>
-      <ListItemIcon sx={{ minWidth: 40 }}>{icon}</ListItemIcon>
+    <ListItem sx={{ p: 0.5 }}>
+      <Tooltip arrow title={label}>
+        <ListItemIcon sx={sxProps} {...props}>
+          {icon}
+        </ListItemIcon>
+      </Tooltip>
       <ListItemText
         primary={
-          <Typography variant="subtitle2" sx={{ lineHeight: "20px" }} noWrap>
+          <Typography variant="subtitle2" sx={{ lineHeight: "24px" }} noWrap>
             {text}
           </Typography>
         }

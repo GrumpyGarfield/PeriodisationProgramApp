@@ -1,5 +1,4 @@
 ﻿using PeriodisationProgramApp.BusinessLogic.Domain.Dto;
-using PeriodisationProgramApp.Domain.Entities;
 
 namespace PeriodisationProgramApp.BusinessLogic.Dto
 {

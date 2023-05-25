@@ -14,7 +14,7 @@ import { TrainingProgramType } from "../../../enums/TrainingProgramType";
 import React, { useState } from "react";
 import { TrainingLevel } from "../../../enums/TrainingLevel";
 import useTrainingPrograms from "../../../context/entityContext/entities/useTrainingPrograms";
-import { EnumFilter } from "../../common/filter/enumCheckboxFilter/EnumCheckboxFilter";
+import { EnumCheckboxFilter } from "../../common/filter/enumCheckboxFilter/EnumCheckboxFilter";
 import { NumberRangeFilter } from "../../common/filter/numberRangeFilter/NumberRangeFilter";
 import useNumberRangeFilter from "../../common/filter/numberRangeFilter/useNumberRangeFilter";
 import { RatingFilter } from "../../common/filter/ratingFilter/RatingFilter";
@@ -109,7 +109,7 @@ export default function TrainingProgramsFilterSidebar() {
 
         <Scrollbar>
           <Stack spacing={3} sx={{ p: 3 }}>
-            <EnumFilter
+            <EnumCheckboxFilter
               label="Split Type"
               enumName="TrainingProgramType"
               enumObject={TrainingProgramType}
@@ -124,7 +124,7 @@ export default function TrainingProgramsFilterSidebar() {
               onChange={numberOfSessionsFilter.handleChange}
             />
 
-            <EnumFilter
+            <EnumCheckboxFilter
               label="Training Level"
               enumName="TrainingLevel"
               enumObject={TrainingLevel}

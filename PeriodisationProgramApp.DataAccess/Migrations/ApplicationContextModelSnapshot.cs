@@ -42,10 +42,19 @@ namespace PeriodisationProgramApp.DataAccess.Migrations
                     b.Property<bool>("IsPublic")
                         .HasColumnType("boolean");
 
+                    b.Property<int>("Likes")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
+
+                    b.Property<int>("Rates")
+                        .HasColumnType("integer");
+
+                    b.Property<double>("Rating")
+                        .HasColumnType("double precision");
 
                     b.Property<int>("RawStimulusMagnitude")
                         .HasColumnType("integer");
@@ -96,10 +105,10 @@ namespace PeriodisationProgramApp.DataAccess.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
-                    b.Property<Guid?>("MuscleGroupId")
-                        .HasColumnType("uuid");
-
                     b.Property<int>("MuscleGroupRole")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("MuscleGroupType")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("Updated")
@@ -111,9 +120,44 @@ namespace PeriodisationProgramApp.DataAccess.Migrations
 
                     b.HasIndex("ExerciseId");
 
-                    b.HasIndex("MuscleGroupId");
-
                     b.ToTable("ExerciseMuscleGroups");
+                });
+
+            modelBuilder.Entity("PeriodisationProgramApp.Domain.Entities.ExerciseUserData", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("ExerciseId")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("FatigueMagnitude")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("RawStimulusMagnitude")
+                        .HasColumnType("integer");
+
+                    b.Property<double>("StimulusToFatigueRatio")
+                        .HasColumnType("double precision");
+
+                    b.Property<DateTime>("Updated")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ExerciseId");
+
+                    b.ToTable("ExerciseUsersData");
                 });
 
             modelBuilder.Entity("PeriodisationProgramApp.Domain.Entities.MuscleGroup", b =>
@@ -157,12 +201,7 @@ namespace PeriodisationProgramApp.DataAccess.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasDefaultValueSql("NOW()");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("MuscleGroups", t =>
                         {
@@ -176,6 +215,45 @@ namespace PeriodisationProgramApp.DataAccess.Migrations
 
                             t.HasCheckConstraint("CK_MinimumEffectiveVolume", "\"MinimumEffectiveVolume\" > -1 AND \"MinimumEffectiveVolume\" < 100");
                         });
+                });
+
+            modelBuilder.Entity("PeriodisationProgramApp.Domain.Entities.MuscleGroupUserData", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("MaintenanceVolume")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("MaximumRecoverableVolume")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("MinimumEffectiveVolume")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("MuscleGroupId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("Updated")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MuscleGroupId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("MuscleGroupUsersData");
                 });
 
             modelBuilder.Entity("PeriodisationProgramApp.Domain.Entities.TrainingProgram", b =>
@@ -348,6 +426,69 @@ namespace PeriodisationProgramApp.DataAccess.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("PeriodisationProgramApp.Domain.Entities.UserExerciseLike", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("ExerciseId")
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime>("Updated")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ExerciseId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserExerciseLikes");
+                });
+
+            modelBuilder.Entity("PeriodisationProgramApp.Domain.Entities.UserExerciseRating", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("ExerciseId")
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("Rating")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("Updated")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ExerciseId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserExerciseRatings");
+                });
+
             modelBuilder.Entity("PeriodisationProgramApp.Domain.Entities.UserTrainingProgramLike", b =>
                 {
                     b.Property<Guid>("Id")
@@ -413,11 +554,13 @@ namespace PeriodisationProgramApp.DataAccess.Migrations
 
             modelBuilder.Entity("PeriodisationProgramApp.Domain.Entities.Exercise", b =>
                 {
-                    b.HasOne("PeriodisationProgramApp.Domain.Entities.User", null)
+                    b.HasOne("PeriodisationProgramApp.Domain.Entities.User", "User")
                         .WithMany("Exercises")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("PeriodisationProgramApp.Domain.Entities.ExerciseMuscleGroup", b =>
@@ -427,16 +570,25 @@ namespace PeriodisationProgramApp.DataAccess.Migrations
                         .HasForeignKey("ExerciseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("PeriodisationProgramApp.Domain.Entities.MuscleGroup", "MuscleGroup")
-                        .WithMany()
-                        .HasForeignKey("MuscleGroupId");
-
-                    b.Navigation("MuscleGroup");
                 });
 
-            modelBuilder.Entity("PeriodisationProgramApp.Domain.Entities.MuscleGroup", b =>
+            modelBuilder.Entity("PeriodisationProgramApp.Domain.Entities.ExerciseUserData", b =>
                 {
+                    b.HasOne("PeriodisationProgramApp.Domain.Entities.Exercise", null)
+                        .WithMany("ExerciseUsersData")
+                        .HasForeignKey("ExerciseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("PeriodisationProgramApp.Domain.Entities.MuscleGroupUserData", b =>
+                {
+                    b.HasOne("PeriodisationProgramApp.Domain.Entities.MuscleGroup", null)
+                        .WithMany("MuscleGroupUsersData")
+                        .HasForeignKey("MuscleGroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("PeriodisationProgramApp.Domain.Entities.User", null)
                         .WithMany("MuscleGroups")
                         .HasForeignKey("UserId")
@@ -477,10 +629,40 @@ namespace PeriodisationProgramApp.DataAccess.Migrations
                     b.Navigation("Exercise");
                 });
 
+            modelBuilder.Entity("PeriodisationProgramApp.Domain.Entities.UserExerciseLike", b =>
+                {
+                    b.HasOne("PeriodisationProgramApp.Domain.Entities.Exercise", null)
+                        .WithMany("UserLikes")
+                        .HasForeignKey("ExerciseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PeriodisationProgramApp.Domain.Entities.User", null)
+                        .WithMany("UserExerciseLikes")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("PeriodisationProgramApp.Domain.Entities.UserExerciseRating", b =>
+                {
+                    b.HasOne("PeriodisationProgramApp.Domain.Entities.Exercise", null)
+                        .WithMany("UserRatings")
+                        .HasForeignKey("ExerciseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PeriodisationProgramApp.Domain.Entities.User", null)
+                        .WithMany("UserExerciseRatings")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("PeriodisationProgramApp.Domain.Entities.UserTrainingProgramLike", b =>
                 {
                     b.HasOne("PeriodisationProgramApp.Domain.Entities.TrainingProgram", null)
-                        .WithMany("UserTrainingProgramLikes")
+                        .WithMany("UserLikes")
                         .HasForeignKey("TrainingProgramId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -495,7 +677,7 @@ namespace PeriodisationProgramApp.DataAccess.Migrations
             modelBuilder.Entity("PeriodisationProgramApp.Domain.Entities.UserTrainingProgramRating", b =>
                 {
                     b.HasOne("PeriodisationProgramApp.Domain.Entities.TrainingProgram", null)
-                        .WithMany("UserTrainingProgramRatings")
+                        .WithMany("UserRatings")
                         .HasForeignKey("TrainingProgramId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -510,15 +692,26 @@ namespace PeriodisationProgramApp.DataAccess.Migrations
             modelBuilder.Entity("PeriodisationProgramApp.Domain.Entities.Exercise", b =>
                 {
                     b.Navigation("ExerciseMuscleGroups");
+
+                    b.Navigation("ExerciseUsersData");
+
+                    b.Navigation("UserLikes");
+
+                    b.Navigation("UserRatings");
+                });
+
+            modelBuilder.Entity("PeriodisationProgramApp.Domain.Entities.MuscleGroup", b =>
+                {
+                    b.Navigation("MuscleGroupUsersData");
                 });
 
             modelBuilder.Entity("PeriodisationProgramApp.Domain.Entities.TrainingProgram", b =>
                 {
                     b.Navigation("Sessions");
 
-                    b.Navigation("UserTrainingProgramLikes");
+                    b.Navigation("UserLikes");
 
-                    b.Navigation("UserTrainingProgramRatings");
+                    b.Navigation("UserRatings");
                 });
 
             modelBuilder.Entity("PeriodisationProgramApp.Domain.Entities.TrainingSession", b =>
@@ -533,6 +726,10 @@ namespace PeriodisationProgramApp.DataAccess.Migrations
                     b.Navigation("MuscleGroups");
 
                     b.Navigation("TrainingPrograms");
+
+                    b.Navigation("UserExerciseLikes");
+
+                    b.Navigation("UserExerciseRatings");
 
                     b.Navigation("UserTrainingProgramLikes");
 

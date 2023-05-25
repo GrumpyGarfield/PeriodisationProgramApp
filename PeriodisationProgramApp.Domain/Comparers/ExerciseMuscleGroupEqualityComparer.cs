@@ -10,7 +10,7 @@ namespace PeriodisationProgramApp.Domain.Comparers
 
             if (exerciseMuscleGroup == null || otherExerciseMuscleGroup == null) return false;
 
-            if (exerciseMuscleGroup.MuscleGroup!.Type != otherExerciseMuscleGroup.MuscleGroup!.Type) return false;
+            if (exerciseMuscleGroup.MuscleGroupType != otherExerciseMuscleGroup.MuscleGroupType) return false;
 
             if (exerciseMuscleGroup.MuscleGroupRole != otherExerciseMuscleGroup.MuscleGroupRole) return false;
 
@@ -19,7 +19,7 @@ namespace PeriodisationProgramApp.Domain.Comparers
 
         public int GetHashCode(ExerciseMuscleGroup exerciseMuscleGroup)
         {
-            int code = exerciseMuscleGroup.MuscleGroup!.Type!.GetHashCode() + (int)exerciseMuscleGroup.MuscleGroupRole;
+            int code = exerciseMuscleGroup.MuscleGroupType.GetHashCode() + (int)exerciseMuscleGroup.MuscleGroupRole;
             return code.GetHashCode();
         }
     }

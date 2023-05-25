@@ -15,10 +15,10 @@ namespace PeriodisationProgramApp.DataAccess.UnitsOfWork
             _defaultDataSettings = defaultDataSettings;
 
             Users = new UserRepository(_context, _defaultDataSettings);
-            MuscleGroups = new MuscleGroupRepository(_context, _defaultDataSettings);
-            Exercises = new ExerciseRepository(_context, _defaultDataSettings);
+            MuscleGroups = new MuscleGroupRepository(_context);
+            Exercises = new ExerciseRepository(_context);
             ExerciseMuscleGroups = new ExerciseMuscleGroupRepository(_context, _defaultDataSettings);
-            TrainingPrograms = new TrainingProgramRepository(_context, _defaultDataSettings);
+            TrainingPrograms = new TrainingProgramRepository(_context);
         }
 
         public IUsersRepository Users { get; private set; } 

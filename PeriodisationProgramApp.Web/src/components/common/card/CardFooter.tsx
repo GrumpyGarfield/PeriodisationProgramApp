@@ -12,8 +12,6 @@ import {
   Star,
 } from "@mui/icons-material";
 import { ChangeEvent, SyntheticEvent, useState } from "react";
-import { AxiosError } from "axios";
-import useAlert from "../../../context/alertContext/useAlert";
 import { HoverPopover } from "../popover/HoverPopover";
 import { UserRatingProps } from "../../../types/UserRatingProps";
 
@@ -48,8 +46,6 @@ export function CardFooter({
   const [ratingChecked, setRatingChecked] = useState(userRatingInfo.isRated);
   const [userRating, setUserRating] = useState(userRatingInfo.rating);
 
-  const { showError } = useAlert();
-
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 
   const handleLikeChecked = (
@@ -60,10 +56,9 @@ export function CardFooter({
     setLikeCount(checked ? likeCount + 1 : likeCount - 1);
     handleLike(id, checked).then(
       () => {},
-      (reason: AxiosError) => {
+      () => {
         setLikeChecked(!checked);
         setLikeCount(likeCount);
-        showError(reason.message);
       }
     );
   };
@@ -82,10 +77,9 @@ export function CardFooter({
     setUserRating(null);
     handleRate(id, false, null).then(
       () => {},
-      (reason: AxiosError) => {
+      () => {
         setRatingChecked(true);
         setUserRating(currentValue);
-        showError(reason.message);
       }
     );
   };
@@ -104,10 +98,9 @@ export function CardFooter({
     setUserRating(value);
     handleRate(id, true, value).then(
       () => {},
-      (reason: AxiosError) => {
+      () => {
         setRatingChecked(false);
         setUserRating(currentValue);
-        showError(reason.message);
       }
     );
   };

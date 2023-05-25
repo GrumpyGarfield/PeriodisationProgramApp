@@ -1,6 +1,5 @@
 import { Grid, GridProps, Box, Typography } from "@mui/material";
 import TrainingProgramsCard from "./trainingProgramsCard/TrainingProgramsCard";
-//import { useQuery } from "react-query";
 import { Loader } from "../../common/loader/Loader";
 import { useInView } from "react-intersection-observer";
 import React from "react";
@@ -9,7 +8,7 @@ import useTrainingPrograms from "../../../context/entityContext/entities/useTrai
 import { TrainingProgram } from "../../../types/enitities/TrainingProgram";
 import { UserRatingProps } from "../../../types/UserRatingProps";
 
-export default function ProductList({ ...other }: GridProps) {
+export default function TrainingProgramList({ ...other }: GridProps) {
   const { ref, inView } = useInView();
 
   const {
@@ -26,9 +25,7 @@ export default function ProductList({ ...other }: GridProps) {
   } = useTrainingPrograms();
 
   const handleLike = async (id: string, isLiked: boolean) => {
-    return like({ id, isLiked }).then(
-      (trainingProgram) => trainingProgram.isLiked
-    );
+    return like(id, isLiked).then((trainingProgram) => trainingProgram.isLiked);
   };
 
   const handleRate = async (
@@ -36,7 +33,7 @@ export default function ProductList({ ...other }: GridProps) {
     isRated: boolean,
     rating: number | null
   ) => {
-    return rate({ id, isRated, rating }).then(
+    return rate(id, isRated, rating).then(
       (trainingProgram): UserRatingProps => {
         const result: UserRatingProps = {
           isRated: trainingProgram.isRated,

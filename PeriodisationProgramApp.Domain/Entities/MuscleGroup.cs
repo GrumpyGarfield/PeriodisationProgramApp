@@ -16,7 +16,7 @@ namespace PeriodisationProgramApp.Domain.Entities
 
         public int AverageRecoveryTime { get; set; }
 
-        public Guid UserId { get; set; }
+        public List<MuscleGroupUserData> MuscleGroupUsersData { get; set; } = new();
 
         public void Update(MuscleGroup other)
         {

@@ -6,7 +6,7 @@ namespace PeriodisationProgramApp.Domain.Entities
     {
         public Guid ExerciseId { get; set; }
 
-        public MuscleGroup? MuscleGroup { get; set; }
+        public MuscleGroupType MuscleGroupType { get; set; }
 
         public MuscleGroupRole MuscleGroupRole { get; set; }
 

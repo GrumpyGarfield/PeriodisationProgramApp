@@ -1,21 +1,8 @@
 ﻿using PeriodisationProgramApp.Domain.Entities;
-using PeriodisationProgramApp.Domain.Enums;
-using PeriodisationProgramApp.Domain.Pagination;
 
 namespace PeriodisationProgramApp.Domain.Interfaces
 {
-    public interface ITrainingProgramRepository : IGenericRepository<TrainingProgram>
+    public interface ITrainingProgramRepository : ICommunityEntityRepository<TrainingProgram, UserTrainingProgramLike, UserTrainingProgramRating>
     {
-        Task<PagedResult<TrainingProgram>> GetUserCreatedTrainingPrograms(IPageableQueryContext context, Guid userId);
-
-        Task<PagedResult<TrainingProgram>> GetUserLikedTrainingPrograms(IPageableQueryContext context, Guid userId);
-
-        Task<TrainingProgram> SetLike(Guid trainingProgramId, Guid userId);
-
-        Task<TrainingProgram> UnsetLike(Guid trainingProgramId, Guid userId);
-
-        Task<TrainingProgram> SetRating(Guid trainingProgramId, Guid userId, int rating);
-
-        Task<TrainingProgram> UnsetRating(Guid trainingProgramId, Guid userId);
     }
 }

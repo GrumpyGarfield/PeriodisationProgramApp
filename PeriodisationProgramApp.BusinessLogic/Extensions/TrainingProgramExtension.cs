@@ -34,46 +34,12 @@ namespace PeriodisationProgramApp.BusinessLogic.Extensions
 
         public static PagedResult<TrainingProgramDto> TranslateToDto(this PagedResult<TrainingProgram> trainingPrograms, IMapper mapper, Guid? userId)
         {
-            var result = trainingPrograms.Translate<TrainingProgram, TrainingProgramDto>(mapper);
-
-            if (userId != null)
-            {
-                for (var i = 0; i < trainingPrograms.Items.Count; i++)
-                {
-                    if (trainingPrograms.Items[i].UserTrainingProgramLikes.Any(l => l.UserId == userId))
-                    {
-                        result.Items[i].IsLiked = true;
-                    }
-
-                    if (trainingPrograms.Items[i].UserTrainingProgramRatings.Any(l => l.UserId == userId))
-                    {
-                        result.Items[i].IsRated = true;
-                        result.Items[i].UserRating = trainingPrograms.Items[i].UserTrainingProgramRatings.First(l => l.UserId == userId).Rating;
-                    }
-                }
-            }
-
-            return result;
+            return trainingPrograms.TranslateToDto<TrainingProgram, TrainingProgramDto, UserTrainingProgramLike, UserTrainingProgramRating>(mapper, userId);
         }
 
         public static TrainingProgramDto TranslateToDto(this TrainingProgram trainingProgram, IMapper mapper, Guid? userId)
         {
-            var result = trainingProgram.Translate<TrainingProgram, TrainingProgramDto>(mapper);
-
-            if (userId != null)
-            {
-                if (trainingProgram.UserTrainingProgramLikes.Any(l => l.UserId == userId))
-                {
-                    result.IsLiked = true;
-                }
-
-                if (trainingProgram.UserTrainingProgramRatings.Any(l => l.UserId == userId))
-                {
-                    result.IsRated = true;
-                }
-            }
-
-            return result;
+            return trainingProgram.TranslateToDto<TrainingProgram, TrainingProgramDto, UserTrainingProgramLike, UserTrainingProgramRating>(mapper, userId);
         }
     }
 }

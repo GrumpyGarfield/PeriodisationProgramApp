@@ -10,6 +10,8 @@ namespace PeriodisationProgramApp.BusinessLogic.Extensions
         {
             services
                 .AddScoped<ITrainingProgramService, TrainingProgramService>()
+                .AddScoped<IExerciseService, ExerciseService>()
+                .AddScoped<IMuscleGroupService, MuscleGroupService>()
                 .AddScoped<IUserService, UserService>();
         }
     }
