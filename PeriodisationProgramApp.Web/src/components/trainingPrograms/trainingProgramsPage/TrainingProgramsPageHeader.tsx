@@ -54,11 +54,9 @@ export function TrainingProgramsPageHeader() {
           </Box>
         ) : null}
       </div>
-      <Box sx={{ p: 3 }}>
-        <Button variant="contained" color="secondary">
-          Create New
-        </Button>
-      </Box>
+      <Button variant="contained" color="secondary">
+        Create New
+      </Button>
     </Stack>
   );
 }

@@ -1,13 +1,14 @@
-import { Typography, Link, Stack } from "@mui/material";
+import { Typography, Link, Stack, TypographyProps } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 
-type Props = {
+export type Props = {
   id: string;
   text: string;
   menu?: React.ReactNode;
-};
+  link?: string;
+} & TypographyProps;
 
-export function CardHeader({ id, text, menu }: Props) {
+export function CardHeader({ id, text, menu, link, ...props }: Props) {
   return (
     <Stack
       direction="row"
@@ -19,10 +20,10 @@ export function CardHeader({ id, text, menu }: Props) {
         color="inherit"
         underline="hover"
         component={RouterLink}
-        to={id}
-        sx={{ maxWidth: "calc(100% - 72px)" }}
+        to={link ? link : id}
+        sx={{ maxWidth: menu ? "calc(100% - 72px)" : "100%" }}
       >
-        <Typography variant="h5" noWrap>
+        <Typography variant="h5" noWrap {...props}>
           {text}
         </Typography>
       </Link>

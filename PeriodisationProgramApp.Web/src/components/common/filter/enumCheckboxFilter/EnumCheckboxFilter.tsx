@@ -1,5 +1,5 @@
 import { ChangeEvent } from "react";
-import { EnumHelper } from "../../../../helpers/EnumHelper";
+import { useEnumHelper } from "../../../../helpers/useEnumHelper";
 import { CheckboxFilter } from "../checkboxFilter/CheckboxFilter";
 
 type Props = {
@@ -20,9 +20,10 @@ export function EnumCheckboxFilter({
   handleChange,
   checked,
 }: Props) {
-  const items = EnumHelper.getKeysOfEnum(enumObject);
+  const { translate, getKeysOfEnum } = useEnumHelper();
+  const items = getKeysOfEnum(enumObject);
   const getFormControlLabel = (item: string) => {
-    return EnumHelper.translate(enumName, item);
+    return translate(enumName, item);
   };
 
   return (

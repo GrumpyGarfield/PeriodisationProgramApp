@@ -1,13 +1,13 @@
 import { FormEventHandler, PropsWithChildren } from "react";
 import { Container, Box, Typography, Avatar } from "@mui/material";
 import {
-  NavigationButton,
-  NavigationButtonProps,
-} from "../navigation/NavigationButton";
+  NavigationIconButton,
+  NavigationIconButtonProps,
+} from "../navigation/NavigationIconButton";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 
 type Props = {
-  navigationButton: NavigationButtonProps;
+  navigationButton: NavigationIconButtonProps;
   formHeader: string;
   handleSubmit: FormEventHandler<HTMLFormElement> | undefined;
 } & PropsWithChildren;
@@ -33,7 +33,7 @@ export function AuthorizationForm({
           position: "relative",
         }}
       >
-        <NavigationButton
+        <NavigationIconButton
           to={navigationButton.to}
           icon={navigationButton.icon}
           sx={{ p: 3, position: "absolute", top: 0, left: 0 }}

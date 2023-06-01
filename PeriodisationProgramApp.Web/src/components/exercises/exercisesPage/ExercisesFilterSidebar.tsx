@@ -116,16 +116,6 @@ export default function ExercisesFilterSidebar() {
               value={targetMuscleGroupFilter.value}
             />
 
-            {/*
-            <EnumCheckboxFilter
-              label="Target Muscle Group"
-              enumName="MuscleGroupType"
-              enumObject={MuscleGroupType}
-              handleChange={targetMuscleGroupFilter.handleChange}
-              checked={targetMuscleGroupFilter.hasSelected}
-            />
-            */}
-
             <RatingFilter
               value={ratingFilter.value}
               onChange={ratingFilter.handleChange}

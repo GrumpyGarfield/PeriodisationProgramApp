@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { EnumHelper } from "../../../../helpers/EnumHelper";
+import { useEnumHelper } from "../../../../helpers/useEnumHelper";
 import { SelectChangeEvent } from "@mui/material";
 import { MultipleSelectFilter } from "../selectFilter/MultipleSelectFilter";
 
@@ -22,9 +22,10 @@ export function EnumMultipleSelectFilter({
   handleChange,
   selected,
 }: Props) {
-  const items = EnumHelper.getKeysOfEnum(enumObject);
+  const { translate, getKeysOfEnum } = useEnumHelper();
+  const items = getKeysOfEnum(enumObject);
   const getFormControlLabel = (item: string) => {
-    return EnumHelper.translate(enumName, item);
+    return translate(enumName, item);
   };
 
   return (

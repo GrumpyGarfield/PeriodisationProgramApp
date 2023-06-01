@@ -11,7 +11,7 @@ import { CardHeader } from "../../../common/card/CardHeader";
 import { CardList } from "../../../common/card/CardList";
 import { TrainingProgramType } from "../../../../enums/TrainingProgramType";
 import { TrainingLevel } from "../../../../enums/TrainingLevel";
-import { EnumHelper } from "../../../../helpers/EnumHelper";
+import { useEnumHelper } from "../../../../helpers/useEnumHelper";
 import { UserRatingProps } from "../../../../types/UserRatingProps";
 
 type Props = {
@@ -30,11 +30,12 @@ export default function TrainingProgramsCard({
   handleRate,
 }: Props) {
   const [raised, setRaised] = React.useState(false);
+  const { translate } = useEnumHelper();
 
   const trainingProgramsCardListItems: CardListItemProps[] = [
     {
       label: "Split type",
-      text: EnumHelper.translate(
+      text: translate(
         "TrainingProgramType",
         TrainingProgramType[trainingProgram.type]
       ),
@@ -47,7 +48,7 @@ export default function TrainingProgramsCard({
     },
     {
       label: "Training level",
-      text: EnumHelper.translate(
+      text: translate(
         "TrainingLevel",
         TrainingLevel[trainingProgram.trainingLevel]
       ),

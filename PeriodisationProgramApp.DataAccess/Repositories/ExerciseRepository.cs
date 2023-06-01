@@ -21,7 +21,7 @@ namespace PeriodisationProgramApp.DataAccess.Repositories
             {
                 var filterValues = targetMuscleGroupFilter.Value.Split(',').Select(value => (MuscleGroupType)Enum.Parse(typeof(MuscleGroupType), value));
 
-                query = query.Where(e => e.ExerciseMuscleGroups.Where(m => m.MuscleGroupRole == MuscleGroupRole.Target && filterValues.Contains(m.MuscleGroupType))
+                query = query.Where(e => e.ExerciseMuscleGroups.Where(m => m.MuscleGroupRole == MuscleGroupRole.Target && filterValues.Contains(m.MuscleGroup!.Type))
                                                                 .Any());
             }
 
@@ -35,14 +35,28 @@ namespace PeriodisationProgramApp.DataAccess.Repositories
             return query.Include(t => t.User)
                         .Include(t => t.UserLikes)
                         .Include(t => t.UserRatings)
-                        .Include(t => t.ExerciseMuscleGroups)
+                        .Include(t => t.ExerciseMuscleGroups.OrderBy(g => g.MuscleGroupRole).ThenBy(g => g.MuscleGroup!.Type))
+                            .ThenInclude(g => g.MuscleGroup)
                         .Include(t => t.ExerciseUsersData.Where(d => d.UserId.Equals(userId)));
+        }
+
+        public async Task<Exercise> GetWithUsersDataAsync(Guid exerciseId)
+        {
+            return await _context.Exercises.Include(t => t.User)
+                                            .Include(t => t.ExerciseUsersData)
+                                            .FirstAsync(m => m.Id == exerciseId);
+        }
+
+        public async Task<Exercise> GetByIdAsync(Guid exerciseId, Guid? userId = null)
+        {
+            return await IncludeAll(_context.Exercises, userId).FirstAsync(m => m.Id == exerciseId);
         }
 
         public IEnumerable<Exercise> GetRandomExercisesForMuscleGroup(MuscleGroupType muscleGroupType, int number)
         {
             return _context.Exercises.Include(e => e.ExerciseMuscleGroups)
-                                     .Where(e => e.ExerciseMuscleGroups.Where(m => m.MuscleGroupType == muscleGroupType && m.MuscleGroupRole == MuscleGroupRole.Target).Any())
+                                        .ThenInclude(g => g.MuscleGroup)
+                                     .Where(e => e.ExerciseMuscleGroups.Where(m => m.MuscleGroup!.Type == muscleGroupType && m.MuscleGroupRole == MuscleGroupRole.Target).Any())
                                      .OrderBy(r => EF.Functions.Random())
                                      .Take(number);
         }
@@ -50,7 +64,8 @@ namespace PeriodisationProgramApp.DataAccess.Repositories
         public IEnumerable<Exercise> GetRandomExercisesOfTypeForMuscleGroup(MuscleGroupType muscleGroupType, ExerciseType exerciseType, int number)
         {
             return _context.Exercises.Include(e => e.ExerciseMuscleGroups)
-                                     .Where(e => e.ExerciseMuscleGroups.Where(m => m.MuscleGroupType == muscleGroupType && m.MuscleGroupRole == MuscleGroupRole.Target).Any() && e.Type == exerciseType)
+                                        .ThenInclude(g => g.MuscleGroup)
+                                     .Where(e => e.ExerciseMuscleGroups.Where(m => m.MuscleGroup!.Type == muscleGroupType && m.MuscleGroupRole == MuscleGroupRole.Target).Any() && e.Type == exerciseType)
                                      .OrderBy(r => EF.Functions.Random())
                                      .Take(number);
         }

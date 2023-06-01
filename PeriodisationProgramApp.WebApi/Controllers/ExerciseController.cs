@@ -7,6 +7,9 @@ using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using PeriodisationProgramApp.WebApi.Dto;
 using PeriodisationProgramApp.Domain.Entities;
+using PeriodisationProgramApp.BusinessLogic.Services;
+using PeriodisationProgramApp.BusinessLogic.Dto;
+using PeriodisationProgramApp.BusinessLogic.Domain.Dto;
 
 namespace PeriodisationProgramApp.WebApi.Controllers
 {
@@ -95,6 +98,41 @@ namespace PeriodisationProgramApp.WebApi.Controllers
             {
                 return Ok(await _exerciseService.UnsetRating(exerciseId, uid));
             }
+        }
+
+        [HttpGet]
+        [Route("{exerciseId}")]
+        public async Task<IActionResult> GetExercise(Guid exerciseId)
+        {
+            var uid = User.FindFirstValue("user_id");
+
+            return Ok(await _exerciseService.GetExercise(exerciseId, uid));
+        }
+
+        [HttpPut]
+        [Route("{exerciseId}")]
+        public async Task<IActionResult> UpdateExercise(Guid exerciseId, [FromBody] ExerciseDto exerciseDto)
+        {
+            var uid = User.FindFirstValue("user_id");
+
+            var exercise = await _unitOfWork.Exercises.GetByIdAsync(exerciseId);
+            exercise.Description = exerciseDto.Description;
+            _unitOfWork.Exercises.Update(exercise);
+
+            return Ok(exerciseDto);
+        }
+
+        [HttpPost]
+        [Route("{exerciseId}/updateUserData")]
+        public async Task<IActionResult> UpdateExerciseUserData(Guid exerciseId, [FromBody] UpdateExerciseUserDataDto updateExerciseUserDataDto)
+        {
+            var uid = User.FindFirstValue("user_id");
+
+            return Ok(await _exerciseService.UpdateExerciseUserData(exerciseId, uid, new ExerciseUserDataDto()
+            {
+                RawStimulusMagnitude = updateExerciseUserDataDto.RawStimulusMagnitude,
+                FatigueMagnitude = updateExerciseUserDataDto.FatigueMagnitude
+            }));
         }
     }
 }

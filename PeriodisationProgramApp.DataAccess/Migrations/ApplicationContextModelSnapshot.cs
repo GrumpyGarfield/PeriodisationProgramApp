@@ -33,6 +33,9 @@ namespace PeriodisationProgramApp.DataAccess.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasDefaultValueSql("NOW()");
 
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
                     b.Property<int>("FatigueMagnitude")
                         .HasColumnType("integer");
 
@@ -76,6 +79,9 @@ namespace PeriodisationProgramApp.DataAccess.Migrations
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
 
+                    b.Property<string>("YoutubeLink")
+                        .HasColumnType("text");
+
                     b.HasKey("Id");
 
                     b.HasIndex("UserId");
@@ -105,10 +111,10 @@ namespace PeriodisationProgramApp.DataAccess.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
-                    b.Property<int>("MuscleGroupRole")
-                        .HasColumnType("integer");
+                    b.Property<Guid?>("MuscleGroupId")
+                        .HasColumnType("uuid");
 
-                    b.Property<int>("MuscleGroupType")
+                    b.Property<int>("MuscleGroupRole")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("Updated")
@@ -119,6 +125,8 @@ namespace PeriodisationProgramApp.DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ExerciseId");
+
+                    b.HasIndex("MuscleGroupId");
 
                     b.ToTable("ExerciseMuscleGroups");
                 });
@@ -570,6 +578,12 @@ namespace PeriodisationProgramApp.DataAccess.Migrations
                         .HasForeignKey("ExerciseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("PeriodisationProgramApp.Domain.Entities.MuscleGroup", "MuscleGroup")
+                        .WithMany()
+                        .HasForeignKey("MuscleGroupId");
+
+                    b.Navigation("MuscleGroup");
                 });
 
             modelBuilder.Entity("PeriodisationProgramApp.Domain.Entities.ExerciseUserData", b =>

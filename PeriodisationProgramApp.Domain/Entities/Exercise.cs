@@ -6,6 +6,10 @@ namespace PeriodisationProgramApp.Domain.Entities
     {
         public string? Name { get; set; }
 
+        public string? Description { get; set; }
+
+        public string? YoutubeLink { get; set; }
+
         public ExerciseType Type { get; set; }
 
         public List<ExerciseMuscleGroup> ExerciseMuscleGroups { get; set; } = new();

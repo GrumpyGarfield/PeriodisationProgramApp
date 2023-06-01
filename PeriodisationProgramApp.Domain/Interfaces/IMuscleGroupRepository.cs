@@ -8,6 +8,10 @@ namespace PeriodisationProgramApp.Domain.Interfaces
     {
         Task<PagedResult<MuscleGroup>> GetPaginatedResultAsync(IPageableQueryContext context, Guid? userId = null);
 
+        Task<MuscleGroup> GetWithUsersDataAsync(Guid muscleGroupId);
+
+        Task<MuscleGroup> GetByIdAsync(Guid muscleGroupId, Guid? userId = null);
+
         MuscleGroup GetMuscleGroupByType(MuscleGroupType type);
     }
 }

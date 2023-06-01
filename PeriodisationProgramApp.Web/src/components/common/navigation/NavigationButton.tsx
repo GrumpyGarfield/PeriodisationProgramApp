@@ -1,12 +1,14 @@
-import { Box, IconButton, BoxProps } from "@mui/material";
+import { Box, BoxProps, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 export type NavigationButtonProps = {
-  icon: any;
+  text: string;
+  icon?: any;
   to?: string;
 } & BoxProps;
 
 export function NavigationButton({
+  text,
   icon,
   to,
   ...boxProps
@@ -15,16 +17,15 @@ export function NavigationButton({
 
   return (
     <Box {...boxProps}>
-      <IconButton
-        size="large"
-        color="inherit"
-        sx={{ opacity: 0.48 }}
+      <Button
+        variant="text"
+        startIcon={icon}
         onClick={() => {
           to === undefined ? navigate(-1) : navigate(to);
         }}
       >
-        {icon}
-      </IconButton>
+        {text}
+      </Button>
     </Box>
   );
 }

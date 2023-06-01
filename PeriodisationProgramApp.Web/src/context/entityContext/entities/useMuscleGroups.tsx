@@ -26,7 +26,7 @@ const useMuscleGroups = () => {
   } = useEntities<MuscleGroup>(
     ["muscleGroup"],
     async ({ pageParam = 0 }): Promise<PagedResult<MuscleGroup>> => {
-      return await MuscleGroupService.getAll<MuscleGroup>(
+      return await MuscleGroupService.getAll(
         pageParam,
         15,
         filters,

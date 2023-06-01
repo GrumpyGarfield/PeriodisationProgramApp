@@ -47,5 +47,28 @@ namespace PeriodisationProgramApp.WebApi.Controllers
 
             return Ok(await _muscleGroupService.GetMuscleGroups(context, uid));
         }
+
+        [HttpGet]
+        [Route("{muscleGroupId}")]
+        public async Task<IActionResult> GetMuscleGroup(Guid muscleGroupId)
+        {
+            var uid = User.FindFirstValue("user_id");
+
+            return Ok(await _muscleGroupService.GetMuscleGroup(muscleGroupId, uid));
+        }
+
+        [HttpPost]
+        [Route("{muscleGroupId}/updateUserData")]
+        public async Task<IActionResult> UpdateMuscleGroupUserData(Guid muscleGroupId, [FromBody]UpdateMuscleGroupUserDataDto updateMuscleGroupUserDataDto)
+        {
+            var uid = User.FindFirstValue("user_id");
+
+            return Ok(await _muscleGroupService.UpdateMuscleGroupUserData(muscleGroupId, uid, new MuscleGroupUserDataDto() 
+            { 
+                MaintenanceVolume = updateMuscleGroupUserDataDto.MaintenanceVolume, 
+                MinimumEffectiveVolume = updateMuscleGroupUserDataDto.MinimumEffectiveVolume,
+                MaximumRecoverableVolume = updateMuscleGroupUserDataDto.MaximumRecoverableVolume
+            }));
+        }
     }
 }

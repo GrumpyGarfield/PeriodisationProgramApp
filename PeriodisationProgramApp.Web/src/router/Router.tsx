@@ -8,6 +8,12 @@ import SignUp from "../components/authorization/SignUp";
 import ResetPassword from "../components/authorization/ResetPassword";
 import ChangePassword from "../components/authorization/ChangePassword";
 import { MuscleGroupsPage } from "../components/muscleGroups/muscleGroupsPage/MuscleGroupsPage";
+import { MuscleGroupPage } from "../components/muscleGroups/muscleGroupPage/MuscleGroupPage";
+import { MuscleGroupProvider } from "../context/entityContext/entities/muscleGroup/MuscleGroupContextProvider";
+import { EntitiesProvider } from "../context/entityContext/EntitiesContextProvider";
+import { ExerciseProvider } from "../context/entityContext/entities/exercise/ExerciseContextProvider";
+import { ExercisePage } from "../components/exercises/exercisePage/ExercisePage";
+import { ExerciseEditPage } from "../components/exercises/exercisePage/edit/ExerciseEditPage";
 
 const router = createBrowserRouter([
   {
@@ -16,15 +22,51 @@ const router = createBrowserRouter([
     children: [
       {
         path: "training-programs",
-        element: <TrainingProgramsPage />,
+        element: (
+          <EntitiesProvider>
+            <TrainingProgramsPage />
+          </EntitiesProvider>
+        ),
       },
       {
         path: "exercises",
-        element: <ExercisesPage />,
+        element: (
+          <EntitiesProvider>
+            <ExercisesPage />
+          </EntitiesProvider>
+        ),
+      },
+      {
+        path: "exercises/:id",
+        element: (
+          <ExerciseProvider>
+            <ExercisePage />
+          </ExerciseProvider>
+        ),
+      },
+      {
+        path: "exercises/:id/edit",
+        element: (
+          <ExerciseProvider>
+            <ExerciseEditPage />
+          </ExerciseProvider>
+        ),
       },
       {
         path: "muscle-groups",
-        element: <MuscleGroupsPage />,
+        element: (
+          <EntitiesProvider>
+            <MuscleGroupsPage />
+          </EntitiesProvider>
+        ),
+      },
+      {
+        path: "muscle-groups/:id",
+        element: (
+          <MuscleGroupProvider>
+            <MuscleGroupPage />
+          </MuscleGroupProvider>
+        ),
       },
       {
         path: "about",

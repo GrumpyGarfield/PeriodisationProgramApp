@@ -47,7 +47,7 @@
                     {
                         filterExpressions.Add(GetBoolFilter(exprParam, prop, filter.Value));
                     }
-                    else if (prop.PropertyType == typeof(Guid) && Guid.TryParse(filter.Value, out Guid testGuid))
+                    else if (prop.PropertyType == typeof(Guid))
                     {
                         filterExpressions.Add(GetGuidFilterExpression(exprParam, prop, filter.Value));
                     }
@@ -163,6 +163,12 @@
             }
             else
             {
+                if (filterValue[0] == '!')
+                {
+                    targetValueExpression = Expression.Constant(Guid.Parse(filterValue.Substring(1)));
+                    return Expression.NotEqual(propertyGetter, targetValueExpression);
+                }
+
                 targetValueExpression = Expression.Constant(Guid.Parse(filterValue));
                 return Expression.Equal(propertyGetter, targetValueExpression);
             }

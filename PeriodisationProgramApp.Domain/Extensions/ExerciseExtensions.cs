@@ -12,7 +12,7 @@ namespace PeriodisationProgramApp.Domain.Extensions
 
         public static double GetVolume(this Exercise exercise, MuscleGroupType muscleGroupType)
         {
-            var exerciseMuscleGroup = exercise.ExerciseMuscleGroups.FirstOrDefault(e => e.MuscleGroupType == muscleGroupType);
+            var exerciseMuscleGroup = exercise.ExerciseMuscleGroups.FirstOrDefault(e => e.MuscleGroup!.Type == muscleGroupType);
 
             return exerciseMuscleGroup!.MuscleGroupRole switch
             {
@@ -25,12 +25,12 @@ namespace PeriodisationProgramApp.Domain.Extensions
 
         public static bool HasMuscleGroup(this Exercise exercise, MuscleGroupType muscleGroupType)
         {
-            return exercise.ExerciseMuscleGroups.Where(m => m.MuscleGroupType == muscleGroupType).Any();
+            return exercise.ExerciseMuscleGroups.Where(m => m.MuscleGroup!.Type == muscleGroupType).Any();
         }
 
         public static bool HasTargetMuscleGroup(this Exercise exercise, MuscleGroupType muscleGroupType)
         {
-            return exercise.ExerciseMuscleGroups.Where(m => m.MuscleGroupType == muscleGroupType && m.MuscleGroupRole == MuscleGroupRole.Target).Any();
+            return exercise.ExerciseMuscleGroups.Where(m => m.MuscleGroup!.Type == muscleGroupType && m.MuscleGroupRole == MuscleGroupRole.Target).Any();
         }
     }
 }

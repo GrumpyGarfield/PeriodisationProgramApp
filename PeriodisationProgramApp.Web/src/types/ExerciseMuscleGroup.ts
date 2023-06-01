@@ -1,8 +1,8 @@
 import { MuscleGroupRole } from "../enums/MuscleGroupRole";
-import { MuscleGroupType } from "../enums/MuscleGroupType";
 import { BaseEntity } from "./enitities/BaseEntity";
+import { MuscleGroup } from "./enitities/MuscleGroup";
 
 export type ExerciseMuscleGroup = {
-  muscleGroupType: MuscleGroupType;
+  muscleGroup: MuscleGroup;
   muscleGroupRole: MuscleGroupRole;
 } & BaseEntity;

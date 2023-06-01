@@ -4,7 +4,7 @@ import { CardListItemProps } from "../../../common/card/CardListItem";
 import { CardHeader } from "../../../common/card/CardHeader";
 import { CardList } from "../../../common/card/CardList";
 import { MuscleGroupType } from "../../../../enums/MuscleGroupType";
-import { EnumHelper } from "../../../../helpers/EnumHelper";
+import { useEnumHelper } from "../../../../helpers/useEnumHelper";
 import { MuscleGroup } from "../../../../types/enitities/MuscleGroup";
 
 type Props = {
@@ -13,6 +13,7 @@ type Props = {
 
 export default function MuscleGroupsCard({ muscleGroup }: Props) {
   const [raised, setRaised] = React.useState(false);
+  const { translate } = useEnumHelper();
 
   const muscleGroupsCardListItems: CardListItemProps[] = [
     {
@@ -45,10 +46,7 @@ export default function MuscleGroupsCard({ muscleGroup }: Props) {
       <Stack spacing={2} sx={{ p: 3 }}>
         <CardHeader
           id={muscleGroup.id}
-          text={EnumHelper.translate(
-            "MuscleGroupType",
-            MuscleGroupType[muscleGroup.type]
-          )}
+          text={translate("MuscleGroupType", MuscleGroupType[muscleGroup.type])}
         />
         <CardList items={muscleGroupsCardListItems} />
       </Stack>

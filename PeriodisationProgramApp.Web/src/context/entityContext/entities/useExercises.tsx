@@ -1,7 +1,7 @@
 import { Exercise } from "../../../types/enitities/Exercise";
 import useCommunityEntities from "./useCommunityEntities";
 
-const useExercises = () => {
+const useExercises = (offset: number = 0, limit: number = 9) => {
   const {
     status,
     data,
@@ -22,7 +22,7 @@ const useExercises = () => {
     setOptionalParams,
     like,
     rate,
-  } = useCommunityEntities<Exercise>("exercise");
+  } = useCommunityEntities<Exercise>("exercise", offset, limit);
 
   return {
     status,

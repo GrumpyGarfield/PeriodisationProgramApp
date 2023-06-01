@@ -25,6 +25,7 @@ namespace PeriodisationProgramApp.DataAccess.Repositories
             return await _context.Users.Include(u => u.MuscleGroups)
                                  .Include(u => u.Exercises)
                                     .ThenInclude(e => e.ExerciseMuscleGroups)
+                                        .ThenInclude(g => g.MuscleGroup)
                                  .FirstOrDefaultAsync(u => u.Id == _defaultDataSettings.DefaultUser!.Id);
         }
 

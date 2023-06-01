@@ -48,7 +48,7 @@ const Post = async <T>(url: string, item: any, config?: any) => {
 };
 
 const Put = async <T>(url: string, item: T) => {
-  const response = await apiClient.put<boolean>(url, item);
+  const response = await apiClient.put<T>(url, item);
   return response.data;
 };
 

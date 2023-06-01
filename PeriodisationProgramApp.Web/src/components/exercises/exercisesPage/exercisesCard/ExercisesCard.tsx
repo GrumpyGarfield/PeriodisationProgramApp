@@ -7,7 +7,7 @@ import { ExercisesCardMenu } from "./ExercisesCardMenu";
 import { CardHeader } from "../../../common/card/CardHeader";
 import { CardList } from "../../../common/card/CardList";
 import { MuscleGroupType } from "../../../../enums/MuscleGroupType";
-import { EnumHelper } from "../../../../helpers/EnumHelper";
+import { useEnumHelper } from "../../../../helpers/useEnumHelper";
 import { UserRatingProps } from "../../../../types/UserRatingProps";
 import { Exercise } from "../../../../types/enitities/Exercise";
 import { ExerciseType } from "../../../../enums/ExerciseType";
@@ -31,6 +31,7 @@ export default function ExercisesCard({
   handleRate,
 }: Props) {
   const [raised, setRaised] = React.useState(false);
+  const { translate } = useEnumHelper();
   const targetMuscleGroup = exercise.exerciseMuscleGroups.find(
     (muscleGroup) => muscleGroup.muscleGroupRole === MuscleGroupRole.Target
   );
@@ -38,9 +39,9 @@ export default function ExercisesCard({
   const exercisesCardListItems: CardListItemProps[] = [
     {
       label: "Target muscle group",
-      text: EnumHelper.translate(
+      text: translate(
         "MuscleGroupType",
-        MuscleGroupType[targetMuscleGroup!.muscleGroupType]
+        MuscleGroupType[targetMuscleGroup!.muscleGroup.type]
       ),
       icon: (
         <Iconify
@@ -51,7 +52,7 @@ export default function ExercisesCard({
     },
     {
       label: "Exercise Type",
-      text: EnumHelper.translate("ExerciseType", ExerciseType[exercise.type]),
+      text: translate("ExerciseType", ExerciseType[exercise.type]),
       icon: <CallSplitIcon />,
     },
     {
