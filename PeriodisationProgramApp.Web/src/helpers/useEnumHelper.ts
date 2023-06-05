@@ -12,6 +12,12 @@ export const useEnumHelper = () => {
     return enumName ? keys.map((item) => translate(enumName, item)) : keys;
   };
 
+  const getValuesOfEnum = (enumObject: any, enumName?: string) => {
+    return Object.keys(enumObject)
+      .map((item) => Number(item))
+      .filter((item) => !isNaN(item));
+  };
+
   const getEnumValuesString = (keys: string[], enumObject: any) => {
     return keys
       .map((item) => enumObject[item as keyof typeof enumObject])
@@ -21,6 +27,7 @@ export const useEnumHelper = () => {
   return {
     translate,
     getKeysOfEnum,
+    getValuesOfEnum,
     getEnumValuesString,
   };
 };

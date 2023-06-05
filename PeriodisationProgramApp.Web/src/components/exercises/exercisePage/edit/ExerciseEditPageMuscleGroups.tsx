@@ -1,48 +1,98 @@
-import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import { Grid, SelectChangeEvent } from "@mui/material";
 import useMuscleGroups from "../../../../context/entityContext/entities/useMuscleGroups";
 import useEnumHelper from "../../../../helpers/useEnumHelper";
 import { MuscleGroupType } from "../../../../enums/MuscleGroupType";
-
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
-};
+import { ControlledSelect } from "../../../common/inputs/ControlledSelect";
+import { Loader } from "../../../common/loader/Loader";
+import { MuscleGroup } from "../../../../types/enitities/MuscleGroup";
+import { ControlledSelectMultiple } from "../../../common/inputs/ControlledSelectMultiple";
 
 type Props = {
-  registerTargetMuscleGroup: any;
+  targetMuscleGroupId: string;
+  setTargetMuscleGroupId: (targetMuscleGroupId: string) => void;
+  majorSynergistIds: string[];
+  setMajorSynergistIds: (majorSynergistIds: string[]) => void;
+  minorSynergistIds: string[];
+  setMinorSynergistIds: (minorSynergistIds: string[]) => void;
 };
 
 export function ExerciseEditPageMuscleGroups({
-  registerTargetMuscleGroup,
+  targetMuscleGroupId,
+  setTargetMuscleGroupId,
+  majorSynergistIds,
+  setMajorSynergistIds,
+  minorSynergistIds,
+  setMinorSynergistIds,
 }: Props) {
   const { data: muscleGroups } = useMuscleGroups();
   const { translate } = useEnumHelper();
 
+  const targetMuscleGroupHandleChange = (event: SelectChangeEvent) => {
+    setTargetMuscleGroupId(event.target.value);
+    setMajorSynergistIds(
+      majorSynergistIds.filter((id) => id !== event.target.value)
+    );
+    setMinorSynergistIds(
+      minorSynergistIds.filter((id) => id !== event.target.value)
+    );
+  };
+  const majorSynergistHandleChange = (event: SelectChangeEvent<any>) => {
+    setMajorSynergistIds(event.target.value);
+    setMinorSynergistIds(
+      minorSynergistIds.filter((id) => !event.target.value.includes(id))
+    );
+  };
+  const minorSynergistsHandleChange = (event: SelectChangeEvent<any>) => {
+    setMinorSynergistIds(event.target.value);
+    setMajorSynergistIds(
+      majorSynergistIds.filter((id) => !event.target.value.includes(id))
+    );
+  };
+
+  const getItemLabel = (item: MuscleGroup) => {
+    return translate("MuscleGroupType", MuscleGroupType[item.type]);
+  };
+
+  if (muscleGroups === undefined) {
+    return <Loader />;
+  }
+
   return (
-    <FormControl sx={{ mt: 1, maxWidth: 500 }}>
-      <InputLabel id="target-muscle-group-label">
-        Target Muscle Group
-      </InputLabel>
-      <Select
-        fullWidth
-        labelId="target-muscle-group-label"
-        autoComplete="targetMuscleGroup"
-        label="Target Muscle Group"
-        MenuProps={MenuProps}
-        {...registerTargetMuscleGroup}
-      >
-        {muscleGroups?.pages[0].items.map((muscleGroup) => (
-          <MenuItem key={muscleGroup.id} value={muscleGroup.type}>
-            {translate("MuscleGroupType", MuscleGroupType[muscleGroup.type])}
-          </MenuItem>
-        ))}
-      </Select>
-    </FormControl>
+    <>
+      <Grid item xs={3} sm={12} md={4}>
+        <ControlledSelect
+          label={"Target Muscle Group *"}
+          items={muscleGroups.pages[0].items}
+          selectedItemKey={targetMuscleGroupId}
+          handleChange={targetMuscleGroupHandleChange}
+          getItemLabel={getItemLabel}
+          keyPropertyName="id"
+        />
+      </Grid>
+      <Grid item xs={12} sm={12} md={4}>
+        <ControlledSelectMultiple
+          label={"Major Synergists"}
+          items={muscleGroups.pages[0].items.filter(
+            (item) => item.id !== targetMuscleGroupId
+          )}
+          selectedItemKeys={majorSynergistIds}
+          handleChange={majorSynergistHandleChange}
+          getItemLabel={getItemLabel}
+          keyPropertyName="id"
+        />
+      </Grid>
+      <Grid item xs={12} sm={12} md={4}>
+        <ControlledSelectMultiple
+          label={"Minor Synergists"}
+          items={muscleGroups.pages[0].items.filter(
+            (item) => item.id !== targetMuscleGroupId
+          )}
+          selectedItemKeys={minorSynergistIds}
+          handleChange={minorSynergistsHandleChange}
+          getItemLabel={getItemLabel}
+          keyPropertyName="id"
+        />
+      </Grid>
+    </>
   );
 }

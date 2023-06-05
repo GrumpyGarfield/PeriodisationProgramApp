@@ -8,6 +8,7 @@ import { Exercise } from "../../../../types/enitities/Exercise";
 import ExerciseService from "../../../../serverInteraction/services/ExerciseService";
 import useLike from "../../../../hooks/useLike";
 import useRate from "../../../../hooks/useRate";
+import { UpdateExerciseProps } from "../../../../types/services/UpdateExerciseProps";
 
 const useExercise = (id: string) => {
   const entity = "exercise";
@@ -132,7 +133,7 @@ const useExercise = (id: string) => {
     }
   );
 
-  const update = async (exercise: Exercise) => {
+  const update = async (exercise: UpdateExerciseProps) => {
     return mutateUpdate(exercise);
   };
 

@@ -1,11 +1,11 @@
 import { Box, Typography } from "@mui/material";
 
 type Props = {
-  text?: string;
+  text?: string | null;
 };
 
 export function Article({ text }: Props) {
-  if (text === undefined) {
+  if (text === undefined || text === null) {
     return null;
   }
 

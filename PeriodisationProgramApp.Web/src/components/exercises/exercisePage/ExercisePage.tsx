@@ -1,10 +1,20 @@
-import { Box, Container, Grid, Toolbar, Typography } from "@mui/material";
-import { useParams } from "react-router-dom";
+import {
+  Box,
+  Container,
+  Grid,
+  Stack,
+  Toolbar,
+  Typography,
+  Button,
+} from "@mui/material";
+import { useLocation, useParams } from "react-router-dom";
 import { Loader } from "../../common/loader/Loader";
 import { AxiosError } from "axios";
 import { ExercisePageHeader } from "./ExercisePageHeader";
 import { NavigationButton } from "../../common/navigation/NavigationButton";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 import ExercisePageIndexCard from "./ExercisePageIndexCard";
 import { auth } from "../../../firebase/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -24,6 +34,7 @@ type Params = {
 export function ExercisePage() {
   const [user] = useAuthState(auth);
   const { id } = useParams<Params>();
+  const location = useLocation();
   const { status, data, error, isLoading, like, rate } = useExercise(id!);
 
   const handleLike = async (id: string, isLiked: boolean) => {
@@ -65,7 +76,30 @@ export function ExercisePage() {
   return (
     <Container sx={{ margin: 0, p: 2 }} maxWidth={false} disableGutters={true}>
       <Toolbar />
-      <NavigationButton text="back" icon={<ArrowBackIcon />} />
+      <Stack
+        direction="row"
+        flexWrap="wrap-reverse"
+        alignItems="center"
+        justifyContent="space-between"
+      >
+        <NavigationButton text="back" icon={<ArrowBackIcon />} />
+        {data.user?.firebaseId === user?.uid ? (
+          <Stack direction="row" spacing={1} flexShrink={0} sx={{ pr: 3 }}>
+            <NavigationButton
+              text="edit"
+              icon={<EditIcon />}
+              to={`${location.pathname}/edit`}
+            />
+            <Button
+              variant="text"
+              startIcon={<DeleteIcon />}
+              sx={{ width: 100 }}
+            >
+              Delete
+            </Button>
+          </Stack>
+        ) : null}
+      </Stack>
       <Box sx={{ flexGrow: 1, p: 3 }}>
         <Grid container spacing={2}>
           <Grid item xs={8}>
@@ -100,7 +134,10 @@ export function ExercisePage() {
             </Grid>
             {data.youtubeLink ? (
               <Grid item xs={2} sm={2} md={1}>
-                <YoutubeEmbed embedId={data.youtubeLink} width={"100%"} />
+                <YoutubeEmbed
+                  embedId={data.youtubeLink.split("/").pop()!}
+                  width={"100%"}
+                />
               </Grid>
             ) : null}
           </Grid>

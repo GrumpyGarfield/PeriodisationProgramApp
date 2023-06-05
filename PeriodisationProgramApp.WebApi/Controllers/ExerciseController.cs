@@ -111,15 +111,11 @@ namespace PeriodisationProgramApp.WebApi.Controllers
 
         [HttpPut]
         [Route("{exerciseId}")]
-        public async Task<IActionResult> UpdateExercise(Guid exerciseId, [FromBody] ExerciseDto exerciseDto)
+        public async Task<IActionResult> UpdateExercise(Guid exerciseId, [FromBody] UpdateExerciseDto updateExerciseDto)
         {
             var uid = User.FindFirstValue("user_id");
 
-            var exercise = await _unitOfWork.Exercises.GetByIdAsync(exerciseId);
-            exercise.Description = exerciseDto.Description;
-            _unitOfWork.Exercises.Update(exercise);
-
-            return Ok(exerciseDto);
+            return Ok(await _exerciseService.UpdateExercise(exerciseId, uid, updateExerciseDto));
         }
 
         [HttpPost]

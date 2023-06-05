@@ -47,7 +47,7 @@ const Post = async <T>(url: string, item: any, config?: any) => {
   return response.data;
 };
 
-const Put = async <T>(url: string, item: T) => {
+const Put = async <T>(url: string, item: any) => {
   const response = await apiClient.put<T>(url, item);
   return response.data;
 };

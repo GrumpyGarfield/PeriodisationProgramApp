@@ -1,7 +1,8 @@
 import {
   Button,
   Container,
-  Stack,
+  FormLabel,
+  Grid,
   TextField,
   Toolbar,
   Typography,
@@ -14,12 +15,18 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { auth } from "../../../../firebase/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import useExercise from "../../../../context/entityContext/entities/exercise/useExercise";
-import { useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { useEffect, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 import { Exercise } from "../../../../types/enitities/Exercise";
 import { PageHeader } from "../../../common/pageHeader/PageHeader";
 import { EntitiesProvider } from "../../../../context/entityContext/EntitiesContextProvider";
 import { ExerciseEditPageMuscleGroups } from "./ExerciseEditPageMuscleGroups";
+import { MuscleGroupRole } from "../../../../enums/MuscleGroupRole";
+import { ExerciseMuscleGroup } from "../../../../types/ExerciseMuscleGroup";
+import { UpdateExerciseProps } from "../../../../types/services/UpdateExerciseProps";
+import { ControlledRadioGroup } from "../../../common/inputs/ControlledRadioGroup";
+import useEnumHelper from "../../../../helpers/useEnumHelper";
+import { ExerciseType } from "../../../../enums/ExerciseType";
 
 type Params = {
   id: string;
@@ -30,6 +37,7 @@ export function ExerciseEditPage() {
   const { status, data: exercise, error, isLoading, update } = useExercise(id!);
   const [user, loading] = useAuthState(auth);
   const navigate = useNavigate();
+  const { translate, getValuesOfEnum } = useEnumHelper();
 
   const parseLines = (value: string | undefined) =>
     value ? value.replace(/(\\n)/g, "\n") : undefined;
@@ -41,14 +49,49 @@ export function ExerciseEditPage() {
 
     const newData: Exercise = { ...value };
     newData.description = parseLines(newData.description);
-    newData.youtubeLink = newData.youtubeLink
-      ? `https://youtu.be/${newData.youtubeLink}`
-      : undefined;
 
     return newData;
   };
 
+  const [targetMuscleGroupId, setTargetMuscleGroupId] = useState<string>("");
+  const [majorSynergistIds, setMajorSynergistIds] = useState<string[]>([]);
+  const [minorSynergistIds, setMinorSynergistIds] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (exercise === undefined) {
+      return;
+    }
+
+    const targetMuscleGroup = exercise.exerciseMuscleGroups.find(
+      (exerciseMuscleGroup: ExerciseMuscleGroup) =>
+        exerciseMuscleGroup.muscleGroupRole === MuscleGroupRole.Target
+    )!.muscleGroup;
+
+    const majorSynergists = exercise.exerciseMuscleGroups
+      .filter(
+        (exerciseMuscleGroup: ExerciseMuscleGroup) =>
+          exerciseMuscleGroup.muscleGroupRole === MuscleGroupRole.MajorSynergist
+      )
+      .map((exerciseMuscleGroup) => exerciseMuscleGroup.muscleGroup);
+
+    const minorSynergists = exercise.exerciseMuscleGroups
+      .filter(
+        (exerciseMuscleGroup: ExerciseMuscleGroup) =>
+          exerciseMuscleGroup.muscleGroupRole === MuscleGroupRole.MinorSynergist
+      )
+      .map((exerciseMuscleGroup) => exerciseMuscleGroup.muscleGroup);
+
+    setTargetMuscleGroupId(targetMuscleGroup.id);
+    setMajorSynergistIds(
+      majorSynergists.map((majorSynergist) => majorSynergist.id)
+    );
+    setMinorSynergistIds(
+      minorSynergists.map((minorSynergist) => minorSynergist.id)
+    );
+  }, [exercise]);
+
   const {
+    control,
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
@@ -66,7 +109,37 @@ export function ExerciseEditPage() {
   }, [user, loading, navigate, exercise]);
 
   const onSubmit = async (exercise: Exercise) => {
-    await update(exercise);
+    const editedExercise: UpdateExerciseProps = {
+      id: exercise.id,
+      name: exercise.name,
+      description: exercise.description,
+      youtubeLink: exercise.youtubeLink,
+      type: exercise.type,
+      rawStimulusMagnitude: exercise.rawStimulusMagnitude,
+      fatigueMagnitude: exercise.fatigueMagnitude,
+      exerciseMuscleGroups: [
+        {
+          muscleGroupRole: MuscleGroupRole.Target,
+          muscleGroupId: targetMuscleGroupId,
+        },
+      ],
+    };
+
+    majorSynergistIds.map((id) =>
+      editedExercise.exerciseMuscleGroups.push({
+        muscleGroupRole: MuscleGroupRole.MajorSynergist,
+        muscleGroupId: id,
+      })
+    );
+
+    minorSynergistIds.map((id) =>
+      editedExercise.exerciseMuscleGroups.push({
+        muscleGroupRole: MuscleGroupRole.MinorSynergist,
+        muscleGroupId: id,
+      })
+    );
+
+    await update(editedExercise);
   };
 
   if (isLoading || exercise === undefined) {
@@ -85,87 +158,152 @@ export function ExerciseEditPage() {
     <Container sx={{ margin: 0, p: 2 }} maxWidth={false} disableGutters={true}>
       <Toolbar />
       <NavigationButton text="back" icon={<ArrowBackIcon />} />
-      <Stack
+      <Grid
+        container
+        spacing={3}
         component="form"
         noValidate
-        sx={{ flexGrow: 1, p: 3 }}
         onSubmit={handleSubmit(onSubmit)}
+        sx={{ p: 3 }}
       >
-        <PageHeader text={`Edit ${exercise.name}`} />
-        <TextField
-          margin="normal"
-          required
-          fullWidth
-          id="name"
-          label="Name"
-          autoComplete="name"
-          sx={{ maxWidth: 500 }}
-          {...register("name", {
-            required: "Enter exercise name",
-            minLength: {
-              value: 3,
-              message: "Name length must be more than 3 symbols",
-            },
-            maxLength: {
-              value: 100,
-              message: "Name length must be less than 100 symbols",
-            },
-          })}
-          helperText={errors.name?.message}
-          error={errors.name !== undefined}
-        />
-        <TextField
-          margin="normal"
-          multiline
-          fullWidth
-          id="description"
-          label="Description"
-          autoComplete="description"
-          sx={{ maxWidth: 500 }}
-          rows={4}
-          {...register("description", {
-            maxLength: {
-              value: 5000,
-              message: "Description length must be less than 5000 symbols",
-            },
-          })}
-          helperText={errors.description?.message}
-          error={errors.description !== undefined}
-        />
-        <TextField
-          margin="normal"
-          fullWidth
-          id="youtubeLink"
-          label="Youtube Link"
-          autoComplete="youtubeLink"
-          sx={{ maxWidth: 500 }}
-          {...register("youtubeLink", {
-            maxLength: {
-              value: 500,
-              message: "Youtube Link length must be less than 500 symbols",
-            },
-            pattern: {
-              value:
-                /http(?:s?):\/\/(?:www\.)?youtu(?:be\.com\/watch\?v=|\.be\/)([\w\-_]*)(&(amp;)?‌​[\w?‌​=]*)?/,
-              message: "Invalid link",
-            },
-          })}
-          helperText={errors.youtubeLink?.message}
-          error={errors.youtubeLink !== undefined}
-        />
+        <Grid item xs={12} sm={12} md={12}>
+          <PageHeader text={`Edit ${exercise.name}`} />
+        </Grid>
+        <Grid item xs={12} sm={12} md={12}>
+          <FormLabel>General</FormLabel>
+        </Grid>
+        <Grid item xs={12} sm={12} md={12}>
+          <TextField
+            required
+            fullWidth
+            id="name"
+            label="Name"
+            autoComplete="name"
+            {...register("name", {
+              required: "Enter exercise name",
+              minLength: {
+                value: 3,
+                message: "Name length must be more than 3 symbols",
+              },
+              maxLength: {
+                value: 100,
+                message: "Name length must be less than 100 symbols",
+              },
+            })}
+            helperText={errors.name?.message}
+            error={errors.name !== undefined}
+          />
+        </Grid>
+        <Grid item xs={12} sm={12} md={12}>
+          <TextField
+            multiline
+            fullWidth
+            id="description"
+            label="Description"
+            autoComplete="description"
+            rows={4}
+            {...register("description", {
+              maxLength: {
+                value: 5000,
+                message: "Description length must be less than 5000 symbols",
+              },
+            })}
+            helperText={errors.description?.message}
+            error={errors.description !== undefined}
+          />
+        </Grid>
+        <Grid item xs={12} sm={12} md={12}>
+          <TextField
+            fullWidth
+            id="youtubeLink"
+            label="Youtube Link"
+            autoComplete="youtubeLink"
+            {...register("youtubeLink", {
+              maxLength: {
+                value: 500,
+                message: "Youtube Link length must be less than 500 symbols",
+              },
+              pattern: {
+                value:
+                  /http(?:s?):\/\/(?:www\.)?youtu(?:be\.com\/watch\?v=|\.be\/)([\w\-_]*)(&(amp;)?‌​[\w?‌​=]*)?/,
+                message: "Invalid link",
+              },
+            })}
+            helperText={errors.youtubeLink?.message}
+            error={errors.youtubeLink !== undefined}
+          />
+        </Grid>
+        <Grid item xs={12} sm={12} md={12}>
+          <Controller
+            control={control}
+            name="type"
+            render={({ field: { onChange, value } }) => (
+              <ControlledRadioGroup
+                label="Type"
+                value={value}
+                items={getValuesOfEnum(ExerciseType, "ExerciseType")}
+                onChange={onChange}
+                getItemLabel={(item) =>
+                  translate("ExerciseType", ExerciseType[item])
+                }
+              />
+            )}
+          />
+        </Grid>
+        <Grid item xs={12} sm={12} md={12}>
+          <FormLabel>Muscle Groups</FormLabel>
+        </Grid>
         <EntitiesProvider>
           <ExerciseEditPageMuscleGroups
-            registerTargetMuscleGroup={{ ...register("exerciseMuscleGroups") }}
+            targetMuscleGroupId={targetMuscleGroupId}
+            setTargetMuscleGroupId={setTargetMuscleGroupId}
+            majorSynergistIds={majorSynergistIds}
+            setMajorSynergistIds={setMajorSynergistIds}
+            minorSynergistIds={minorSynergistIds}
+            setMinorSynergistIds={setMinorSynergistIds}
           />
         </EntitiesProvider>
-        <Button
-          variant="contained"
-          sx={{ mt: 3, mb: 2, maxWidth: 100 }}
-          type="submit"
-        >
-          {isSubmitting ? "Savling..." : "Save"}
-        </Button>
-      </Stack>
+        <Grid item xs={12} sm={12} md={12}>
+          <FormLabel>Base Indexes</FormLabel>
+        </Grid>
+        <Grid item xs={12} sm={12} md={6}>
+          <TextField
+            required
+            type="number"
+            fullWidth
+            id="rawStimulusMagnitude"
+            label="Raw Stimulus Magnitude"
+            {...register("rawStimulusMagnitude", {
+              required: "Must be between 0 and 9",
+              min: { value: 0, message: "Must be between 0 and 9" },
+              max: { value: 9, message: "Must be between 0 and 9" },
+            })}
+            helperText={errors.rawStimulusMagnitude?.message}
+            error={errors.rawStimulusMagnitude !== undefined}
+          />
+        </Grid>
+        <Grid item xs={12} sm={12} md={6}>
+          <TextField
+            required
+            type="number"
+            fullWidth
+            id="fatigueMagnitude"
+            label="Fatigue Magnitude"
+            {...register("fatigueMagnitude", {
+              required: "Must be between 0 and 9",
+              min: { value: 0, message: "Must be between 0 and 9" },
+              max: { value: 9, message: "Must be between 0 and 9" },
+            })}
+            helperText={errors.fatigueMagnitude?.message}
+            error={errors.fatigueMagnitude !== undefined}
+          />
+        </Grid>
+        <Grid item xs={12} sm={12} md={12}>
+          <Button variant="contained" sx={{ width: 150, my: 2 }} type="submit">
+            {isSubmitting ? "Saving..." : "Save"}
+          </Button>
+        </Grid>
+      </Grid>
     </Container>
   );
 }

@@ -43,6 +43,10 @@ namespace PeriodisationProgramApp.BusinessLogic.Services.Interfaces
         Task<ExerciseDto> UpdateExerciseUserData(Guid exerciseId, Guid userId, ExerciseUserDataDto exerciseUserDataDto);
 
         Task<ExerciseDto> UpdateExerciseUserData(Guid exerciseId, string firebaseId, ExerciseUserDataDto exerciseUserDataDto);
+
+        Task<ExerciseDto> UpdateExercise(Guid exerciseId, Guid userId, UpdateExerciseDto updateExerciseDto);
+
+        Task<ExerciseDto> UpdateExercise(Guid exerciseId, string firebaseId, UpdateExerciseDto updateExerciseDto);
     }
 }
 

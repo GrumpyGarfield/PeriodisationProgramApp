@@ -220,5 +220,56 @@ namespace PeriodisationProgramApp.BusinessLogic.Services
 
             return await UpdateExerciseUserData(exerciseId, user.Id, exerciseUserDataDto);
         }
+
+        public async Task<ExerciseDto> UpdateExercise(Guid exerciseId, Guid userId, UpdateExerciseDto updateExerciseDto)
+        {
+            var exercise = await _unitOfWork.Exercises.GetByIdAsync(exerciseId);
+
+            if (exercise == null)
+            {
+                throw new Exception($"Exercise with ID {exerciseId} not found");
+            }
+
+            exercise.Name = updateExerciseDto.Name;
+            exercise.Description = updateExerciseDto.Description;
+            exercise.YoutubeLink = updateExerciseDto.YoutubeLink;
+            exercise.Type = updateExerciseDto.Type;
+            exercise.RawStimulusMagnitude = updateExerciseDto.RawStimulusMagnitude;
+            exercise.FatigueMagnitude = updateExerciseDto.FatigueMagnitude;
+            exercise.StimulusToFatigueRatio = (double)(updateExerciseDto.RawStimulusMagnitude + 1) / (updateExerciseDto.FatigueMagnitude + 1);
+
+            exercise.ExerciseMuscleGroups = updateExerciseDto.ExerciseMuscleGroups.Select(g =>
+            {
+                var muscleGroup = _unitOfWork.MuscleGroups.GetById(g.MuscleGroupId);
+
+                if (muscleGroup == null)
+                {
+                    throw new Exception($"Muscle group with ID {g.MuscleGroupId} not found");
+                }
+
+                return new ExerciseMuscleGroup()
+                {
+                    MuscleGroup = muscleGroup,
+                    MuscleGroupRole = g.MuscleGroupRole
+                };
+            }).ToList();
+
+            _unitOfWork.Exercises.Update(exercise);
+            _unitOfWork.Complete();
+
+            return exercise.TranslateToDto(_mapper, userId);
+        }
+
+        public async Task<ExerciseDto> UpdateExercise(Guid exerciseId, string firebaseId, UpdateExerciseDto updateExerciseDto)
+        {
+            var user = await _unitOfWork.Users.GetUserByFirebaseId(firebaseId);
+
+            if (user == null)
+            {
+                throw new Exception($"User with Firebase ID {firebaseId} not found");
+            }
+
+            return await UpdateExercise(exerciseId, user.Id, updateExerciseDto);
+        }
     }
 }

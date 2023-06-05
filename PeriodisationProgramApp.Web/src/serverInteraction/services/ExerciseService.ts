@@ -1,4 +1,5 @@
 import { Exercise } from "../../types/enitities/Exercise";
+import { UpdateExerciseProps } from "../../types/services/UpdateExerciseProps";
 import { UpdateExerciseUserDataProps } from "../../types/services/UpdateExerciseUserDataProps";
 import BaseServerInteractionService from "../BaseServerInteractionService";
 
@@ -20,8 +21,11 @@ const updateUserData = async ({
   );
 };
 
-const update = async (exercise: Exercise) => {
-  return BaseServerInteractionService.Put(`/exercise/${exercise.id}`, exercise);
+const update = async (exercise: UpdateExerciseProps) => {
+  return BaseServerInteractionService.Put<Exercise>(
+    `/exercise/${exercise.id}`,
+    exercise
+  );
 };
 
 const ExerciseService = { get, updateUserData, update };
