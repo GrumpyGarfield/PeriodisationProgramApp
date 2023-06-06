@@ -14,61 +14,51 @@ export default function MuscleGroupPageIndexCard({
   muscleGroup,
   isAuthenticated,
 }: Props) {
-  const {
-    maintenanceVolume,
-    setMaintenanceVolume,
-    minimumEffectiveVolume,
-    setMinimumEffectiveVolume,
-    maximumRecoverableVolume,
-    setMaximumRecoverableVolume,
-    updateUserData,
-  } = useMuscleGroup(muscleGroup.id);
+  const { registerUserData, submitUserData, userDataFormErrors } =
+    useMuscleGroup(muscleGroup.id);
 
   const muscleGroupIndexCardListItems: IndexCardListItemProps[] = [
     {
+      id: "maintenanceVolume",
       label: "MV",
       tooltip: "Maintenance Volume",
-      value: maintenanceVolume,
-      onChange: isAuthenticated
-        ? (e: React.ChangeEvent<HTMLInputElement>) => {
-            const value =
-              e.currentTarget.value === ""
-                ? 0
-                : parseInt(e.currentTarget.value);
-            setMaintenanceVolume(value);
-            updateUserData("maintenanceVolume", value);
-          }
-        : undefined,
+      register: {
+        ...registerUserData("maintenanceVolume", {
+          min: { value: 0, message: "Must be at least 0" },
+          max: { value: 50, message: "Must be lower than 50" },
+          valueAsNumber: true,
+          onBlur: submitUserData,
+        }),
+      },
+      errors: userDataFormErrors,
     },
     {
+      id: "minimumEffectiveVolume",
       label: "MEV",
       tooltip: "Minimum Effective Volume",
-      value: minimumEffectiveVolume,
-      onChange: isAuthenticated
-        ? (e: React.ChangeEvent<HTMLInputElement>) => {
-            const value =
-              e.currentTarget.value === ""
-                ? 0
-                : parseInt(e.currentTarget.value);
-            setMinimumEffectiveVolume(value);
-            updateUserData("minimumEffectiveVolume", value);
-          }
-        : undefined,
+      register: {
+        ...registerUserData("minimumEffectiveVolume", {
+          min: { value: 0, message: "Must be at least 0" },
+          max: { value: 50, message: "Must be lower than 50" },
+          valueAsNumber: true,
+          onBlur: submitUserData,
+        }),
+      },
+      errors: userDataFormErrors,
     },
     {
+      id: "maximumRecoverableVolume",
       label: "MRV",
       tooltip: "Maximum Recoverable Volume",
-      value: maximumRecoverableVolume,
-      onChange: isAuthenticated
-        ? (e: React.ChangeEvent<HTMLInputElement>) => {
-            const value =
-              e.currentTarget.value === ""
-                ? 0
-                : parseInt(e.currentTarget.value);
-            setMaximumRecoverableVolume(value);
-            updateUserData("maximumRecoverableVolume", value);
-          }
-        : undefined,
+      register: {
+        ...registerUserData("maximumRecoverableVolume", {
+          min: { value: 0, message: "Must be at least 0" },
+          max: { value: 50, message: "Must be lower than 50" },
+          valueAsNumber: true,
+          onBlur: submitUserData,
+        }),
+      },
+      errors: userDataFormErrors,
     },
   ];
 

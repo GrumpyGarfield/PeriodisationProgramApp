@@ -9,11 +9,12 @@ import ResetPassword from "../components/authorization/ResetPassword";
 import ChangePassword from "../components/authorization/ChangePassword";
 import { MuscleGroupsPage } from "../components/muscleGroups/muscleGroupsPage/MuscleGroupsPage";
 import { MuscleGroupPage } from "../components/muscleGroups/muscleGroupPage/MuscleGroupPage";
-import { MuscleGroupProvider } from "../context/entityContext/entities/muscleGroup/MuscleGroupContextProvider";
-import { EntitiesProvider } from "../context/entityContext/EntitiesContextProvider";
-import { ExerciseProvider } from "../context/entityContext/entities/exercise/ExerciseContextProvider";
 import { ExercisePage } from "../components/exercises/exercisePage/ExercisePage";
 import { ExerciseEditPage } from "../components/exercises/exercisePage/edit/ExerciseEditPage";
+import { TrainingProgramsProvider } from "../context/entityContext/entities/trainingProgram/TrainingProgramsContextProvider";
+import { ExercisesProvider } from "../context/entityContext/entities/exercise/ExercisesContextProvider";
+import { MuscleGroupsProvider } from "../context/entityContext/entities/muscleGroup/MuscleGroupsContextProvider";
+import { ExerciseCreatePage } from "../components/exercises/exercisePage/create/ExerciseCreatePage";
 
 const router = createBrowserRouter([
   {
@@ -23,50 +24,42 @@ const router = createBrowserRouter([
       {
         path: "training-programs",
         element: (
-          <EntitiesProvider>
+          <TrainingProgramsProvider initialSorting={{ sortBy: "rating" }}>
             <TrainingProgramsPage />
-          </EntitiesProvider>
+          </TrainingProgramsProvider>
         ),
       },
       {
         path: "exercises",
         element: (
-          <EntitiesProvider>
+          <ExercisesProvider initialSorting={{ sortBy: "rating" }}>
             <ExercisesPage />
-          </EntitiesProvider>
+          </ExercisesProvider>
         ),
+      },
+      {
+        path: "exercises/create",
+        element: <ExerciseCreatePage />,
       },
       {
         path: "exercises/:id",
-        element: (
-          <ExerciseProvider>
-            <ExercisePage />
-          </ExerciseProvider>
-        ),
+        element: <ExercisePage />,
       },
       {
         path: "exercises/:id/edit",
-        element: (
-          <ExerciseProvider>
-            <ExerciseEditPage />
-          </ExerciseProvider>
-        ),
+        element: <ExerciseEditPage />,
       },
       {
         path: "muscle-groups",
         element: (
-          <EntitiesProvider>
+          <MuscleGroupsProvider>
             <MuscleGroupsPage />
-          </EntitiesProvider>
+          </MuscleGroupsProvider>
         ),
       },
       {
         path: "muscle-groups/:id",
-        element: (
-          <MuscleGroupProvider>
-            <MuscleGroupPage />
-          </MuscleGroupProvider>
-        ),
+        element: <MuscleGroupPage />,
       },
       {
         path: "about",

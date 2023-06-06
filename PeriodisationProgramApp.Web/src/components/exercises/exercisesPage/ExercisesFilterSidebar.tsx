@@ -16,7 +16,7 @@ import { RatingFilter } from "../../common/filter/ratingFilter/RatingFilter";
 import { IFilter } from "../../../types/IFilter";
 import useEnumCheckboxFilter from "../../common/filter/enumCheckboxFilter/useEnumCheckboxFilter";
 import useRatingFilter from "../../common/filter/ratingFilter/useRatingFilter";
-import useExercises from "../../../context/entityContext/entities/useExercises";
+import useExercises from "../../../context/entityContext/entities/exercise/useExercises";
 import { MuscleGroupType } from "../../../enums/MuscleGroupType";
 import { ExerciseType } from "../../../enums/ExerciseType";
 import useEnumMultipleSelectFilter from "../../common/filter/enumSelectFilter/useEnumMultipleSelectFilter";

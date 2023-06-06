@@ -54,7 +54,6 @@ export function ControlledSelectMultiple({
       <Select
         multiple
         fullWidth
-        displayEmpty
         labelId={labelId}
         label={label}
         MenuProps={MenuProps}

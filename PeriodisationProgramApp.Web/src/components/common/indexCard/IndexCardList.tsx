@@ -1,12 +1,13 @@
-import { Avatar, Grid, TextField, Tooltip, Typography } from "@mui/material";
+import { Grid, TextField, Tooltip, Typography } from "@mui/material";
 import { ReactNode } from "react";
-import { theme } from "../../../styling/Theme";
 
 export type IndexCardListItemProps = {
+  id: string;
   label: string;
   tooltip: string | ReactNode;
-  value: number | undefined;
-  onChange?: (e: React.FocusEvent<HTMLInputElement>) => void;
+  register: any;
+  errors: any;
+  readonly?: boolean;
 };
 
 type Props = {
@@ -26,45 +27,26 @@ export function IndexCardList({ items }: Props) {
       justifyContent="center"
     >
       {items.map((item) => (
-        <Grid item xs={1} key={item.label}>
+        <Grid item xs={1} key={item.id}>
           <Tooltip arrow title={item.tooltip}>
             <Typography variant="h6">{item.label}</Typography>
           </Tooltip>
         </Grid>
       ))}
       {items.map((item) => (
-        <Grid item xs={1} key={`${item.label}-${item.value}`}>
-          {item.onChange === undefined ? (
-            <Avatar
-              sx={{
-                border: `1px solid ${theme.palette.primary.main}`,
-                backgroundColor: "transparent",
-                p: 3,
-                margin: "auto",
-              }}
-            >
-              <Typography
-                variant="h6"
-                sx={{ color: theme.palette.primary.main }}
-              >
-                {item.value
-                  ? item.value % 1 !== 0
-                    ? item.value.toFixed(1)
-                    : item.value.toString()
-                  : undefined}
-              </Typography>
-            </Avatar>
-          ) : (
-            <TextField
-              defaultValue={item.value}
-              type="number"
-              onBlur={item.onChange}
-              inputProps={{
-                min: 0,
-                style: { textAlign: "center" },
-              }}
-            />
-          )}
+        <Grid item xs={1} key={`${item.id}-val`}>
+          <TextField
+            id={item.id}
+            type="number"
+            inputProps={{
+              min: 0,
+              style: { textAlign: "center" },
+              readOnly: item.readonly === true ? true : false,
+            }}
+            {...item.register}
+            helperText={item.errors[item.id]?.message}
+            error={item.errors[item.id] !== undefined}
+          />
         </Grid>
       ))}
     </Grid>

@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import { Loader } from "../../common/loader/Loader";
 import { AxiosError } from "axios";
-import useExercises from "../../../context/entityContext/entities/useExercises";
+import useExercises from "../../../context/entityContext/entities/exercise/useExercises";
 import { Exercise } from "../../../types/enitities/Exercise";
 import { CardHeader } from "../../common/card/CardHeader";
 import { Star, StarBorder } from "@mui/icons-material";

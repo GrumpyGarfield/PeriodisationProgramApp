@@ -1,32 +1,24 @@
-import {
-  Button,
-  Container,
-  FormLabel,
-  Grid,
-  TextField,
-  Toolbar,
-  Typography,
-} from "@mui/material";
+import { Button, FormLabel, Grid, TextField, Typography } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
 import { Loader } from "../../../common/loader/Loader";
 import { AxiosError } from "axios";
-import { NavigationButton } from "../../../common/navigation/NavigationButton";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { auth } from "../../../../firebase/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import useExercise from "../../../../context/entityContext/entities/exercise/useExercise";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Exercise } from "../../../../types/enitities/Exercise";
 import { PageHeader } from "../../../common/pageHeader/PageHeader";
-import { EntitiesProvider } from "../../../../context/entityContext/EntitiesContextProvider";
 import { ExerciseEditPageMuscleGroups } from "./ExerciseEditPageMuscleGroups";
 import { MuscleGroupRole } from "../../../../enums/MuscleGroupRole";
-import { ExerciseMuscleGroup } from "../../../../types/ExerciseMuscleGroup";
 import { UpdateExerciseProps } from "../../../../types/services/UpdateExerciseProps";
 import { ControlledRadioGroup } from "../../../common/inputs/ControlledRadioGroup";
 import useEnumHelper from "../../../../helpers/useEnumHelper";
 import { ExerciseType } from "../../../../enums/ExerciseType";
+import { MuscleGroupsProvider } from "../../../../context/entityContext/entities/muscleGroup/MuscleGroupsContextProvider";
+import { PageContentPanel } from "../../../common/pageContent/PageContentPanel";
+import { PageContent } from "../../../common/pageContent/PageContent";
+import useMuscleGroupRoles from "../../../../hooks/useMuscleGroupRoles";
 
 type Params = {
   id: string;
@@ -34,10 +26,18 @@ type Params = {
 
 export function ExerciseEditPage() {
   const { id } = useParams<Params>();
-  const { status, data: exercise, error, isLoading, update } = useExercise(id!);
+  const { status, exercise, error, isLoading, update } = useExercise(id!);
   const [user, loading] = useAuthState(auth);
   const navigate = useNavigate();
   const { translate, getValuesOfEnum } = useEnumHelper();
+  const {
+    targetMuscleGroupId,
+    setTargetMuscleGroupId,
+    majorSynergistIds,
+    setMajorSynergistIds,
+    minorSynergistIds,
+    setMinorSynergistIds,
+  } = useMuscleGroupRoles();
 
   const parseLines = (value: string | undefined) =>
     value ? value.replace(/(\\n)/g, "\n") : undefined;
@@ -52,43 +52,6 @@ export function ExerciseEditPage() {
 
     return newData;
   };
-
-  const [targetMuscleGroupId, setTargetMuscleGroupId] = useState<string>("");
-  const [majorSynergistIds, setMajorSynergistIds] = useState<string[]>([]);
-  const [minorSynergistIds, setMinorSynergistIds] = useState<string[]>([]);
-
-  useEffect(() => {
-    if (exercise === undefined) {
-      return;
-    }
-
-    const targetMuscleGroup = exercise.exerciseMuscleGroups.find(
-      (exerciseMuscleGroup: ExerciseMuscleGroup) =>
-        exerciseMuscleGroup.muscleGroupRole === MuscleGroupRole.Target
-    )!.muscleGroup;
-
-    const majorSynergists = exercise.exerciseMuscleGroups
-      .filter(
-        (exerciseMuscleGroup: ExerciseMuscleGroup) =>
-          exerciseMuscleGroup.muscleGroupRole === MuscleGroupRole.MajorSynergist
-      )
-      .map((exerciseMuscleGroup) => exerciseMuscleGroup.muscleGroup);
-
-    const minorSynergists = exercise.exerciseMuscleGroups
-      .filter(
-        (exerciseMuscleGroup: ExerciseMuscleGroup) =>
-          exerciseMuscleGroup.muscleGroupRole === MuscleGroupRole.MinorSynergist
-      )
-      .map((exerciseMuscleGroup) => exerciseMuscleGroup.muscleGroup);
-
-    setTargetMuscleGroupId(targetMuscleGroup.id);
-    setMajorSynergistIds(
-      majorSynergists.map((majorSynergist) => majorSynergist.id)
-    );
-    setMinorSynergistIds(
-      minorSynergists.map((minorSynergist) => minorSynergist.id)
-    );
-  }, [exercise]);
 
   const {
     control,
@@ -155,16 +118,13 @@ export function ExerciseEditPage() {
   }
 
   return (
-    <Container sx={{ margin: 0, p: 2 }} maxWidth={false} disableGutters={true}>
-      <Toolbar />
-      <NavigationButton text="back" icon={<ArrowBackIcon />} />
+    <PageContent pageContentPanel={<PageContentPanel />}>
       <Grid
         container
         spacing={3}
         component="form"
         noValidate
         onSubmit={handleSubmit(onSubmit)}
-        sx={{ p: 3 }}
       >
         <Grid item xs={12} sm={12} md={12}>
           <PageHeader text={`Edit ${exercise.name}`} />
@@ -239,6 +199,7 @@ export function ExerciseEditPage() {
             name="type"
             render={({ field: { onChange, value } }) => (
               <ControlledRadioGroup
+                id="type"
                 label="Type"
                 value={value}
                 items={getValuesOfEnum(ExerciseType, "ExerciseType")}
@@ -253,7 +214,7 @@ export function ExerciseEditPage() {
         <Grid item xs={12} sm={12} md={12}>
           <FormLabel>Muscle Groups</FormLabel>
         </Grid>
-        <EntitiesProvider>
+        <MuscleGroupsProvider>
           <ExerciseEditPageMuscleGroups
             targetMuscleGroupId={targetMuscleGroupId}
             setTargetMuscleGroupId={setTargetMuscleGroupId}
@@ -262,7 +223,7 @@ export function ExerciseEditPage() {
             minorSynergistIds={minorSynergistIds}
             setMinorSynergistIds={setMinorSynergistIds}
           />
-        </EntitiesProvider>
+        </MuscleGroupsProvider>
         <Grid item xs={12} sm={12} md={12}>
           <FormLabel>Base Indexes</FormLabel>
         </Grid>
@@ -304,6 +265,6 @@ export function ExerciseEditPage() {
           </Button>
         </Grid>
       </Grid>
-    </Container>
+    </PageContent>
   );
 }

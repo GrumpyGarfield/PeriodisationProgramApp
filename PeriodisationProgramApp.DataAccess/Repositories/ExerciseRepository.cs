@@ -43,6 +43,10 @@ namespace PeriodisationProgramApp.DataAccess.Repositories
         public async Task<Exercise> GetWithUsersDataAsync(Guid exerciseId)
         {
             return await _context.Exercises.Include(t => t.User)
+                                            .Include(t => t.UserLikes)
+                                            .Include(t => t.UserRatings)
+                                            .Include(t => t.ExerciseMuscleGroups.OrderBy(g => g.MuscleGroupRole).ThenBy(g => g.MuscleGroup!.Type))
+                                                .ThenInclude(g => g.MuscleGroup)
                                             .Include(t => t.ExerciseUsersData)
                                             .FirstAsync(m => m.Id == exerciseId);
         }

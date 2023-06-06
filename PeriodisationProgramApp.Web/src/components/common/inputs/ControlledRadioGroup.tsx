@@ -8,7 +8,8 @@ import {
 } from "@mui/material";
 
 type Props = {
-  label: string;
+  id: string;
+  label?: string;
   value: any;
   items: any[];
   onChange: (...event: any[]) => void;
@@ -16,6 +17,7 @@ type Props = {
 } & FormControlProps;
 
 export function ControlledRadioGroup({
+  id,
   label,
   value,
   items,
@@ -23,13 +25,15 @@ export function ControlledRadioGroup({
   getItemLabel,
   ...formControlProps
 }: Props) {
-  const labelId = `${label.replaceAll(" ", "-").toLowerCase()}-select-label`;
+  const labelId = `${id}-select-label`;
 
   return (
     <FormControl {...formControlProps}>
-      <FormLabel id={labelId} sx={{ pb: 1 }}>
-        {label}
-      </FormLabel>
+      {label !== undefined && (
+        <FormLabel id={labelId} sx={{ pb: 1 }}>
+          {label}
+        </FormLabel>
+      )}
       <RadioGroup row aria-labelledby={labelId}>
         {items.map((item) => (
           <FormControlLabel

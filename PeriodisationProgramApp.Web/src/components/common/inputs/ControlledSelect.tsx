@@ -1,10 +1,13 @@
 import {
   FormControl,
+  FormHelperText,
   InputLabel,
   MenuItem,
   Select,
   SelectChangeEvent,
+  SelectProps,
 } from "@mui/material";
+import { theme } from "../../../styling/Theme";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -24,7 +27,8 @@ type Props = {
   handleChange: (event: SelectChangeEvent) => void;
   getItemLabel?: (item: any) => string;
   keyPropertyName?: string;
-};
+  errorText?: string;
+} & SelectProps;
 
 export function ControlledSelect({
   label,
@@ -33,12 +37,24 @@ export function ControlledSelect({
   handleChange,
   getItemLabel,
   keyPropertyName,
+  errorText,
+  error,
+  ...selectProps
 }: Props) {
   const labelId = `${label.replaceAll(" ", "-").toLowerCase()}-select-label`;
 
   return (
     <FormControl sx={{ mt: 1, width: "100%" }}>
-      <InputLabel id={labelId}>{label}</InputLabel>
+      <InputLabel
+        id={labelId}
+        sx={{
+          color: error
+            ? theme.palette.error.main
+            : theme.palette.text.secondary,
+        }}
+      >
+        {label}
+      </InputLabel>
       <Select
         fullWidth
         displayEmpty
@@ -47,6 +63,8 @@ export function ControlledSelect({
         MenuProps={MenuProps}
         value={selectedItemKey}
         onChange={handleChange}
+        error={error}
+        {...selectProps}
       >
         {items.map((item) => (
           <MenuItem
@@ -61,6 +79,11 @@ export function ControlledSelect({
           </MenuItem>
         ))}
       </Select>
+      {error ? (
+        <FormHelperText sx={{ color: theme.palette.error.main }}>
+          {errorText}
+        </FormHelperText>
+      ) : null}
     </FormControl>
   );
 }

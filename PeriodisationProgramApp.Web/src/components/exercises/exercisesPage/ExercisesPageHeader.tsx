@@ -3,7 +3,7 @@ import { PageHeader } from "../../../components/common/pageHeader/PageHeader";
 import React from "react";
 import { auth } from "../../../firebase/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
-import useExercises from "../../../context/entityContext/entities/useExercises";
+import useExercises from "../../../context/entityContext/entities/exercise/useExercises";
 
 export function ExercisesPageHeader() {
   const [value, setValue] = React.useState("all");

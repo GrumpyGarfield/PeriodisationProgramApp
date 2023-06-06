@@ -14,50 +14,52 @@ export default function ExercisePageIndexCard({
   exercise,
   isAuthenticated,
 }: Props) {
-  const {
-    rawStimulusMagnitude,
-    setRawStimulusMagnitude,
-    fatigueMagnitude,
-    setFatigueMagnitude,
-    stimulusToFatigueRatio,
-    updateUserData,
-  } = useExercise(exercise.id);
+  const { registerUserData, submitUserData, userDataFormErrors } = useExercise(
+    exercise.id
+  );
 
   const exerciseIndexCardListItems: IndexCardListItemProps[] = [
     {
+      id: "rawStimulusMagnitude",
       label: "RSM",
       tooltip: "Raw Stimulus Magnitude",
-      value: rawStimulusMagnitude,
-      onChange: isAuthenticated
-        ? (e: React.ChangeEvent<HTMLInputElement>) => {
-            const value =
-              e.currentTarget.value === ""
-                ? 0
-                : parseInt(e.currentTarget.value);
-            setRawStimulusMagnitude(value);
-            updateUserData("rawStimulusMagnitude", value);
-          }
-        : undefined,
+      register: {
+        ...registerUserData("rawStimulusMagnitude", {
+          min: { value: 0, message: "Must be at least 0" },
+          max: { value: 9, message: "Must be lower than 9" },
+          valueAsNumber: true,
+          onBlur: submitUserData,
+        }),
+      },
+      errors: userDataFormErrors,
     },
     {
+      id: "fatigueMagnitude",
       label: "FM",
       tooltip: "Fatigue Magnitude",
-      value: fatigueMagnitude,
-      onChange: isAuthenticated
-        ? (e: React.ChangeEvent<HTMLInputElement>) => {
-            const value =
-              e.currentTarget.value === ""
-                ? 0
-                : parseInt(e.currentTarget.value);
-            setFatigueMagnitude(value);
-            updateUserData("fatigueMagnitude", value);
-          }
-        : undefined,
+      register: {
+        ...registerUserData("fatigueMagnitude", {
+          min: { value: 0, message: "Must be at least 0" },
+          max: { value: 9, message: "Must be lower than 9" },
+          valueAsNumber: true,
+          onBlur: submitUserData,
+        }),
+      },
+      errors: userDataFormErrors,
     },
     {
+      id: "stimulusToFatigueRatio",
       label: "SFR",
       tooltip: "Stimulus to Fatigue Ratio",
-      value: stimulusToFatigueRatio,
+      register: {
+        ...registerUserData("stimulusToFatigueRatio", {
+          min: { value: 0, message: "Must be at least 0" },
+          max: { value: 9, message: "Must be lower than 9" },
+          valueAsNumber: true,
+        }),
+      },
+      errors: userDataFormErrors,
+      readonly: true,
     },
   ];
 

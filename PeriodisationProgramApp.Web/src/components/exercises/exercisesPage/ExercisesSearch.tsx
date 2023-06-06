@@ -1,7 +1,7 @@
 import { OutlinedInput, InputAdornment } from "@mui/material";
 import Iconify from "../../../components/common/iconify/Iconify";
 import { useState } from "react";
-import useExercises from "../../../context/entityContext/entities/useExercises";
+import useExercises from "../../../context/entityContext/entities/exercise/useExercises";
 
 export default function ExercisesSearch() {
   const [filter, setFilter] = useState<string>("");

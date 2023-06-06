@@ -1,26 +1,28 @@
-import {
-  Drawer,
-  Toolbar,
-  Divider,
-  List,
-  Box,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-} from "@mui/material";
+import { Drawer, Toolbar, Divider, List, Box } from "@mui/material";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import SummarizeIcon from "@mui/icons-material/Summarize";
 import FitnessCenterIcon from "@mui/icons-material/FitnessCenter";
 import HelpIcon from "@mui/icons-material/Help";
 import React from "react";
-import { ListItemLink } from "../common/ListItemLink";
+import { SidebarItem, SidebarItemProps } from "./SidebarItem";
+
+const mainListItems: SidebarItemProps[] = [
+  {
+    label: "Training Programs",
+    link: "training-programs",
+    icon: <SummarizeIcon />,
+  },
+  { label: "Exercises", link: "exercises", icon: <FitnessCenterIcon /> },
+  { label: "Muscle Groups", link: "muscle-groups", icon: <InboxIcon /> },
+];
+
+const secondaryListItems: SidebarItemProps[] = [
+  { label: "About", link: "about", icon: <HelpIcon /> },
+];
 
 const drawerWidth = 240;
 
 export function Sidebar() {
-  const [selectedIndex, setSelectedIndex] = React.useState(-1);
-
   return (
     <Drawer
       variant="permanent"
@@ -33,76 +35,25 @@ export function Sidebar() {
       <Toolbar />
       <Box sx={{ overflow: "auto" }}>
         <List>
-          <ListItem
-            key={"Training Programs"}
-            disablePadding
-            component={ListItemLink}
-            to="training-programs"
-          >
-            <ListItemButton
-              selected={selectedIndex === 0}
-              onClick={() => setSelectedIndex(0)}
-            >
-              <ListItemIcon>
-                <SummarizeIcon />
-              </ListItemIcon>
-              <ListItemText
-                primary={"Training Programs"}
-                sx={{ color: "primary" }}
-              />
-            </ListItemButton>
-          </ListItem>
-          <ListItem
-            key={"Exercises"}
-            disablePadding
-            component={ListItemLink}
-            to="exercises"
-          >
-            <ListItemButton
-              selected={selectedIndex === 1}
-              onClick={() => setSelectedIndex(1)}
-            >
-              <ListItemIcon>
-                <FitnessCenterIcon />
-              </ListItemIcon>
-              <ListItemText primary={"Exercises"} />
-            </ListItemButton>
-          </ListItem>
-          <ListItem
-            key={"Muscle Groups"}
-            disablePadding
-            component={ListItemLink}
-            to="muscle-groups"
-          >
-            <ListItemButton
-              selected={selectedIndex === 2}
-              onClick={() => setSelectedIndex(2)}
-            >
-              <ListItemIcon>
-                <InboxIcon />
-              </ListItemIcon>
-              <ListItemText primary={"Muscle Groups"} />
-            </ListItemButton>
-          </ListItem>
+          {mainListItems.map((item) => (
+            <SidebarItem
+              key={item.link}
+              label={item.label}
+              link={item.link}
+              children={item.children}
+            />
+          ))}
         </List>
         <Divider />
         <List>
-          <ListItem
-            key={"About"}
-            disablePadding
-            component={ListItemLink}
-            to="about"
-          >
-            <ListItemButton
-              selected={selectedIndex === 3}
-              onClick={() => setSelectedIndex(3)}
-            >
-              <ListItemIcon>
-                <HelpIcon />
-              </ListItemIcon>
-              <ListItemText primary={"About"} />
-            </ListItemButton>
-          </ListItem>
+          {secondaryListItems.map((item) => (
+            <SidebarItem
+              key={item.link}
+              label={item.label}
+              link={item.link}
+              children={item.children}
+            />
+          ))}
         </List>
       </Box>
     </Drawer>

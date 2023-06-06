@@ -2,25 +2,17 @@ import { useMutation, useQueryClient } from "react-query";
 import useEntity from "../../useEntity";
 import useAlert from "../../../alertContext/useAlert";
 import { AxiosError } from "axios";
-import { useEffect } from "react";
-import { useExerciseContext } from "./ExerciseContextProvider";
 import { Exercise } from "../../../../types/enitities/Exercise";
 import ExerciseService from "../../../../serverInteraction/services/ExerciseService";
 import useLike from "../../../../hooks/useLike";
 import useRate from "../../../../hooks/useRate";
 import { UpdateExerciseProps } from "../../../../types/services/UpdateExerciseProps";
+import { ExerciseIndexData } from "../../../../types/ExerciseIndexData";
+import { useForm } from "react-hook-form";
 
 const useExercise = (id: string) => {
   const entity = "exercise";
   const queryClient = useQueryClient();
-  const {
-    rawStimulusMagnitude,
-    setRawStimulusMagnitude,
-    fatigueMagnitude,
-    setFatigueMagnitude,
-    stimulusToFatigueRatio,
-    setStimulusToFatigueRatio,
-  } = useExerciseContext();
 
   const { showError, showSuccess } = useAlert();
   const { like } = useLike(entity, (exercise) => {
@@ -38,6 +30,7 @@ const useExercise = (id: string) => {
       }
     );
   });
+
   const { rate } = useRate(entity, (exercise) => {
     queryClient.setQueryData<Exercise | undefined>(
       ["exercise", id],
@@ -55,34 +48,25 @@ const useExercise = (id: string) => {
     );
   });
 
-  const { status, data, error, isLoading, isFetching, isRefetching, refetch } =
-    useEntity<Exercise>(["exercise", id], async (): Promise<Exercise> => {
-      return await ExerciseService.get(id);
-    });
+  const {
+    status,
+    data: exercise,
+    error,
+    isLoading,
+    isFetching,
+    isRefetching,
+    refetch,
+  } = useEntity<Exercise>(["exercise", id], async (): Promise<Exercise> => {
+    return await ExerciseService.get(id);
+  });
 
   const { mutateAsync: mutateUpdateUserData } = useMutation(
     ExerciseService.updateUserData,
     {
       onSuccess: (exercise) => {
-        queryClient.setQueryData<Exercise | undefined>(
-          ["exercise", id],
-          (data): Exercise | undefined => {
-            if (data === undefined) {
-              return data;
-            }
-
-            if (exercise.exerciseUserData == null) {
-              return data;
-            }
-
-            data.exerciseUserData = exercise.exerciseUserData;
-            setStimulusToFatigueRatio(
-              exercise.exerciseUserData.stimulusToFatigueRatio
-            );
-
-            return data;
-          }
-        );
+        queryClient.setQueryData<Exercise | undefined>(["exercise", id], () => {
+          return exercise;
+        });
       },
       onError: (error) => {
         console.log(error);
@@ -94,34 +78,14 @@ const useExercise = (id: string) => {
     }
   );
 
-  const updateUserData = async (propName: string, value: number) => {
-    const data: any = {
-      id,
-      rawStimulusMagnitude: rawStimulusMagnitude ? rawStimulusMagnitude : 0,
-      fatigueMagnitude: fatigueMagnitude ? fatigueMagnitude : 0,
-    };
-
-    data[propName] = value;
-
-    return mutateUpdateUserData(data);
-  };
-
   const { mutateAsync: mutateUpdate, isLoading: isUpdating } = useMutation(
     ExerciseService.update,
     {
       onSuccess: (exercise) => {
-        queryClient.setQueryData<Exercise | undefined>(
-          ["exercise", id],
-          (data): Exercise | undefined => {
-            if (data === undefined) {
-              return data;
-            }
-
-            showSuccess("Saved successfully!");
-
-            return exercise;
-          }
-        );
+        queryClient.setQueryData<Exercise | undefined>(["exercise", id], () => {
+          showSuccess("Saved successfully!");
+          return exercise;
+        });
       },
       onError: (error) => {
         console.log(error);
@@ -137,60 +101,69 @@ const useExercise = (id: string) => {
     return mutateUpdate(exercise);
   };
 
-  const resetToDefault = async () => {
-    setRawStimulusMagnitude(data?.rawStimulusMagnitude);
-    setFatigueMagnitude(data?.fatigueMagnitude);
-    setStimulusToFatigueRatio(data?.stimulusToFatigueRatio);
-  };
-
-  useEffect(() => {
-    if (data === undefined) {
-      return;
+  const parseIndexData = (
+    exercise: Exercise | undefined
+  ): ExerciseIndexData | undefined => {
+    if (exercise === undefined) {
+      return undefined;
     }
 
-    const rsm =
-      data.exerciseUserData === null
-        ? data.rawStimulusMagnitude
-        : data.exerciseUserData.rawStimulusMagnitude;
-    const fm =
-      data.exerciseUserData === null
-        ? data.fatigueMagnitude
-        : data.exerciseUserData.fatigueMagnitude;
-    const sfr =
-      data.exerciseUserData === null
-        ? data.stimulusToFatigueRatio
-        : data.exerciseUserData.stimulusToFatigueRatio;
+    if (exercise.exerciseUserData !== null) {
+      return {
+        rawStimulusMagnitude: exercise.exerciseUserData.rawStimulusMagnitude,
+        fatigueMagnitude: exercise.exerciseUserData.fatigueMagnitude,
+        stimulusToFatigueRatio:
+          exercise.exerciseUserData.stimulusToFatigueRatio % 1 !== 0
+            ? exercise.exerciseUserData.stimulusToFatigueRatio.toFixed(1)
+            : exercise.exerciseUserData.stimulusToFatigueRatio.toString(),
+      };
+    }
 
-    setRawStimulusMagnitude(rsm);
-    setFatigueMagnitude(fm);
-    setStimulusToFatigueRatio(sfr);
-  }, [
-    data,
-    setRawStimulusMagnitude,
-    setFatigueMagnitude,
-    setStimulusToFatigueRatio,
-  ]);
+    return {
+      rawStimulusMagnitude: exercise.rawStimulusMagnitude,
+      fatigueMagnitude: exercise.fatigueMagnitude,
+      stimulusToFatigueRatio:
+        exercise.stimulusToFatigueRatio % 1 !== 0
+          ? exercise.stimulusToFatigueRatio.toFixed(1)
+          : exercise.stimulusToFatigueRatio.toString(),
+    };
+  };
+
+  const onSubmitUserData = async (exerciseIndexData: ExerciseIndexData) => {
+    await mutateUpdateUserData({
+      id: id,
+      rawStimulusMagnitude: exerciseIndexData.rawStimulusMagnitude,
+      fatigueMagnitude: exerciseIndexData.fatigueMagnitude,
+    });
+  };
+
+  const {
+    register: registerUserData,
+    handleSubmit: handleSubmitUserData,
+    formState: { errors: userDataFormErrors },
+  } = useForm<ExerciseIndexData>({
+    mode: "onBlur",
+    reValidateMode: "onBlur",
+    values: parseIndexData(exercise),
+  });
+
+  const submitUserData = handleSubmitUserData(onSubmitUserData);
 
   return {
     status,
-    data,
+    exercise,
     error,
     isLoading,
     isFetching,
     isRefetching,
     refetch,
-    rawStimulusMagnitude,
-    setRawStimulusMagnitude,
-    fatigueMagnitude,
-    setFatigueMagnitude,
-    stimulusToFatigueRatio,
-    setStimulusToFatigueRatio,
-    updateUserData,
-    resetToDefault,
     like,
     rate,
     update,
     isUpdating,
+    registerUserData,
+    submitUserData,
+    userDataFormErrors,
   };
 };
 

@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Menu, Button, MenuItem, Typography } from "@mui/material";
 import Iconify from "../../../components/common/iconify/Iconify";
-import useExercises from "../../../context/entityContext/entities/useExercises";
+import useExercises from "../../../context/entityContext/entities/exercise/useExercises";
 import { EntitySorting } from "../../../types/EntitySorting";
 import { SortDirection } from "../../../enums/SortDirection";
 
@@ -27,17 +27,6 @@ export default function ExercisesSort() {
   const { setSortParams } = useExercises();
   const [currentOption, setOption] = useState<string>("rating");
 
-  useEffect(() => {
-    const option = SORT_BY_OPTIONS.find(
-      (option) => option.label === currentOption
-    );
-    setSortParams(
-      option === undefined
-        ? option
-        : { sortBy: option.sortBy, sortDir: option.sortDir }
-    );
-  }, [currentOption, setSortParams]);
-
   const handleOpen = (event: React.MouseEvent<HTMLButtonElement>) => {
     setOpen(event.currentTarget);
   };
@@ -47,7 +36,13 @@ export default function ExercisesSort() {
   };
 
   const handlePicked = (value: string) => {
+    const option = SORT_BY_OPTIONS.find((option) => option.label === value);
+
     setOption(value);
+    setSortParams(
+      option ? { sortBy: option.sortBy, sortDir: option.sortDir } : option
+    );
+
     handleClose();
   };
 

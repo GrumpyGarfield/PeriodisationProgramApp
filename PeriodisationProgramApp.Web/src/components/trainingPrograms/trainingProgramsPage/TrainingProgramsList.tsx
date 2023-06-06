@@ -4,7 +4,7 @@ import { Loader } from "../../common/loader/Loader";
 import { useInView } from "react-intersection-observer";
 import React from "react";
 import { AxiosError } from "axios";
-import useTrainingPrograms from "../../../context/entityContext/entities/useTrainingPrograms";
+import useTrainingPrograms from "../../../context/entityContext/entities/trainingProgram/useTrainingPrograms";
 import { TrainingProgram } from "../../../types/enitities/TrainingProgram";
 import { UserRatingProps } from "../../../types/UserRatingProps";
 
