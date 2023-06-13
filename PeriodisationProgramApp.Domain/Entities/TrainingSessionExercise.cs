@@ -1,6 +1,6 @@
 ﻿namespace PeriodisationProgramApp.Domain.Entities
 {
-    public class TrainingSessionExercise : Entity
+    public class TrainingSessionExercise : BaseEntity
     {
         public TrainingSessionExercise() { }
 

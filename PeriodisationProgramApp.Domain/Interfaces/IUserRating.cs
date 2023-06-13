@@ -1,6 +1,6 @@
 ﻿namespace PeriodisationProgramApp.Domain.Interfaces
 {
-    public interface IUserRating : IEntity
+    public interface IUserRating : IBaseEntity
     {
         Guid UserId { get; set; }
 

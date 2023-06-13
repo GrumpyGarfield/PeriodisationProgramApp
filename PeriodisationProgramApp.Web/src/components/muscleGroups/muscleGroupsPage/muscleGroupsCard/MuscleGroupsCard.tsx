@@ -1,18 +1,18 @@
 import { Card, Stack, Typography } from "@mui/material";
-import React from "react";
 import { CardListItemProps } from "../../../common/card/CardListItem";
 import { CardHeader } from "../../../common/card/CardHeader";
 import { CardList } from "../../../common/card/CardList";
 import { MuscleGroupType } from "../../../../enums/MuscleGroupType";
 import { useEnumHelper } from "../../../../helpers/useEnumHelper";
 import { MuscleGroup } from "../../../../types/enitities/MuscleGroup";
+import { useState } from "react";
 
 type Props = {
   muscleGroup: MuscleGroup;
 };
 
 export default function MuscleGroupsCard({ muscleGroup }: Props) {
-  const [raised, setRaised] = React.useState(false);
+  const [raised, setRaised] = useState(false);
   const { translate } = useEnumHelper();
 
   const muscleGroupsCardListItems: CardListItemProps[] = [

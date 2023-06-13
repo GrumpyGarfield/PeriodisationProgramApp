@@ -9,6 +9,9 @@ import {
 import { HoverPopover } from "../../common/popover/HoverPopover";
 import { UserRatingProps } from "../../../types/UserRatingProps";
 import { ChangeEvent, SyntheticEvent, useState } from "react";
+import useLike from "../../../serverInteraction/hooks/communityEntity/useLike";
+import useRate from "../../../serverInteraction/hooks/communityEntity/useRate";
+import { Exercise } from "../../../types/enitities/Exercise";
 
 type Props = {
   title: string;
@@ -18,12 +21,6 @@ type Props = {
   rating: number;
   userRatingInfo: UserRatingProps;
   id: string;
-  handleLike: (id: string, isLiked: boolean) => Promise<boolean>;
-  handleRate: (
-    id: string,
-    isRated: boolean,
-    rating: number | null
-  ) => Promise<UserRatingProps>;
 };
 
 export function ExercisePageHeader({
@@ -34,9 +31,11 @@ export function ExercisePageHeader({
   rating,
   userRatingInfo,
   id,
-  handleLike,
-  handleRate,
 }: Props) {
+  const entityName = "exercise";
+  const { like } = useLike<Exercise>(entityName);
+  const { rate } = useRate<Exercise>(entityName);
+
   const [likeChecked, setLikeChecked] = useState(isLiked);
   const [likeCount, setLikeCount] = useState(likes);
 
@@ -51,7 +50,7 @@ export function ExercisePageHeader({
   ) => {
     setLikeChecked(checked);
     setLikeCount(checked ? likeCount + 1 : likeCount - 1);
-    handleLike(id, checked).then(
+    like(id, checked).then(
       () => {},
       () => {
         setLikeChecked(!checked);
@@ -72,7 +71,7 @@ export function ExercisePageHeader({
 
     setRatingChecked(false);
     setUserRating(null);
-    handleRate(id, false, null).then(
+    rate(id, false, null).then(
       () => {},
       () => {
         setRatingChecked(true);
@@ -93,7 +92,7 @@ export function ExercisePageHeader({
 
     setRatingChecked(true);
     setUserRating(value);
-    handleRate(id, true, value).then(
+    rate(id, true, value).then(
       () => {},
       () => {
         setRatingChecked(false);

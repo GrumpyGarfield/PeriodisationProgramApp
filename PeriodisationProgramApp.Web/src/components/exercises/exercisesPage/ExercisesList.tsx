@@ -22,6 +22,7 @@ export default function ExercisesList({ ...other }: GridProps) {
     hasNextPage,
     like,
     rate,
+    remove,
   } = useExercises();
 
   const handleLike = async (id: string, isLiked: boolean) => {
@@ -40,6 +41,10 @@ export default function ExercisesList({ ...other }: GridProps) {
       };
       return result;
     });
+  };
+
+  const handleDelete = async (id: string) => {
+    return await remove(id);
   };
 
   React.useEffect(() => {
@@ -69,11 +74,12 @@ export default function ExercisesList({ ...other }: GridProps) {
       <Grid container spacing={3} {...other}>
         {data.pages.map((page) =>
           page.items.map((exercise: Exercise) => (
-            <Grid key={exercise.id} item xs={12} sm={6} md={4}>
+            <Grid key={exercise.id} item sm={12} md={6} lg={4} xl={3}>
               <ExercisesCard
                 exercise={exercise}
                 handleLike={handleLike}
                 handleRate={handleRate}
+                handleDelete={handleDelete}
               />
             </Grid>
           ))

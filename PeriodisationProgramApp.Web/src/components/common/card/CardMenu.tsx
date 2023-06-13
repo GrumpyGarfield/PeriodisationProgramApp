@@ -56,6 +56,7 @@ export function CardMenu({ raised, setRaised, cardMenuItems }: Props) {
             icon={cardMenuItem.icon}
             label={cardMenuItem.label}
             color={cardMenuItem.color}
+            onClick={cardMenuItem.onClick}
           />
         ))}
       </Popover>

@@ -1,18 +1,28 @@
-import { useMutation } from "react-query";
-import CommunityEntityService from "../serverInteraction/CommunityEntityInteractionService";
-import { CommunityEntity } from "../types/enitities/CommunityEntity";
+import { useMutation, useQueryClient } from "react-query";
 import { AxiosError } from "axios";
-import useAlert from "../context/alertContext/useAlert";
+import { CommunityEntity } from "../../../types/enitities/CommunityEntity";
+import useAlert from "../../../context/alertContext/useAlert";
+import CommunityEntityService from "../../CommunityEntityInteractionService";
 
 const useLike = <T extends CommunityEntity>(
-  entity: string,
+  entityName: string,
   onSuccess?: (item: T) => void,
   onError?: (error: any) => void
 ) => {
+  const queryClient = useQueryClient();
   const { showError } = useAlert();
 
   const { mutateAsync } = useMutation(CommunityEntityService.like<T>, {
-    onSuccess: onSuccess,
+    onSuccess: onSuccess
+      ? onSuccess
+      : (entity) => {
+          queryClient.setQueryData<T | undefined>(
+            [entityName, entity.id],
+            () => {
+              return entity;
+            }
+          );
+        },
     onError: onError
       ? onError
       : (error) => {
@@ -27,7 +37,7 @@ const useLike = <T extends CommunityEntity>(
   });
 
   const like = async (id: string, isLiked: boolean) => {
-    return mutateAsync({ entity, id, isLiked });
+    return mutateAsync({ entityName, id, isLiked });
   };
 
   return { like };

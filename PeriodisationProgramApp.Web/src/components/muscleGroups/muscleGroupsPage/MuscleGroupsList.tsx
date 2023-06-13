@@ -2,13 +2,12 @@ import { Grid, GridProps, Typography } from "@mui/material";
 import { Loader } from "../../common/loader/Loader";
 import { AxiosError } from "axios";
 import useMuscleGroups from "../../../context/entityContext/entities/muscleGroup/useMuscleGroups";
-import { MuscleGroup } from "../../../types/enitities/MuscleGroup";
 import MuscleGroupsCard from "./muscleGroupsCard/MuscleGroupsCard";
 
 export default function MuscleGroupsList({ ...other }: GridProps) {
-  const { status, data, error, isLoading } = useMuscleGroups();
+  const { status, muscleGroups, error, isLoading } = useMuscleGroups();
 
-  if (isLoading || data === undefined) {
+  if (isLoading || muscleGroups === undefined) {
     return <Loader />;
   }
 
@@ -23,8 +22,8 @@ export default function MuscleGroupsList({ ...other }: GridProps) {
   return (
     <div>
       <Grid container spacing={3} {...other}>
-        {data.items.map((muscleGroup: MuscleGroup) => (
-          <Grid key={muscleGroup.type} item xs={12} sm={6} md={4}>
+        {muscleGroups.map((muscleGroup) => (
+          <Grid key={muscleGroup.type} item sm={12} md={6} lg={4} xl={3}>
             <MuscleGroupsCard muscleGroup={muscleGroup} />
           </Grid>
         ))}

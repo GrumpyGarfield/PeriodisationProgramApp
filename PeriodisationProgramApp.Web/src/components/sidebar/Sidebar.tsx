@@ -20,7 +20,7 @@ const secondaryListItems: SidebarItemProps[] = [
   { label: "About", link: "about", icon: <HelpIcon /> },
 ];
 
-const drawerWidth = 240;
+const drawerWidth = 300;
 
 export function Sidebar() {
   return (
@@ -40,6 +40,7 @@ export function Sidebar() {
               key={item.link}
               label={item.label}
               link={item.link}
+              icon={item.icon}
               children={item.children}
             />
           ))}
@@ -51,6 +52,7 @@ export function Sidebar() {
               key={item.link}
               label={item.label}
               link={item.link}
+              icon={item.icon}
               children={item.children}
             />
           ))}

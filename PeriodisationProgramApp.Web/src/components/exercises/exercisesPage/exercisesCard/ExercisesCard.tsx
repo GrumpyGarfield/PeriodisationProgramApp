@@ -1,4 +1,4 @@
-import { Card, Stack, Divider, Typography, Link } from "@mui/material";
+import { Card, Stack, Divider } from "@mui/material";
 import React from "react";
 import CallSplitIcon from "@mui/icons-material/CallSplit";
 import { CardListItemProps } from "../../../common/card/CardListItem";
@@ -13,7 +13,6 @@ import { Exercise } from "../../../../types/enitities/Exercise";
 import { ExerciseType } from "../../../../enums/ExerciseType";
 import { MuscleGroupRole } from "../../../../enums/MuscleGroupRole";
 import Iconify from "../../../common/iconify/Iconify";
-import { theme } from "../../../../styling/Theme";
 
 type Props = {
   exercise: Exercise;
@@ -23,12 +22,14 @@ type Props = {
     isRating: boolean,
     rating: number | null
   ) => Promise<UserRatingProps>;
+  handleDelete: (id: string) => Promise<boolean>;
 };
 
 export default function ExercisesCard({
   exercise,
   handleLike,
   handleRate,
+  handleDelete,
 }: Props) {
   const [raised, setRaised] = React.useState(false);
   const { translate } = useEnumHelper();
@@ -56,13 +57,7 @@ export default function ExercisesCard({
       icon: <CallSplitIcon />,
     },
     {
-      label: (
-        <Typography variant="caption">
-          <Link href="/" color={theme.palette.primary.contrastText}>
-            SFR
-          </Link>
-        </Typography>
-      ),
+      label: "Stimulus to Fatigue Ratio",
       text: exercise.stimulusToFatigueRatio.toFixed(1),
       icon: (
         <Iconify
@@ -84,20 +79,20 @@ export default function ExercisesCard({
         <CardHeader
           id={exercise.id}
           text={exercise.name}
-          menu={<ExercisesCardMenu raised={raised} setRaised={setRaised} />}
+          menu={
+            <ExercisesCardMenu
+              id={exercise.id}
+              owner={exercise.user}
+              raised={raised}
+              setRaised={setRaised}
+              handleDelete={handleDelete}
+            />
+          }
         />
         <CardList items={exercisesCardListItems} />
         <Divider />
         <CardFooter
-          author={exercise.user.username}
-          rating={exercise.rating}
-          likes={exercise.likes}
-          isLiked={exercise.isLiked}
-          userRatingInfo={{
-            isRated: exercise.isRated,
-            rating: exercise.userRating,
-          }}
-          id={exercise.id}
+          entity={exercise}
           handleLike={handleLike}
           handleRate={handleRate}
         />

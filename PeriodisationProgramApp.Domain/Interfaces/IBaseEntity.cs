@@ -1,6 +1,6 @@
 ﻿namespace PeriodisationProgramApp.Domain.Interfaces
 {
-    public interface IEntity
+    public interface IBaseEntity
     {
         DateTime Created { get; set; }
         Guid Id { get; set; }

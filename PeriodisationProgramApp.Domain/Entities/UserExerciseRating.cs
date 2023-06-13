@@ -2,7 +2,7 @@
 
 namespace PeriodisationProgramApp.Domain.Entities
 {
-    public class UserExerciseRating : Entity, IUserRating
+    public class UserExerciseRating : BaseEntity, IUserRating
     {
 
         public Guid UserId { get; set; }

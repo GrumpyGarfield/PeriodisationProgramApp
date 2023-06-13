@@ -4,6 +4,7 @@ import {
   IndexCardListItemProps,
 } from "../../common/indexCard/IndexCardList";
 import useMuscleGroup from "../../../context/entityContext/entities/muscleGroup/useMuscleGroup";
+import { SyntheticEvent } from "react";
 
 type Props = {
   muscleGroup: MuscleGroup;
@@ -14,7 +15,7 @@ export default function MuscleGroupPageIndexCard({
   muscleGroup,
   isAuthenticated,
 }: Props) {
-  const { registerUserData, submitUserData, userDataFormErrors } =
+  const { registerUserData, userDataOnBlur, userDataFormErrors } =
     useMuscleGroup(muscleGroup.id);
 
   const muscleGroupIndexCardListItems: IndexCardListItemProps[] = [
@@ -27,7 +28,8 @@ export default function MuscleGroupPageIndexCard({
           min: { value: 0, message: "Must be at least 0" },
           max: { value: 50, message: "Must be lower than 50" },
           valueAsNumber: true,
-          onBlur: submitUserData,
+          onBlur: (event: SyntheticEvent<HTMLInputElement>) =>
+            userDataOnBlur(event.currentTarget.value, "maintenanceVolume"),
         }),
       },
       errors: userDataFormErrors,
@@ -41,7 +43,8 @@ export default function MuscleGroupPageIndexCard({
           min: { value: 0, message: "Must be at least 0" },
           max: { value: 50, message: "Must be lower than 50" },
           valueAsNumber: true,
-          onBlur: submitUserData,
+          onBlur: (event: SyntheticEvent<HTMLInputElement>) =>
+            userDataOnBlur(event.currentTarget.value, "minimumEffectiveVolume"),
         }),
       },
       errors: userDataFormErrors,
@@ -55,7 +58,11 @@ export default function MuscleGroupPageIndexCard({
           min: { value: 0, message: "Must be at least 0" },
           max: { value: 50, message: "Must be lower than 50" },
           valueAsNumber: true,
-          onBlur: submitUserData,
+          onBlur: (event: SyntheticEvent<HTMLInputElement>) =>
+            userDataOnBlur(
+              event.currentTarget.value,
+              "maximumRecoverableVolume"
+            ),
         }),
       },
       errors: userDataFormErrors,

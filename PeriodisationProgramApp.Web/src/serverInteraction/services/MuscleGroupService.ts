@@ -1,7 +1,7 @@
 import { EntityFilter } from "../../types/EntityFilter";
 import { EntitySorting } from "../../types/EntitySorting";
 import { MuscleGroup } from "../../types/enitities/MuscleGroup";
-import { UpdateMuscleGroupUserDataProps } from "../../types/services/UpdateMuscleGroupUserDataProps";
+import { UpdateMuscleGroupUserDataProps } from "../../types/services/muscleGroup/UpdateMuscleGroupUserDataProps";
 import BaseServerInteractionService from "../BaseServerInteractionService";
 
 const getAll = async (

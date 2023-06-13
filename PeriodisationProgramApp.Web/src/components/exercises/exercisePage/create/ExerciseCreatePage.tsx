@@ -9,9 +9,8 @@ import {
   Switch,
   TextField,
 } from "@mui/material";
-import React from "react";
 import { FormStepper, StepProps } from "../../../common/stepper/FormStepper";
-import { CreateExerciseProps } from "../../../../types/services/CreateExerciseProps";
+import { CreateExerciseProps } from "../../../../types/services/exercise/CreateExerciseProps";
 import { Controller, useForm } from "react-hook-form";
 import { ControlledRadioGroup } from "../../../common/inputs/ControlledRadioGroup";
 import useEnumHelper from "../../../../helpers/useEnumHelper";
@@ -20,8 +19,15 @@ import useMuscleGroupRoles from "../../../../hooks/useMuscleGroupRoles";
 import { MuscleGroupsProvider } from "../../../../context/entityContext/entities/muscleGroup/MuscleGroupsContextProvider";
 import { ExerciseCreatePageMuscleGroups } from "./ExerciseCreatePageMuscleGroups";
 import { MuscleGroupRole } from "../../../../enums/MuscleGroupRole";
+import InfoPopover from "../../../common/popover/InfoPopover";
+import { RsmIndexInfo } from "../../../info/RsmIndexInfo";
+import { FmIndexInfo } from "../../../info/FmIndexInfo";
+import useCreate from "../../../../serverInteraction/hooks/entity/useCreate";
+import { Exercise } from "../../../../types/enitities/Exercise";
 
 export function ExerciseCreatePage() {
+  const entityName = "exercise";
+  const { create } = useCreate<CreateExerciseProps, Exercise>(entityName);
   const {
     control,
     register,
@@ -33,7 +39,11 @@ export function ExerciseCreatePage() {
   } = useForm<CreateExerciseProps>({
     mode: "onBlur",
     reValidateMode: "onBlur",
-    defaultValues: { type: ExerciseType.Compound },
+    defaultValues: {
+      type: ExerciseType.Compound,
+      rawStimulusMagnitude: 5,
+      fatigueMagnitude: 5,
+    },
   });
   const { translate, getValuesOfEnum } = useEnumHelper();
   const {
@@ -179,13 +189,23 @@ export function ExerciseCreatePage() {
     <Grid container spacing={4} sx={{ py: 3 }}>
       <Grid item xs={12}>
         <Stack spacing={2}>
-          <FormLabel>Provide Raw Stimulus Magnitude index (0-9)</FormLabel>
+          <Stack
+            direction="row"
+            spacing={1}
+            sx={{ display: "flex", alignItems: "center" }}
+          >
+            <FormLabel>Provide Raw Stimulus Magnitude index (0-9)</FormLabel>
+            <InfoPopover>
+              <RsmIndexInfo />
+            </InfoPopover>
+          </Stack>
           <TextField
             type="number"
             fullWidth
             id="rawStimulusMagnitude"
             label="Raw Stimulus Magnitude"
             {...register("rawStimulusMagnitude", {
+              required: "Must be between 0 and 9",
               min: { value: 0, message: "Must be between 0 and 9" },
               max: { value: 9, message: "Must be between 0 and 9" },
             })}
@@ -196,13 +216,23 @@ export function ExerciseCreatePage() {
       </Grid>
       <Grid item xs={12}>
         <Stack spacing={2}>
-          <FormLabel>Provide Fatigue Magnitude index (0-9)</FormLabel>
+          <Stack
+            direction="row"
+            spacing={1}
+            sx={{ display: "flex", alignItems: "center" }}
+          >
+            <FormLabel>Provide Fatigue Magnitude index (0-9)</FormLabel>
+            <InfoPopover>
+              <FmIndexInfo />
+            </InfoPopover>
+          </Stack>
           <TextField
             type="number"
             fullWidth
             id="fatigueMagnitude"
             label="Fatigue Magnitude"
             {...register("fatigueMagnitude", {
+              required: "Must be between 0 and 9",
               min: { value: 0, message: "Must be between 0 and 9" },
               max: { value: 9, message: "Must be between 0 and 9" },
             })}
@@ -242,6 +272,7 @@ export function ExerciseCreatePage() {
     {
       label: "Indexes",
       content: indexesStep,
+      requiredFields: ["rawStimulusMagnitude", "fatigueMagnitude"],
       isOptional: true,
     },
     { label: "Finish", content: finishStep },
@@ -271,7 +302,7 @@ export function ExerciseCreatePage() {
       })
     );
 
-    console.log(createdExercise);
+    await create(createdExercise);
   };
 
   return (

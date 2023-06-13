@@ -4,7 +4,7 @@ using PeriodisationProgramApp.Domain.Entities;
 
 namespace PeriodisationProgramApp.DataAccess.Configurations
 {
-    public class EntityConfiguration<TEntity> : IEntityTypeConfiguration<TEntity> where TEntity : Entity
+    public class EntityConfiguration<TEntity> : IEntityTypeConfiguration<TEntity> where TEntity : BaseEntity
     {
         public virtual void Configure(EntityTypeBuilder<TEntity> builder)
         {

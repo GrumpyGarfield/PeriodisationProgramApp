@@ -1,42 +1,34 @@
-import { EntityFilter } from "../types/EntityFilter";
-import { EntitySorting } from "../types/EntitySorting";
-import { LikeProps } from "../types/services/LikeProps";
-import { RateProps } from "../types/services/RateProps";
+import { UpdateUserDataProps } from "../types/services/communityEntity/UpdateUserDataProps";
+import { LikeProps } from "../types/services/communityEntity/LikeProps";
+import { RateProps } from "../types/services/communityEntity/RateProps";
 import BaseServerInteractionService from "./BaseServerInteractionService";
 
-const getAll = async <T>(
-  entity: string,
-  offset: number,
-  limit?: number,
-  filters?: EntityFilter[],
-  sortParams?: EntitySorting,
-  optionalParams?: any
-) => {
-  return BaseServerInteractionService.GetPage<T>(
-    `/${entity}/items`,
-    offset,
-    limit,
-    filters,
-    sortParams,
-    optionalParams
+const updateUserData = async <T1, T2>({
+  entityName,
+  id,
+  updateUserDataProps,
+}: UpdateUserDataProps<T1>) => {
+  return BaseServerInteractionService.Post<T2>(
+    `/${entityName}/${id}/updateUserData`,
+    updateUserDataProps
   );
 };
 
-const like = async <T>({ entity, id, isLiked }: LikeProps) => {
-  return BaseServerInteractionService.Post<T>(`/${entity}/${id}/like`, {
+const like = async <T>({ entityName, id, isLiked }: LikeProps) => {
+  return BaseServerInteractionService.Post<T>(`/${entityName}/${id}/like`, {
     isLiked,
   });
 };
 
-const rate = async <T>({ entity, id, isRated, rating }: RateProps) => {
-  return BaseServerInteractionService.Post<T>(`/${entity}/${id}/rate`, {
+const rate = async <T>({ entityName, id, isRated, rating }: RateProps) => {
+  return BaseServerInteractionService.Post<T>(`/${entityName}/${id}/rate`, {
     isRated,
     rating,
   });
 };
 
 const CommunityEntityService = {
-  getAll,
+  updateUserData,
   like,
   rate,
 };

@@ -1,18 +1,28 @@
-import { useMutation } from "react-query";
-import { CommunityEntity } from "../types/enitities/CommunityEntity";
+import { useMutation, useQueryClient } from "react-query";
+import { CommunityEntity } from "../../../types/enitities/CommunityEntity";
 import { AxiosError } from "axios";
-import useAlert from "../context/alertContext/useAlert";
-import CommunityEntityService from "../serverInteraction/CommunityEntityInteractionService";
+import useAlert from "../../../context/alertContext/useAlert";
+import CommunityEntityService from "../../CommunityEntityInteractionService";
 
 const useRate = <T extends CommunityEntity>(
-  entity: string,
+  entityName: string,
   onSuccess?: (item: T) => void,
   onError?: (error: any) => void
 ) => {
+  const queryClient = useQueryClient();
   const { showError } = useAlert();
 
   const { mutateAsync } = useMutation(CommunityEntityService.rate<T>, {
-    onSuccess: onSuccess,
+    onSuccess: onSuccess
+      ? onSuccess
+      : (entity) => {
+          queryClient.setQueryData<T | undefined>(
+            [entityName, entity.id],
+            () => {
+              return entity;
+            }
+          );
+        },
     onError: onError
       ? onError
       : (error) => {
@@ -27,7 +37,7 @@ const useRate = <T extends CommunityEntity>(
   });
 
   const rate = async (id: string, isRated: boolean, rating: number | null) => {
-    return mutateAsync({ entity, id, isRated, rating });
+    return mutateAsync({ entityName, id, isRated, rating });
   };
 
   return { rate };

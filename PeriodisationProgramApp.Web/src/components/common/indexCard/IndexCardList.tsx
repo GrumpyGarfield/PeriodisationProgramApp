@@ -1,10 +1,12 @@
-import { Grid, TextField, Tooltip, Typography } from "@mui/material";
+import { Grid, Stack, TextField, Tooltip, Typography } from "@mui/material";
 import { ReactNode } from "react";
+import InfoPopover from "../popover/InfoPopover";
 
 export type IndexCardListItemProps = {
   id: string;
   label: string;
   tooltip: string | ReactNode;
+  info?: ReactNode;
   register: any;
   errors: any;
   readonly?: boolean;
@@ -28,9 +30,26 @@ export function IndexCardList({ items }: Props) {
     >
       {items.map((item) => (
         <Grid item xs={1} key={item.id}>
-          <Tooltip arrow title={item.tooltip}>
-            <Typography variant="h6">{item.label}</Typography>
-          </Tooltip>
+          <Stack
+            direction="row"
+            spacing={0.5}
+            justifyContent="center"
+            sx={{ display: "flex", alignItems: "center" }}
+          >
+            <Tooltip arrow title={item.tooltip}>
+              <Typography variant="h6">{item.label}</Typography>
+            </Tooltip>
+            {item.info !== undefined && (
+              <InfoPopover
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "right",
+                }}
+              >
+                {item.info}
+              </InfoPopover>
+            )}
+          </Stack>
         </Grid>
       ))}
       {items.map((item) => (

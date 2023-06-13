@@ -1,6 +1,6 @@
 ﻿namespace PeriodisationProgramApp.Domain.Entities
 {
-    public class MuscleGroupUserData : Entity
+    public class MuscleGroupUserData : BaseEntity
     {
         public Guid UserId { get; set; }
 

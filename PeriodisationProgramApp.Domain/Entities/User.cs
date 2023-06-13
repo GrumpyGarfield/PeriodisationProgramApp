@@ -1,6 +1,6 @@
 ﻿namespace PeriodisationProgramApp.Domain.Entities
 {
-    public class User : Entity, IEquatable<User>
+    public class User : BaseEntity, IEquatable<User>
     {
         public string? FirebaseId { get; set; }
 

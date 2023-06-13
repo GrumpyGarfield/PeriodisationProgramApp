@@ -2,7 +2,7 @@
 
 namespace PeriodisationProgramApp.Domain.Interfaces
 {
-    public interface ICommunityEntity<UserLike, UserRating>: IEntity 
+    public interface ICommunityEntity<UserLike, UserRating>: IBaseEntity 
                                                             where UserLike : IUserLike
                                                             where UserRating : IUserRating
     {

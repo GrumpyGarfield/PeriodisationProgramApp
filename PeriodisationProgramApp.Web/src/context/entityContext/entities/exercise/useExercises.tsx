@@ -1,13 +1,11 @@
-import { useInfiniteQuery } from "react-query";
 import useCommunityEntities from "../useCommunityEntities";
-import CommunityEntityService from "../../../../serverInteraction/CommunityEntityInteractionService";
-import { useEffect } from "react";
-import { PagedResult } from "../../../../types/PagedResult";
 import { useExercisesContext } from "./ExercisesContextProvider";
 import { Exercise } from "../../../../types/enitities/Exercise";
+import useRemove from "../../../../serverInteraction/hooks/entity/useRemove";
+import useGetAll from "../../../../serverInteraction/hooks/entity/useGetAll";
 
-const useExercises = (offset: number = 0, limit: number = 9) => {
-  const entity = "exercise";
+const useExercises = (offset: number = 0, limit: number = 12) => {
+  const entityName = "exercise";
   const {
     filters,
     filterEntities,
@@ -29,42 +27,22 @@ const useExercises = (offset: number = 0, limit: number = 9) => {
     fetchNextPage,
     hasNextPage,
     refetch,
-  } = useInfiniteQuery(
-    [
-      entity,
-      JSON.stringify(filters),
-      JSON.stringify(sortParams),
-      JSON.stringify(optionalParams),
-    ],
-    async ({ pageParam = offset }): Promise<PagedResult<Exercise>> => {
-      return await CommunityEntityService.getAll<Exercise>(
-        entity,
-        pageParam,
-        limit,
-        filters,
-        sortParams,
-        optionalParams
-      );
-    },
-    {
-      getNextPageParam: (lastPage) => {
-        if (lastPage.offset + lastPage.limit < lastPage.totalItems) {
-          return lastPage.offset + lastPage.limit;
-        }
-        return undefined;
-      },
-    }
+  } = useGetAll<Exercise>(
+    entityName,
+    offset,
+    limit,
+    filters,
+    sortParams,
+    optionalParams
   );
 
-  const { like, rate } = useCommunityEntities<Exercise>(entity, optionalParams);
-
-  useEffect(() => {
-    const refetchData = async () => {
-      await refetch();
-    };
-
-    refetchData();
-  }, [filters, sortParams, optionalParams, refetch]);
+  const { like, rate } = useCommunityEntities<Exercise>(
+    entityName,
+    optionalParams
+  );
+  const { remove } = useRemove(entityName, (result) => {
+    result && refetch();
+  });
 
   return {
     status,
@@ -86,6 +64,7 @@ const useExercises = (offset: number = 0, limit: number = 9) => {
     setOptionalParams,
     like,
     rate,
+    remove,
   };
 };
 

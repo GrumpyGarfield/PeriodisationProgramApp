@@ -71,7 +71,7 @@ export default function TrainingProgramList({ ...other }: GridProps) {
       <Grid container spacing={3} {...other}>
         {data.pages.map((page) =>
           page.items.map((trainingProgram: TrainingProgram) => (
-            <Grid key={trainingProgram.id} item xs={12} sm={6} md={4}>
+            <Grid key={trainingProgram.id} item sm={12} md={6} lg={4} xl={3}>
               <TrainingProgramsCard
                 trainingProgram={trainingProgram}
                 handleLike={handleLike}

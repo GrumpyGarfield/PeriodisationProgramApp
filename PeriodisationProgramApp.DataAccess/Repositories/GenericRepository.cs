@@ -7,7 +7,7 @@ using System.Linq.Expressions;
 
 namespace PeriodisationProgramApp.DataAccess.Repositories
 {
-    public class GenericRepository<T> : IGenericRepository<T> where T : Entity
+    public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     {
         protected readonly ApplicationContext _context;
 

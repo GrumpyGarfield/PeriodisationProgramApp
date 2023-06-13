@@ -1,5 +1,5 @@
-import { ExerciseType } from "../../enums/ExerciseType";
-import { MuscleGroupRole } from "../../enums/MuscleGroupRole";
+import { ExerciseType } from "../../../enums/ExerciseType";
+import { MuscleGroupRole } from "../../../enums/MuscleGroupRole";
 
 type CreateExerciseMuscleGroupProps = {
   muscleGroupId: string;

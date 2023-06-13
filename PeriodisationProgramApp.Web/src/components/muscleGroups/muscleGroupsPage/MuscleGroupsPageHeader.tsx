@@ -10,12 +10,10 @@ export function MuscleGroupsPageHeader() {
       justifyContent="space-between"
       sx={{ mb: 5 }}
     >
-      <div>
-        <PageHeader
-          text="Muscle Groups"
-          subtext="Browse and edit muscle groups info"
-        />
-      </div>
+      <PageHeader
+        text="Muscle Groups"
+        subtext="Browse and edit muscle groups info"
+      />
     </Stack>
   );
 }

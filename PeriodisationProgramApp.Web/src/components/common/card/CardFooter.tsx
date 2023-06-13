@@ -14,14 +14,10 @@ import {
 import { ChangeEvent, SyntheticEvent, useState } from "react";
 import { HoverPopover } from "../popover/HoverPopover";
 import { UserRatingProps } from "../../../types/UserRatingProps";
+import { CommunityEntity } from "../../../types/enitities/CommunityEntity";
 
-type Props = {
-  author: string;
-  likes: number;
-  isLiked: boolean;
-  rating: number;
-  userRatingInfo: UserRatingProps;
-  id: string;
+type Props<T extends CommunityEntity> = {
+  entity: T;
   handleLike: (id: string, isLiked: boolean) => Promise<boolean>;
   handleRate: (
     id: string,
@@ -30,21 +26,17 @@ type Props = {
   ) => Promise<UserRatingProps>;
 };
 
-export function CardFooter({
-  author,
-  likes,
-  isLiked,
-  rating,
-  userRatingInfo,
-  id,
+export function CardFooter<T extends CommunityEntity>({
+  entity,
   handleLike,
   handleRate,
-}: Props) {
+}: Props<T>) {
+  const { id, isLiked, likes, isRated, rating, userRating, user } = entity;
   const [likeChecked, setLikeChecked] = useState(isLiked);
   const [likeCount, setLikeCount] = useState(likes);
 
-  const [ratingChecked, setRatingChecked] = useState(userRatingInfo.isRated);
-  const [userRating, setUserRating] = useState(userRatingInfo.rating);
+  const [ratingChecked, setRatingChecked] = useState(isRated);
+  const [userRatingValue, setUserRatingValue] = useState(userRating);
 
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
 
@@ -71,15 +63,15 @@ export function CardFooter({
       return;
     }
 
-    var currentValue = userRating;
+    var currentValue = userRatingValue;
 
     setRatingChecked(false);
-    setUserRating(null);
+    setUserRatingValue(null);
     handleRate(id, false, null).then(
       () => {},
       () => {
         setRatingChecked(true);
-        setUserRating(currentValue);
+        setUserRatingValue(currentValue);
       }
     );
   };
@@ -92,15 +84,15 @@ export function CardFooter({
       return;
     }
 
-    var currentValue = userRating;
+    var currentValue = userRatingValue;
 
     setRatingChecked(true);
-    setUserRating(value);
+    setUserRatingValue(value);
     handleRate(id, true, value).then(
       () => {},
       () => {
         setRatingChecked(false);
-        setUserRating(currentValue);
+        setUserRatingValue(currentValue);
       }
     );
   };
@@ -119,7 +111,7 @@ export function CardFooter({
         maxWidth={"50%"}
         noWrap
       >
-        {author}
+        {user.username}
       </Typography>
       <Stack direction="row" spacing={1} flexShrink={0}>
         <div>
@@ -148,7 +140,7 @@ export function CardFooter({
           >
             <Rating
               name="no-value"
-              value={userRating}
+              value={userRatingValue}
               onChange={handleUserRatingSet}
             />
           </HoverPopover>

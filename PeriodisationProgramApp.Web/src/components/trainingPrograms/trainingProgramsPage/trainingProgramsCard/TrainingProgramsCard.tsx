@@ -68,21 +68,18 @@ export default function TrainingProgramsCard({
           id={trainingProgram.id}
           text={trainingProgram.name}
           menu={
-            <TrainingProgramsCardMenu raised={raised} setRaised={setRaised} />
+            <TrainingProgramsCardMenu
+              id={trainingProgram.id}
+              owner={trainingProgram.user}
+              raised={raised}
+              setRaised={setRaised}
+            />
           }
         />
         <CardList items={trainingProgramsCardListItems} />
         <Divider />
         <CardFooter
-          author={trainingProgram.user.username}
-          rating={trainingProgram.rating}
-          likes={trainingProgram.likes}
-          isLiked={trainingProgram.isLiked}
-          userRatingInfo={{
-            isRated: trainingProgram.isRated,
-            rating: trainingProgram.userRating,
-          }}
-          id={trainingProgram.id}
+          entity={trainingProgram}
           handleLike={handleLike}
           handleRate={handleRate}
         />

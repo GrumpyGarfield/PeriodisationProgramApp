@@ -3,6 +3,7 @@ using PeriodisationProgramApp.BusinessLogic.Domain.Dto;
 using PeriodisationProgramApp.BusinessLogic.Dto;
 using PeriodisationProgramApp.BusinessLogic.Extensions;
 using PeriodisationProgramApp.BusinessLogic.Services.Interfaces;
+using PeriodisationProgramApp.DataAccess;
 using PeriodisationProgramApp.DataAccess.QueryContext;
 using PeriodisationProgramApp.Domain.Entities;
 using PeriodisationProgramApp.Domain.Interfaces;
@@ -10,15 +11,13 @@ using PeriodisationProgramApp.Domain.Pagination;
 
 namespace PeriodisationProgramApp.BusinessLogic.Services
 {
-    public class ExerciseService : IExerciseService
+    public class ExerciseService : CommunityEntityService<Exercise, ExerciseDto, UserExerciseLike, UserExerciseRating>, IExerciseService
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
 
-        public ExerciseService(IUnitOfWork unitOfWork, IMapper mapper)
+        public ExerciseService(ApplicationContext context, IExerciseRepository repository, IUsersRepository usersRepository, IMapper mapper, IUnitOfWork unitOfWork) : base(context, repository, usersRepository, mapper)
         {
             _unitOfWork = unitOfWork;
-            _mapper = mapper;
         }
 
         public async Task<PagedResult<ExerciseDto>> GetExercises(PageableQueryContext context, Guid? userId = null)
@@ -42,122 +41,6 @@ namespace PeriodisationProgramApp.BusinessLogic.Services
             }
 
             return await GetExercises(context, user.Id);
-        }
-
-        public async Task<PagedResult<ExerciseDto>> GetUserCreatedExercises(PageableQueryContext context, Guid userId)
-        {
-            var exercises = await _unitOfWork.Exercises.GetUserCreated(context, userId);
-            return exercises.TranslateToDto(_mapper, userId);
-        }
-
-        public async Task<PagedResult<ExerciseDto>> GetUserCreatedExercises(PageableQueryContext context, string firebaseId)
-        {
-            var user = await _unitOfWork.Users.GetUserByFirebaseId(firebaseId);
-
-            if (user == null)
-            {
-                throw new Exception($"User with Firebase ID {firebaseId} not found");
-            }
-
-            return await GetUserCreatedExercises(context, user.Id);
-        }
-
-        public async Task<PagedResult<ExerciseDto>> GetUserLikedExercises(PageableQueryContext context, Guid userId)
-        {
-            var exercises = await _unitOfWork.Exercises.GetUserLiked(context, userId);
-            return exercises.TranslateToDto(_mapper, userId);
-        }
-
-        public async Task<PagedResult<ExerciseDto>> GetUserLikedExercises(PageableQueryContext context, string firebaseId)
-        {
-            var user = await _unitOfWork.Users.GetUserByFirebaseId(firebaseId);
-
-            if (user == null)
-            {
-                throw new Exception($"User with Firebase ID {firebaseId} not found");
-            }
-
-            return await GetUserLikedExercises(context, user.Id);
-        }
-
-        public async Task<ExerciseDto> SetLike(Guid exerciseId, Guid userId)
-        {
-            var exercise = await _unitOfWork.Exercises.SetLike(exerciseId, userId);
-            await _unitOfWork.CompleteAsync();
-
-            return exercise.TranslateToDto(_mapper, userId);
-        }
-
-        public async Task<ExerciseDto> SetLike(Guid exerciseId, string firebaseId)
-        {
-            var user = await _unitOfWork.Users.GetUserByFirebaseId(firebaseId);
-
-            if (user == null)
-            {
-                throw new Exception($"User with Firebase ID {firebaseId} not found");
-            }
-
-            return await SetLike(exerciseId, user.Id);
-        }
-
-        public async Task<ExerciseDto> UnsetLike(Guid exerciseId, Guid userId)
-        {
-            var exercise = await _unitOfWork.Exercises.UnsetLike(exerciseId, userId);
-            await _unitOfWork.CompleteAsync();
-
-            return exercise.TranslateToDto(_mapper, userId);
-        }
-
-        public async Task<ExerciseDto> UnsetLike(Guid exerciseId, string firebaseId)
-        {
-            var user = await _unitOfWork.Users.GetUserByFirebaseId(firebaseId);
-
-            if (user == null)
-            {
-                throw new Exception($"User with Firebase ID {firebaseId} not found");
-            }
-
-            return await UnsetLike(exerciseId, user.Id);
-        }
-
-        public async Task<ExerciseDto> SetRating(Guid exerciseId, Guid userId, int rating)
-        {
-            var exercise = await _unitOfWork.Exercises.SetRating(exerciseId, userId, rating);
-            await _unitOfWork.CompleteAsync();
-
-            return exercise.TranslateToDto(_mapper, userId);
-        }
-
-        public async Task<ExerciseDto> SetRating(Guid exerciseId, string firebaseId, int rating)
-        {
-            var user = await _unitOfWork.Users.GetUserByFirebaseId(firebaseId);
-
-            if (user == null)
-            {
-                throw new Exception($"User with Firebase ID {firebaseId} not found");
-            }
-
-            return await SetRating(exerciseId, user.Id, rating);
-        }
-
-        public async Task<ExerciseDto> UnsetRating(Guid exerciseId, Guid userId)
-        {
-            var exercise = await _unitOfWork.Exercises.UnsetRating(exerciseId, userId);
-            await _unitOfWork.CompleteAsync();
-
-            return exercise.TranslateToDto(_mapper, userId);
-        }
-
-        public async Task<ExerciseDto> UnsetRating(Guid exerciseId, string firebaseId)
-        {
-            var user = await _unitOfWork.Users.GetUserByFirebaseId(firebaseId);
-
-            if (user == null)
-            {
-                throw new Exception($"User with Firebase ID {firebaseId} not found");
-            }
-
-            return await UnsetRating(exerciseId, user.Id);
         }
 
         public async Task<ExerciseDto> GetExercise(Guid exerciseId, Guid? userId = null)
@@ -219,57 +102,6 @@ namespace PeriodisationProgramApp.BusinessLogic.Services
             }
 
             return await UpdateExerciseUserData(exerciseId, user.Id, exerciseUserDataDto);
-        }
-
-        public async Task<ExerciseDto> UpdateExercise(Guid exerciseId, Guid userId, UpdateExerciseDto updateExerciseDto)
-        {
-            var exercise = await _unitOfWork.Exercises.GetByIdAsync(exerciseId);
-
-            if (exercise == null)
-            {
-                throw new Exception($"Exercise with ID {exerciseId} not found");
-            }
-
-            exercise.Name = updateExerciseDto.Name;
-            exercise.Description = updateExerciseDto.Description;
-            exercise.YoutubeLink = updateExerciseDto.YoutubeLink;
-            exercise.Type = updateExerciseDto.Type;
-            exercise.RawStimulusMagnitude = updateExerciseDto.RawStimulusMagnitude;
-            exercise.FatigueMagnitude = updateExerciseDto.FatigueMagnitude;
-            exercise.StimulusToFatigueRatio = (double)(updateExerciseDto.RawStimulusMagnitude + 1) / (updateExerciseDto.FatigueMagnitude + 1);
-
-            exercise.ExerciseMuscleGroups = updateExerciseDto.ExerciseMuscleGroups.Select(g =>
-            {
-                var muscleGroup = _unitOfWork.MuscleGroups.GetById(g.MuscleGroupId);
-
-                if (muscleGroup == null)
-                {
-                    throw new Exception($"Muscle group with ID {g.MuscleGroupId} not found");
-                }
-
-                return new ExerciseMuscleGroup()
-                {
-                    MuscleGroup = muscleGroup,
-                    MuscleGroupRole = g.MuscleGroupRole
-                };
-            }).ToList();
-
-            _unitOfWork.Exercises.Update(exercise);
-            _unitOfWork.Complete();
-
-            return exercise.TranslateToDto(_mapper, userId);
-        }
-
-        public async Task<ExerciseDto> UpdateExercise(Guid exerciseId, string firebaseId, UpdateExerciseDto updateExerciseDto)
-        {
-            var user = await _unitOfWork.Users.GetUserByFirebaseId(firebaseId);
-
-            if (user == null)
-            {
-                throw new Exception($"User with Firebase ID {firebaseId} not found");
-            }
-
-            return await UpdateExercise(exerciseId, user.Id, updateExerciseDto);
         }
     }
 }

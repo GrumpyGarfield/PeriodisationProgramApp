@@ -2,7 +2,7 @@
 
 namespace PeriodisationProgramApp.BusinessLogic.Domain.Dto
 {
-    public class UpdateExerciseMuscleGroupDto
+    public class CreateExerciseMuscleGroupDto
     {
         public Guid MuscleGroupId { get; set; }
 

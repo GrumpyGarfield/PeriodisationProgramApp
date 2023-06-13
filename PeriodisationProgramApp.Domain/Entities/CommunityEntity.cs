@@ -2,7 +2,7 @@
 
 namespace PeriodisationProgramApp.Domain.Entities
 {
-    public class CommunityEntity<UserLike, UserRating> : Entity, ICommunityEntity<UserLike, UserRating>
+    public class CommunityEntity<UserLike, UserRating> : BaseEntity, ICommunityEntity<UserLike, UserRating>
                                                                                          where UserLike : IUserLike
                                                                                          where UserRating : IUserRating
     {

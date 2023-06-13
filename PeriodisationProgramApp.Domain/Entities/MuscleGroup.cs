@@ -2,7 +2,7 @@
 
 namespace PeriodisationProgramApp.Domain.Entities
 {
-    public class MuscleGroup : Entity
+    public class MuscleGroup : BaseEntity
     {
         public MuscleGroupType Type { get; set; }
 

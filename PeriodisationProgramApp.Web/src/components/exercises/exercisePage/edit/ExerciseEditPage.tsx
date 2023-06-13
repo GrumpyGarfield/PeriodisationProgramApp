@@ -1,4 +1,12 @@
-import { Button, FormLabel, Grid, TextField, Typography } from "@mui/material";
+import {
+  Button,
+  FormControlLabel,
+  FormLabel,
+  Grid,
+  Switch,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
 import { Loader } from "../../../common/loader/Loader";
 import { AxiosError } from "axios";
@@ -11,7 +19,7 @@ import { Exercise } from "../../../../types/enitities/Exercise";
 import { PageHeader } from "../../../common/pageHeader/PageHeader";
 import { ExerciseEditPageMuscleGroups } from "./ExerciseEditPageMuscleGroups";
 import { MuscleGroupRole } from "../../../../enums/MuscleGroupRole";
-import { UpdateExerciseProps } from "../../../../types/services/UpdateExerciseProps";
+import { UpdateExerciseProps } from "../../../../types/services/exercise/UpdateExerciseProps";
 import { ControlledRadioGroup } from "../../../common/inputs/ControlledRadioGroup";
 import useEnumHelper from "../../../../helpers/useEnumHelper";
 import { ExerciseType } from "../../../../enums/ExerciseType";
@@ -37,7 +45,7 @@ export function ExerciseEditPage() {
     setMajorSynergistIds,
     minorSynergistIds,
     setMinorSynergistIds,
-  } = useMuscleGroupRoles();
+  } = useMuscleGroupRoles(exercise);
 
   const parseLines = (value: string | undefined) =>
     value ? value.replace(/(\\n)/g, "\n") : undefined;
@@ -73,7 +81,6 @@ export function ExerciseEditPage() {
 
   const onSubmit = async (exercise: Exercise) => {
     const editedExercise: UpdateExerciseProps = {
-      id: exercise.id,
       name: exercise.name,
       description: exercise.description,
       youtubeLink: exercise.youtubeLink,
@@ -257,6 +264,24 @@ export function ExerciseEditPage() {
             })}
             helperText={errors.fatigueMagnitude?.message}
             error={errors.fatigueMagnitude !== undefined}
+          />
+        </Grid>
+        <Grid item xs={12} sm={12} md={12}>
+          <FormLabel>Is Public</FormLabel>
+        </Grid>
+        <Grid item xs={12} sm={12} md={6}>
+          <Controller
+            control={control}
+            name="isPublic"
+            render={({ field: { onChange, value } }) => (
+              <FormControlLabel
+                id="isPublic"
+                control={
+                  <Switch color="primary" checked={value} onChange={onChange} />
+                }
+                label="Public"
+              />
+            )}
           />
         </Grid>
         <Grid item xs={12} sm={12} md={12}>

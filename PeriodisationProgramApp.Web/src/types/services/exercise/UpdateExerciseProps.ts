@@ -1,5 +1,5 @@
-import { ExerciseType } from "../../enums/ExerciseType";
-import { MuscleGroupRole } from "../../enums/MuscleGroupRole";
+import { ExerciseType } from "../../../enums/ExerciseType";
+import { MuscleGroupRole } from "../../../enums/MuscleGroupRole";
 
 type UpdateExerciseMuscleGroupProps = {
   muscleGroupId: string;
@@ -7,7 +7,6 @@ type UpdateExerciseMuscleGroupProps = {
 };
 
 export type UpdateExerciseProps = {
-  id: string;
   name: string;
   description?: string;
   youtubeLink?: string;

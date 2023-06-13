@@ -12,30 +12,6 @@ namespace PeriodisationProgramApp.BusinessLogic.Services.Interfaces
 
         Task<PagedResult<ExerciseDto>> GetExercises(PageableQueryContext context, string? firebaseId);
 
-        Task<PagedResult<ExerciseDto>> GetUserCreatedExercises(PageableQueryContext context, Guid userId);
-
-        Task<PagedResult<ExerciseDto>> GetUserCreatedExercises(PageableQueryContext context, string firebaseId);
-
-        Task<PagedResult<ExerciseDto>> GetUserLikedExercises(PageableQueryContext context, Guid userId);
-
-        Task<PagedResult<ExerciseDto>> GetUserLikedExercises(PageableQueryContext context, string firebaseId);
-
-        Task<ExerciseDto> SetLike(Guid exerciseId, Guid userId);
-
-        Task<ExerciseDto> SetLike(Guid exerciseId, string firebaseId);
-
-        Task<ExerciseDto> UnsetLike(Guid exerciseId, Guid userId);
-
-        Task<ExerciseDto> UnsetLike(Guid exerciseId, string firebaseId);
-
-        Task<ExerciseDto> SetRating(Guid exerciseId, Guid userId, int rating);
-
-        Task<ExerciseDto> SetRating(Guid exerciseId, string firebaseId, int rating);
-
-        Task<ExerciseDto> UnsetRating(Guid exerciseId, Guid userId);
-
-        Task<ExerciseDto> UnsetRating(Guid exerciseId, string firebaseId);
-
         Task<ExerciseDto> GetExercise(Guid exerciseId, Guid? userId);
 
         Task<ExerciseDto> GetExercise(Guid exerciseId, string? firebaseId);
@@ -43,10 +19,6 @@ namespace PeriodisationProgramApp.BusinessLogic.Services.Interfaces
         Task<ExerciseDto> UpdateExerciseUserData(Guid exerciseId, Guid userId, ExerciseUserDataDto exerciseUserDataDto);
 
         Task<ExerciseDto> UpdateExerciseUserData(Guid exerciseId, string firebaseId, ExerciseUserDataDto exerciseUserDataDto);
-
-        Task<ExerciseDto> UpdateExercise(Guid exerciseId, Guid userId, UpdateExerciseDto updateExerciseDto);
-
-        Task<ExerciseDto> UpdateExercise(Guid exerciseId, string firebaseId, UpdateExerciseDto updateExerciseDto);
     }
 }
 

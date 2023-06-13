@@ -1,10 +1,9 @@
-import { PagedResult } from "../../../../types/PagedResult";
-import MuscleGroupService from "../../../../serverInteraction/services/MuscleGroupService";
-import { MuscleGroup } from "../../../../types/enitities/MuscleGroup";
-import { useQuery } from "react-query";
 import { useMuscleGroupsContext } from "./MuscleGroupsContextProvider";
+import useGetAll from "../../../../serverInteraction/hooks/entity/useGetAll";
+import { MuscleGroup } from "../../../../types/enitities/MuscleGroup";
 
-const useMuscleGroups = () => {
+const useMuscleGroups = (offset: number = 0, limit: number = 16) => {
+  const entityName = "muscleGroup";
   const {
     filters,
     filterEntities,
@@ -15,22 +14,21 @@ const useMuscleGroups = () => {
   } = useMuscleGroupsContext();
 
   const { status, data, error, isLoading, isFetching, isRefetching, refetch } =
-    useQuery(
-      ["muscleGroups", JSON.stringify(filters), JSON.stringify(optionalParams)],
-      async ({ pageParam = 0 }): Promise<PagedResult<MuscleGroup>> => {
-        return await MuscleGroupService.getAll(
-          pageParam,
-          15,
-          filters,
-          sortParams,
-          optionalParams
-        );
-      }
+    useGetAll<MuscleGroup>(
+      entityName,
+      offset,
+      limit,
+      filters,
+      sortParams,
+      optionalParams
     );
+
+  const muscleGroups = data?.pages[0].items;
 
   return {
     status,
     data,
+    muscleGroups,
     error,
     isLoading,
     isFetching,

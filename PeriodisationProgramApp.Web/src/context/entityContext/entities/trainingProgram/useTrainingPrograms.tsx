@@ -2,9 +2,9 @@ import { useInfiniteQuery } from "react-query";
 import { TrainingProgram } from "../../../../types/enitities/TrainingProgram";
 import { useTrainingProgramsContext } from "../trainingProgram/TrainingProgramsContextProvider";
 import useCommunityEntities from "../useCommunityEntities";
-import CommunityEntityService from "../../../../serverInteraction/CommunityEntityInteractionService";
 import { useEffect } from "react";
 import { PagedResult } from "../../../../types/PagedResult";
+import EntityService from "../../../../serverInteraction/services/entity/EntityInteractionService";
 
 const useTrainingPrograms = (offset: number = 0, limit: number = 9) => {
   const entity = "trainingProgram";
@@ -37,7 +37,7 @@ const useTrainingPrograms = (offset: number = 0, limit: number = 9) => {
       JSON.stringify(optionalParams),
     ],
     async ({ pageParam = offset }): Promise<PagedResult<TrainingProgram>> => {
-      return await CommunityEntityService.getAll<TrainingProgram>(
+      return await EntityService.getAll<TrainingProgram>(
         entity,
         pageParam,
         limit,

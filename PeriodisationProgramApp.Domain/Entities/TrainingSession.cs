@@ -1,6 +1,6 @@
 ﻿namespace PeriodisationProgramApp.Domain.Entities
 {
-    public class TrainingSession : Entity
+    public class TrainingSession : BaseEntity
     {
         public TrainingSession(int week, DayOfWeek dayOfWeek, int repsInReserve)
         {

@@ -100,6 +100,7 @@ namespace PeriodisationProgramApp.WebApi.Controllers
             }
         }
 
+        [Authorize]
         [HttpGet]
         [Route("{exerciseId}")]
         public async Task<IActionResult> GetExercise(Guid exerciseId)
@@ -109,6 +110,17 @@ namespace PeriodisationProgramApp.WebApi.Controllers
             return Ok(await _exerciseService.GetExercise(exerciseId, uid));
         }
 
+        [Authorize]
+        [HttpPost]
+        [Route("")]
+        public async Task<IActionResult> CreateExercise([FromBody] CreateExerciseDto createExerciseDto)
+        {
+            var uid = User.FindFirstValue("user_id");
+
+            return Ok(await _exerciseService.CreateExercise(uid, createExerciseDto));
+        }
+
+        [Authorize]
         [HttpPut]
         [Route("{exerciseId}")]
         public async Task<IActionResult> UpdateExercise(Guid exerciseId, [FromBody] UpdateExerciseDto updateExerciseDto)
@@ -116,6 +128,26 @@ namespace PeriodisationProgramApp.WebApi.Controllers
             var uid = User.FindFirstValue("user_id");
 
             return Ok(await _exerciseService.UpdateExercise(exerciseId, uid, updateExerciseDto));
+        }
+
+        [Authorize]
+        [HttpDelete]
+        [Route("{exerciseId}")]
+        public async Task<IActionResult> DeleteExercise(Guid exerciseId)
+        {
+            var uid = User.FindFirstValue("user_id");
+
+            return Ok(await _exerciseService.DeleteExercise(exerciseId, uid));
+        }
+
+        [Authorize]
+        [HttpPost]
+        [Route("{exerciseId}/clone")]
+        public async Task<IActionResult> CloneExercise(Guid exerciseId)
+        {
+            var uid = User.FindFirstValue("user_id");
+
+            return Ok(true);
         }
 
         [HttpPost]

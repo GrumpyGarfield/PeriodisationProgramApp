@@ -2,7 +2,7 @@
 
 namespace PeriodisationProgramApp.Domain.Entities
 {
-    public class ExerciseMuscleGroup : Entity
+    public class ExerciseMuscleGroup : BaseEntity
     {
         public Guid ExerciseId { get; set; }
 

@@ -5,6 +5,7 @@ import { EntityFilter } from "../../../../types/EntityFilter";
 import { MuscleGroup } from "../../../../types/enitities/MuscleGroup";
 import { EntitiesProviderProps } from "../../../../types/EntitiesProviderProps";
 import FilterHelper from "../../../../helpers/FilterHelper";
+import { SortDirection } from "../../../../enums/SortDirection";
 
 const MuscleGroupsContext = createContext<
   IEntitiesContext<MuscleGroup> | undefined
@@ -37,6 +38,8 @@ const MuscleGroupsProvider = ({
   );
   const [sortParams, setSortParams] = useState<EntitySorting | undefined>(
     initialSorting
+      ? initialSorting
+      : { sortBy: "type", sortDir: SortDirection.Asc }
   );
   const [optionalParams, setOptionalParams] = useState<{}>({});
 

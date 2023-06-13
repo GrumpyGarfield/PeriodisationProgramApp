@@ -4,6 +4,9 @@ import {
   IndexCardListItemProps,
 } from "../../common/indexCard/IndexCardList";
 import useExercise from "../../../context/entityContext/entities/exercise/useExercise";
+import { RsmIndexInfo } from "../../info/RsmIndexInfo";
+import { FmIndexInfo } from "../../info/FmIndexInfo";
+import { SfrIndexInfo } from "../../info/SfrIndexInfo";
 
 type Props = {
   exercise: Exercise;
@@ -22,6 +25,7 @@ export default function ExercisePageIndexCard({
     {
       id: "rawStimulusMagnitude",
       label: "RSM",
+      info: <RsmIndexInfo />,
       tooltip: "Raw Stimulus Magnitude",
       register: {
         ...registerUserData("rawStimulusMagnitude", {
@@ -36,6 +40,7 @@ export default function ExercisePageIndexCard({
     {
       id: "fatigueMagnitude",
       label: "FM",
+      info: <FmIndexInfo />,
       tooltip: "Fatigue Magnitude",
       register: {
         ...registerUserData("fatigueMagnitude", {
@@ -50,6 +55,7 @@ export default function ExercisePageIndexCard({
     {
       id: "stimulusToFatigueRatio",
       label: "SFR",
+      info: <SfrIndexInfo />,
       tooltip: "Stimulus to Fatigue Ratio",
       register: {
         ...registerUserData("stimulusToFatigueRatio", {

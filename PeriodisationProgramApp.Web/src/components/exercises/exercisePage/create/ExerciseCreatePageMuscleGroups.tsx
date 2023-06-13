@@ -29,7 +29,7 @@ export function ExerciseCreatePageMuscleGroups({
   errors,
   validate,
 }: Props) {
-  const { data: muscleGroups } = useMuscleGroups();
+  const { muscleGroups } = useMuscleGroups();
   const { translate } = useEnumHelper();
 
   const targetMuscleGroupHandleChange = (event: SelectChangeEvent) => {
@@ -59,7 +59,11 @@ export function ExerciseCreatePageMuscleGroups({
   };
 
   if (muscleGroups === undefined) {
-    return <Loader />;
+    return (
+      <Grid item xs={12}>
+        <Loader />
+      </Grid>
+    );
   }
 
   return (
@@ -69,7 +73,7 @@ export function ExerciseCreatePageMuscleGroups({
           <FormLabel>Select target muscle group</FormLabel>
           <ControlledSelect
             label={"Target Muscle Group *"}
-            items={muscleGroups.items}
+            items={muscleGroups}
             selectedItemKey={targetMuscleGroupId}
             handleChange={targetMuscleGroupHandleChange}
             getItemLabel={getItemLabel}
@@ -85,7 +89,7 @@ export function ExerciseCreatePageMuscleGroups({
           <FormLabel>Select major synergists</FormLabel>
           <ControlledSelectMultiple
             label={"Major Synergists"}
-            items={muscleGroups.items.filter(
+            items={muscleGroups.filter(
               (item) => item.id !== targetMuscleGroupId
             )}
             selectedItemKeys={majorSynergistIds}
@@ -100,7 +104,7 @@ export function ExerciseCreatePageMuscleGroups({
           <FormLabel>Select minor synergists</FormLabel>
           <ControlledSelectMultiple
             label={"Minor Synergists"}
-            items={muscleGroups.items.filter(
+            items={muscleGroups.filter(
               (item) => item.id !== targetMuscleGroupId
             )}
             selectedItemKeys={minorSynergistIds}

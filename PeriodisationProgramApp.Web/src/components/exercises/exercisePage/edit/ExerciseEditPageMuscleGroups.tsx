@@ -24,7 +24,7 @@ export function ExerciseEditPageMuscleGroups({
   minorSynergistIds,
   setMinorSynergistIds,
 }: Props) {
-  const { data: muscleGroups } = useMuscleGroups();
+  const { muscleGroups } = useMuscleGroups();
   const { translate } = useEnumHelper();
 
   const targetMuscleGroupHandleChange = (event: SelectChangeEvent) => {
@@ -62,7 +62,7 @@ export function ExerciseEditPageMuscleGroups({
       <Grid item xs={12} sm={12} md={4}>
         <ControlledSelect
           label={"Target Muscle Group *"}
-          items={muscleGroups.items}
+          items={muscleGroups}
           selectedItemKey={targetMuscleGroupId}
           handleChange={targetMuscleGroupHandleChange}
           getItemLabel={getItemLabel}
@@ -72,9 +72,7 @@ export function ExerciseEditPageMuscleGroups({
       <Grid item xs={12} sm={12} md={4}>
         <ControlledSelectMultiple
           label={"Major Synergists"}
-          items={muscleGroups.items.filter(
-            (item) => item.id !== targetMuscleGroupId
-          )}
+          items={muscleGroups.filter((item) => item.id !== targetMuscleGroupId)}
           selectedItemKeys={majorSynergistIds}
           handleChange={majorSynergistHandleChange}
           getItemLabel={getItemLabel}
@@ -84,9 +82,7 @@ export function ExerciseEditPageMuscleGroups({
       <Grid item xs={12} sm={12} md={4}>
         <ControlledSelectMultiple
           label={"Minor Synergists"}
-          items={muscleGroups.items.filter(
-            (item) => item.id !== targetMuscleGroupId
-          )}
+          items={muscleGroups.filter((item) => item.id !== targetMuscleGroupId)}
           selectedItemKeys={minorSynergistIds}
           handleChange={minorSynergistsHandleChange}
           getItemLabel={getItemLabel}

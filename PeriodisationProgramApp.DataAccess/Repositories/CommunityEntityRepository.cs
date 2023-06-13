@@ -31,7 +31,7 @@ namespace PeriodisationProgramApp.DataAccess.Repositories
 
         public async Task<PagedResult<T>> GetPaginatedResultAsync(IPageableQueryContext context, Guid? userId = null)
         {
-            var query = _context.Set<T>();
+            var query = _context.Set<T>().Where(t => t.UserId != userId);
             return await GetPagedAsync(query, context, userId);
         }
 
@@ -43,7 +43,7 @@ namespace PeriodisationProgramApp.DataAccess.Repositories
 
         public async Task<PagedResult<T>> GetUserLiked(IPageableQueryContext context, Guid userId)
         {
-            var query = _context.Set<T>().Where(t => t.UserLikes.Any(u => u.UserId == userId));
+            var query = _context.Set<T>().Where(t => t.UserId != userId && t.UserLikes.Any(u => u.UserId == userId));
             return await GetPagedAsync(query, context);
         }
 

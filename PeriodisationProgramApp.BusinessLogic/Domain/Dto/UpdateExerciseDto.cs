@@ -12,11 +12,13 @@ namespace PeriodisationProgramApp.BusinessLogic.Domain.Dto
 
         public ExerciseType Type { get; set; }
 
-        public List<UpdateExerciseMuscleGroupDto> ExerciseMuscleGroups { get; set; } = new();
+        public List<CreateExerciseMuscleGroupDto> ExerciseMuscleGroups { get; set; } = new();
 
         public int RawStimulusMagnitude { get; set; }
 
         public int FatigueMagnitude { get; set; }
+
+        public bool IsPublic { get; set; }
     }
 }
 

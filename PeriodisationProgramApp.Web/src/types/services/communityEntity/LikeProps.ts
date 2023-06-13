@@ -1,5 +1,5 @@
 export type LikeProps = {
-  entity: string;
+  entityName: string;
   id: string;
   isLiked: boolean;
 };

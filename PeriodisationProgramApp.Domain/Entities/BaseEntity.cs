@@ -2,7 +2,7 @@
 
 namespace PeriodisationProgramApp.Domain.Entities
 {
-    public class Entity : IEntity
+    public class BaseEntity : IBaseEntity
     {
         public Guid Id { get; set; }
 

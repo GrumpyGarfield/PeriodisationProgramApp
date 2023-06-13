@@ -1,5 +1,4 @@
 import { Box, Grid, Typography } from "@mui/material";
-import useMuscleGroup from "../../../context/entityContext/entities/muscleGroup/useMuscleGroup";
 import { useParams } from "react-router-dom";
 import { Loader } from "../../common/loader/Loader";
 import { AxiosError } from "axios";
@@ -13,6 +12,8 @@ import MuscleGroupPageExercises from "./MuscleGroupPageExercises";
 import { PageContent } from "../../common/pageContent/PageContent";
 import { PageContentPanel } from "../../common/pageContent/PageContentPanel";
 import { ExercisesProvider } from "../../../context/entityContext/entities/exercise/ExercisesContextProvider";
+import useGet from "../../../serverInteraction/hooks/entity/useGet";
+import { MuscleGroup } from "../../../types/enitities/MuscleGroup";
 
 type Params = {
   id: string;
@@ -21,7 +22,13 @@ type Params = {
 export function MuscleGroupPage() {
   const [user] = useAuthState(auth);
   const { id } = useParams<Params>();
-  const { status, muscleGroup, error, isLoading } = useMuscleGroup(id!);
+  //const { status, muscleGroup, error, isLoading } = useMuscleGroup(id!);
+  const {
+    status,
+    entity: muscleGroup,
+    error,
+    isLoading,
+  } = useGet<MuscleGroup>("muscleGroup", id!);
   const { translate } = useEnumHelper();
 
   const isAuthenticated = user !== null && user !== undefined;

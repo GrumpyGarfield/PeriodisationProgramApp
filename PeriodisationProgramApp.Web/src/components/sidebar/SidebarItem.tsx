@@ -28,7 +28,6 @@ export function SidebarItem({ label, link, icon, children }: SidebarItemProps) {
             onClick={() => children !== undefined && setOpen(!open)}
             sx={{ pl: level * 3 }}
           >
-            {" "}
             {icon !== undefined && <ListItemIcon>{icon}</ListItemIcon>}
             <ListItemText primary={label} />
             {children !== undefined && (open ? <ExpandLess /> : <ExpandMore />)}

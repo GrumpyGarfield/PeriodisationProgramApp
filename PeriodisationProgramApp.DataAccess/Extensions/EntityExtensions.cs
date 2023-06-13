@@ -9,13 +9,13 @@ namespace PeriodisationProgramApp.DataAccess.Extensions
 {
     public static class EntityExtensions
     {
-        public static void MarkAsCreated<T>(this T entity) where T : Entity
+        public static void MarkAsCreated<T>(this T entity) where T : BaseEntity
         {
             entity.Created = DateTime.UtcNow;
             entity.Updated = DateTime.UtcNow;
         }
 
-        public static void MarkAsUpdated<T>(this T entity) where T : Entity
+        public static void MarkAsUpdated<T>(this T entity) where T : BaseEntity
         {
             entity.Updated = DateTime.UtcNow;
         }

@@ -1,5 +1,5 @@
 import { Box, Grid, Typography, Button } from "@mui/material";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { Loader } from "../../common/loader/Loader";
 import { AxiosError } from "axios";
 import { ExercisePageHeader } from "./ExercisePageHeader";
@@ -10,7 +10,6 @@ import ExercisePageIndexCard from "./ExercisePageIndexCard";
 import { auth } from "../../../firebase/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import useExercise from "../../../context/entityContext/entities/exercise/useExercise";
-import { UserRatingProps } from "../../../types/UserRatingProps";
 import ExercisePageMuscleGroups from "./ExercisePageMuscleGroups";
 import ExercisePageSimilarExercises from "./ExercisePageSimilarExercises";
 import { MuscleGroupRole } from "../../../enums/MuscleGroupRole";
@@ -19,6 +18,8 @@ import { Article } from "../../common/text/Article";
 import { PageContent } from "../../common/pageContent/PageContent";
 import { PageContentPanel } from "../../common/pageContent/PageContentPanel";
 import { ExercisesProvider } from "../../../context/entityContext/entities/exercise/ExercisesContextProvider";
+import { DeleteDialogModal } from "../../common/modal/DeleteDialogModal";
+import { useState } from "react";
 
 type Params = {
   id: string;
@@ -28,25 +29,9 @@ export function ExercisePage() {
   const [user] = useAuthState(auth);
   const { id } = useParams<Params>();
   const location = useLocation();
-  const { status, exercise, error, isLoading, like, rate } = useExercise(id!);
-
-  const handleLike = async (id: string, isLiked: boolean) => {
-    return like(id, isLiked).then((exercise) => exercise.isLiked);
-  };
-
-  const handleRate = async (
-    id: string,
-    isRated: boolean,
-    rating: number | null
-  ) => {
-    return rate(id, isRated, rating).then((exercise): UserRatingProps => {
-      const result: UserRatingProps = {
-        isRated: exercise.isRated,
-        rating: exercise.userRating,
-      };
-      return result;
-    });
-  };
+  const { status, exercise, error, isLoading, remove } = useExercise(id!);
+  const [isModalOpen, setModalOpen] = useState(false);
+  const navigate = useNavigate();
 
   const isAuthenticated = user !== null && user !== undefined;
 
@@ -66,6 +51,15 @@ export function ExercisePage() {
     (g) => g.muscleGroupRole === MuscleGroupRole.Target
   );
 
+  const handleDelete = async () => {
+    setModalOpen(false);
+    const result = await remove();
+
+    if (result) {
+      navigate("/exercises");
+    }
+  };
+
   const pageContentPanel = () => {
     return (
       <PageContentPanel>
@@ -80,9 +74,16 @@ export function ExercisePage() {
               variant="text"
               startIcon={<DeleteIcon />}
               sx={{ width: 100 }}
+              onClick={() => setModalOpen(true)}
             >
               Delete
             </Button>
+            <DeleteDialogModal
+              entityName="exercise"
+              isOpen={isModalOpen}
+              handleClose={() => setModalOpen(false)}
+              handleDelete={handleDelete}
+            />
           </>
         ) : null}
       </PageContentPanel>
@@ -103,8 +104,6 @@ export function ExercisePage() {
               isRated: exercise.isRated,
               rating: exercise.userRating,
             }}
-            handleLike={handleLike}
-            handleRate={handleRate}
           />
         </Grid>
         <Grid item xs={4}>
@@ -124,10 +123,7 @@ export function ExercisePage() {
           </Grid>
           {exercise.youtubeLink ? (
             <Grid item xs={2} sm={2} md={1}>
-              <YoutubeEmbed
-                embedId={exercise.youtubeLink.split("/").pop()!}
-                width={"100%"}
-              />
+              <YoutubeEmbed url={exercise.youtubeLink} width={"100%"} />
             </Grid>
           ) : null}
         </Grid>

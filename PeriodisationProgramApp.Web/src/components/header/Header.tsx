@@ -1,13 +1,10 @@
 import {
   AppBar,
-  Container,
   Toolbar,
   Typography,
   Box,
   IconButton,
   Menu,
-  MenuItem,
-  Button,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import AdbIcon from "@mui/icons-material/Adb";
@@ -22,7 +19,6 @@ type Props = {
   loading: boolean;
 };
 
-const pages = ["Products", "Pricing", "Blog"];
 export function Header({ user, loading }: Props) {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
@@ -46,8 +42,8 @@ export function Header({ user, loading }: Props) {
       position="fixed"
       sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
     >
-      <Container maxWidth="xl">
-        <Toolbar disableGutters>
+      <Box>
+        <Toolbar>
           <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
           <Typography
             variant="h6"
@@ -95,13 +91,7 @@ export function Header({ user, loading }: Props) {
               sx={{
                 display: { xs: "block", md: "none" },
               }}
-            >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
+            ></Menu>
           </Box>
           <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
           <Typography
@@ -122,17 +112,7 @@ export function Header({ user, loading }: Props) {
           >
             LOGO
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "white", display: "block" }}
-              >
-                {page}
-              </Button>
-            ))}
-          </Box>
+          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}></Box>
           <Box sx={{ flexGrow: 0 }}>
             {loading ? null : user === null || user === undefined ? (
               <Link to="signin">Sign In</Link>
@@ -141,7 +121,7 @@ export function Header({ user, loading }: Props) {
             )}
           </Box>
         </Toolbar>
-      </Container>
+      </Box>
     </AppBar>
   );
 }

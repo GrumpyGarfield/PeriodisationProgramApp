@@ -4,7 +4,7 @@ import Iconify from "../iconify/Iconify";
 export type CardMenuItemProps = {
   icon: string;
   label: string;
-  onClick?: (props?: any) => void;
+  onClick?: (event: any) => void;
   color?: string;
 };
 
@@ -15,7 +15,7 @@ export function CardMenuItem({
   color,
 }: CardMenuItemProps) {
   return (
-    <MenuItem sx={{ color: color }}>
+    <MenuItem sx={{ color: color }} onClick={onClick}>
       <Iconify icon={icon} sx={{ mr: 2 }} />
       {label}
     </MenuItem>

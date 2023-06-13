@@ -1,105 +1,32 @@
-import { useMutation, useQueryClient } from "react-query";
-import useEntity from "../../useEntity";
-import useAlert from "../../../alertContext/useAlert";
-import { AxiosError } from "axios";
 import { Exercise } from "../../../../types/enitities/Exercise";
-import ExerciseService from "../../../../serverInteraction/services/ExerciseService";
-import useLike from "../../../../hooks/useLike";
-import useRate from "../../../../hooks/useRate";
-import { UpdateExerciseProps } from "../../../../types/services/UpdateExerciseProps";
 import { ExerciseIndexData } from "../../../../types/ExerciseIndexData";
 import { useForm } from "react-hook-form";
+import useGet from "../../../../serverInteraction/hooks/entity/useGet";
+import useUpdateUserData from "../../../../serverInteraction/hooks/communityEntity/useUpdateUserData";
+import useLike from "../../../../serverInteraction/hooks/communityEntity/useLike";
+import useRate from "../../../../serverInteraction/hooks/communityEntity/useRate";
+import useUpdate from "../../../../serverInteraction/hooks/entity/useUpdate";
+import { UpdateExerciseProps } from "../../../../types/services/exercise/UpdateExerciseProps";
+import useRemove from "../../../../serverInteraction/hooks/entity/useRemove";
 
 const useExercise = (id: string) => {
-  const entity = "exercise";
-  const queryClient = useQueryClient();
-
-  const { showError, showSuccess } = useAlert();
-  const { like } = useLike(entity, (exercise) => {
-    queryClient.setQueryData<Exercise | undefined>(
-      ["exercise", id],
-      (data): Exercise | undefined => {
-        if (data === undefined) {
-          return data;
-        }
-
-        data.isLiked = exercise.isLiked;
-        data.likes = exercise.likes;
-
-        return data;
-      }
-    );
-  });
-
-  const { rate } = useRate(entity, (exercise) => {
-    queryClient.setQueryData<Exercise | undefined>(
-      ["exercise", id],
-      (data): Exercise | undefined => {
-        if (data === undefined) {
-          return data;
-        }
-
-        data.isRated = exercise.isRated;
-        data.rating = exercise.rating;
-        data.userRating = exercise.userRating;
-
-        return data;
-      }
-    );
-  });
+  const entityName = "exercise";
+  const { like } = useLike<Exercise>(entityName);
+  const { rate } = useRate<Exercise>(entityName);
+  const { update, isUpdating } = useUpdate<UpdateExerciseProps, Exercise>(
+    entityName
+  );
+  const { remove, isRemoving } = useRemove(entityName);
 
   const {
     status,
-    data: exercise,
+    entity: exercise,
     error,
     isLoading,
     isFetching,
     isRefetching,
     refetch,
-  } = useEntity<Exercise>(["exercise", id], async (): Promise<Exercise> => {
-    return await ExerciseService.get(id);
-  });
-
-  const { mutateAsync: mutateUpdateUserData } = useMutation(
-    ExerciseService.updateUserData,
-    {
-      onSuccess: (exercise) => {
-        queryClient.setQueryData<Exercise | undefined>(["exercise", id], () => {
-          return exercise;
-        });
-      },
-      onError: (error) => {
-        console.log(error);
-
-        if (error instanceof AxiosError) {
-          showError(error.message);
-        }
-      },
-    }
-  );
-
-  const { mutateAsync: mutateUpdate, isLoading: isUpdating } = useMutation(
-    ExerciseService.update,
-    {
-      onSuccess: (exercise) => {
-        queryClient.setQueryData<Exercise | undefined>(["exercise", id], () => {
-          showSuccess("Saved successfully!");
-          return exercise;
-        });
-      },
-      onError: (error) => {
-        console.log(error);
-
-        if (error instanceof AxiosError) {
-          showError(error.message);
-        }
-      },
-    }
-  );
-
-  const update = async (exercise: UpdateExerciseProps) => {
-    return mutateUpdate(exercise);
-  };
+  } = useGet<Exercise>(entityName, id);
 
   const parseIndexData = (
     exercise: Exercise | undefined
@@ -129,13 +56,7 @@ const useExercise = (id: string) => {
     };
   };
 
-  const onSubmitUserData = async (exerciseIndexData: ExerciseIndexData) => {
-    await mutateUpdateUserData({
-      id: id,
-      rawStimulusMagnitude: exerciseIndexData.rawStimulusMagnitude,
-      fatigueMagnitude: exerciseIndexData.fatigueMagnitude,
-    });
-  };
+  const { updateUserData } = useUpdateUserData(entityName, id);
 
   const {
     register: registerUserData,
@@ -147,7 +68,23 @@ const useExercise = (id: string) => {
     values: parseIndexData(exercise),
   });
 
-  const submitUserData = handleSubmitUserData(onSubmitUserData);
+  const submitUserData = handleSubmitUserData(updateUserData);
+
+  const likeExercise = (isLiked: boolean) => {
+    return like(id, isLiked);
+  };
+
+  const rateExercise = (isRated: boolean, rating: number | null) => {
+    return rate(id, isRated, rating);
+  };
+
+  const updateExercise = (updateProps: UpdateExerciseProps) => {
+    return update(id, updateProps);
+  };
+
+  const removeExercise = () => {
+    return remove(id);
+  };
 
   return {
     status,
@@ -157,13 +94,15 @@ const useExercise = (id: string) => {
     isFetching,
     isRefetching,
     refetch,
-    like,
-    rate,
-    update,
-    isUpdating,
     registerUserData,
     submitUserData,
     userDataFormErrors,
+    like: likeExercise,
+    rate: rateExercise,
+    update: updateExercise,
+    isUpdating,
+    remove: removeExercise,
+    isRemoving,
   };
 };
 

@@ -8,4 +8,5 @@ export type CommunityEntity = {
   user: User;
   isLiked: boolean;
   isRated: boolean;
+  isPublic: boolean;
 } & BaseEntity;

@@ -1,51 +1,21 @@
-import { useMutation, useQueryClient } from "react-query";
 import { MuscleGroup } from "../../../../types/enitities/MuscleGroup";
-import useEntity from "../../useEntity";
-import useAlert from "../../../alertContext/useAlert";
-import { AxiosError } from "axios";
 import { useForm } from "react-hook-form";
 import { MuscleGroupIndexData } from "../../../../types/MuscleGroupIndexData";
-import MuscleGroupService from "../../../../serverInteraction/services/MuscleGroupService";
+import useGet from "../../../../serverInteraction/hooks/entity/useGet";
+import useUpdateUserData from "../../../../serverInteraction/hooks/communityEntity/useUpdateUserData";
 
 const useMuscleGroup = (id: string) => {
-  const { showError } = useAlert();
-  const queryClient = useQueryClient();
+  const entityName = "muscleGroup";
 
   const {
     status,
-    data: muscleGroup,
+    entity: muscleGroup,
     error,
     isLoading,
     isFetching,
     isRefetching,
     refetch,
-  } = useEntity<MuscleGroup>(
-    ["muscleGroup", id],
-    async (): Promise<MuscleGroup> => {
-      return await MuscleGroupService.get(id);
-    }
-  );
-
-  const { mutateAsync: mutateUpdateUserData } = useMutation(
-    MuscleGroupService.updateUserData<MuscleGroup>,
-    {
-      onSuccess: (muscleGroup) => {
-        queryClient.setQueryData<MuscleGroup | undefined>(
-          ["muscleGroup", id],
-          () => {
-            return muscleGroup;
-          }
-        );
-      },
-      onError: (error) => {
-        console.log(error);
-
-        if (error instanceof AxiosError) {
-          showError(error.message);
-        }
-      },
-    }
-  );
+  } = useGet<MuscleGroup>(entityName, id);
 
   const parseIndexData = (
     muscleGroup: MuscleGroup | undefined
@@ -71,34 +41,30 @@ const useMuscleGroup = (id: string) => {
     };
   };
 
-  const onSubmitUserData = async (
-    muscleGroupIndexData: MuscleGroupIndexData
-  ) => {
-    await mutateUpdateUserData({
-      id: id,
-      maintenanceVolume: muscleGroupIndexData.maintenanceVolume
-        ? muscleGroupIndexData.maintenanceVolume
-        : 0,
-      minimumEffectiveVolume: muscleGroupIndexData.minimumEffectiveVolume
-        ? muscleGroupIndexData.minimumEffectiveVolume
-        : 0,
-      maximumRecoverableVolume: muscleGroupIndexData.maximumRecoverableVolume
-        ? muscleGroupIndexData.maximumRecoverableVolume
-        : 0,
-    });
-  };
+  const { updateUserData } = useUpdateUserData(entityName, id);
 
   const {
     register: registerUserData,
     handleSubmit: handleSubmitUserData,
     formState: { errors: userDataFormErrors },
+    setValue: setUserDataValue,
   } = useForm<MuscleGroupIndexData>({
     mode: "onBlur",
     reValidateMode: "onBlur",
     values: parseIndexData(muscleGroup),
   });
 
-  const submitUserData = handleSubmitUserData(onSubmitUserData);
+  const submitUserData = handleSubmitUserData(updateUserData);
+
+  const userDataOnBlur = (
+    value: string,
+    fieldName: keyof MuscleGroupIndexData
+  ) => {
+    if (value === "") {
+      setUserDataValue(fieldName, 0);
+    }
+    submitUserData();
+  };
 
   return {
     status,
@@ -111,6 +77,7 @@ const useMuscleGroup = (id: string) => {
     registerUserData,
     submitUserData,
     userDataFormErrors,
+    userDataOnBlur,
   };
 };
 
