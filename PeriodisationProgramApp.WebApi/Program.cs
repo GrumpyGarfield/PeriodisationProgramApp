@@ -8,6 +8,7 @@ using PeriodisationProgramApp.BusinessLogic.Factories;
 using PeriodisationProgramApp.BusinessLogic.Factories.Interfaces;
 using PeriodisationProgramApp.Configuration.Interfaces;
 using PeriodisationProgramApp.DataAccess;
+using PeriodisationProgramApp.DataAccess.Extensions;
 using PeriodisationProgramApp.DataAccess.Repositories;
 using PeriodisationProgramApp.DataAccess.UnitsOfWork;
 using PeriodisationProgramApp.Domain.Interfaces;
@@ -29,6 +30,7 @@ builder.Services.AddTransient(typeof(IGenericRepository<>), typeof(GenericReposi
                 .AddSingleton<IAppSettings, AppSettings>()
                 .AddSingleton(x => x.GetService<IAppSettings>()!.DefaultDataSettings);
 
+builder.Services.AddRepositories();
 builder.Services.AddTrainingSessionBuilders();
 builder.Services.AddTrainingProgramBuilders();
 builder.Services.AddBusinessLogicServices();

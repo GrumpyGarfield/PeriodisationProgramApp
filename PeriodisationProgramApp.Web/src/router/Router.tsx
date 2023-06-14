@@ -15,6 +15,8 @@ import { TrainingProgramsProvider } from "../context/entityContext/entities/trai
 import { ExercisesProvider } from "../context/entityContext/entities/exercise/ExercisesContextProvider";
 import { MuscleGroupsProvider } from "../context/entityContext/entities/muscleGroup/MuscleGroupsContextProvider";
 import { ExerciseCreatePage } from "../components/exercises/exercisePage/create/ExerciseCreatePage";
+import { TrainingProgramPage } from "../components/trainingPrograms/trainingProgramPage/TrainingProgramPage";
+import { TrainingProgramCreatePage } from "../components/trainingPrograms/trainingProgramPage/create/TrainingProgramCreatePage";
 
 const router = createBrowserRouter([
   {
@@ -28,6 +30,14 @@ const router = createBrowserRouter([
             <TrainingProgramsPage />
           </TrainingProgramsProvider>
         ),
+      },
+      {
+        path: "training-programs/create",
+        element: <TrainingProgramCreatePage />,
+      },
+      {
+        path: "training-programs/:id",
+        element: <TrainingProgramPage />,
       },
       {
         path: "exercises",

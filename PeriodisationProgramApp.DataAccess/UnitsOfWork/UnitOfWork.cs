@@ -21,7 +21,7 @@ namespace PeriodisationProgramApp.DataAccess.UnitsOfWork
             TrainingPrograms = new TrainingProgramRepository(_context);
         }
 
-        public IUsersRepository Users { get; private set; } 
+        public IUserRepository Users { get; private set; } 
 
         public IMuscleGroupRepository MuscleGroups { get; private set; }
 

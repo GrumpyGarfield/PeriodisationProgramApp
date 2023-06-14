@@ -8,7 +8,6 @@ import { CardHeader } from "../../../common/card/CardHeader";
 import { CardList } from "../../../common/card/CardList";
 import { MuscleGroupType } from "../../../../enums/MuscleGroupType";
 import { useEnumHelper } from "../../../../helpers/useEnumHelper";
-import { UserRatingProps } from "../../../../types/UserRatingProps";
 import { Exercise } from "../../../../types/enitities/Exercise";
 import { ExerciseType } from "../../../../enums/ExerciseType";
 import { MuscleGroupRole } from "../../../../enums/MuscleGroupRole";
@@ -16,12 +15,12 @@ import Iconify from "../../../common/iconify/Iconify";
 
 type Props = {
   exercise: Exercise;
-  handleLike: (id: string, isLiked: boolean) => Promise<boolean>;
+  handleLike: (id: string, isLiked: boolean) => Promise<Exercise>;
   handleRate: (
     id: string,
     isRating: boolean,
     rating: number | null
-  ) => Promise<UserRatingProps>;
+  ) => Promise<Exercise>;
   handleDelete: (id: string) => Promise<boolean>;
 };
 

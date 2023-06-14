@@ -4,7 +4,6 @@ using PeriodisationProgramApp.Domain.Entities;
 using PeriodisationProgramApp.Domain.Enums;
 using PeriodisationProgramApp.Domain.Interfaces;
 using PeriodisationProgramApp.Domain.Pagination;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace PeriodisationProgramApp.DataAccess.Repositories
 {

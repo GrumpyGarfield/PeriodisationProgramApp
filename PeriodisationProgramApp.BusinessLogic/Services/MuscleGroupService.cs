@@ -2,6 +2,7 @@
 using PeriodisationProgramApp.BusinessLogic.Domain.Dto;
 using PeriodisationProgramApp.BusinessLogic.Extensions;
 using PeriodisationProgramApp.BusinessLogic.Services.Interfaces;
+using PeriodisationProgramApp.DataAccess;
 using PeriodisationProgramApp.DataAccess.QueryContext;
 using PeriodisationProgramApp.Domain.Entities;
 using PeriodisationProgramApp.Domain.Interfaces;
@@ -9,20 +10,15 @@ using PeriodisationProgramApp.Domain.Pagination;
 
 namespace PeriodisationProgramApp.BusinessLogic.Services
 {
-    public class MuscleGroupService : IMuscleGroupService
+    public class MuscleGroupService : EntityService<MuscleGroup, MuscleGroupDto>, IMuscleGroupService
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
-
-        public MuscleGroupService(IUnitOfWork unitOfWork, IMapper mapper)
+        public MuscleGroupService(ApplicationContext context, IMuscleGroupRepository repository, IUserRepository usersRepository, IMapper mapper) : base(context, repository, usersRepository, mapper)
         {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
         }
 
         public async Task<PagedResult<MuscleGroupDto>> GetMuscleGroups(PageableQueryContext context, Guid? userId = null)
         {
-            var muscleGroups = await _unitOfWork.MuscleGroups.GetPaginatedResultAsync(context, userId);
+            var muscleGroups = await _repository.GetPaginatedResultAsync(context, userId);
             return muscleGroups.Translate<MuscleGroup, MuscleGroupDto>(_mapper);
         }
 
@@ -33,7 +29,7 @@ namespace PeriodisationProgramApp.BusinessLogic.Services
                 return await GetMuscleGroups(context);
             }
 
-            var user = await _unitOfWork.Users.GetUserByFirebaseId(firebaseId);
+            var user = await _usersRepository.GetUserByFirebaseId(firebaseId);
 
             if (user == null)
             {
@@ -45,7 +41,7 @@ namespace PeriodisationProgramApp.BusinessLogic.Services
 
         public async Task<MuscleGroupDto> GetMuscleGroup(Guid muscleGroupId, Guid? userId = null)
         {
-            var muscleGroup = await _unitOfWork.MuscleGroups.GetByIdAsync(muscleGroupId, userId);
+            var muscleGroup = await _repository.GetByIdAsync(muscleGroupId, userId);
             return muscleGroup.Translate<MuscleGroup, MuscleGroupDto>(_mapper);
         }
 
@@ -56,7 +52,7 @@ namespace PeriodisationProgramApp.BusinessLogic.Services
                 return await GetMuscleGroup(muscleGroupId);
             }
 
-            var user = await _unitOfWork.Users.GetUserByFirebaseId(firebaseId);
+            var user = await _usersRepository.GetUserByFirebaseId(firebaseId);
 
             if (user == null)
             {
@@ -68,7 +64,7 @@ namespace PeriodisationProgramApp.BusinessLogic.Services
 
         public async Task<MuscleGroupDto> UpdateMuscleGroupUserData(Guid muscleGroupId, Guid userId, MuscleGroupUserDataDto muscleGroupUserDataDto)
         {
-            var muscleGroup = await _unitOfWork.MuscleGroups.GetWithUsersDataAsync(muscleGroupId);
+            var muscleGroup = await _repository.GetWithUsersDataAsync(muscleGroupId);
             var muscleGroupUserData = muscleGroup.MuscleGroupUsersData.FirstOrDefault(d => d.UserId == userId);
 
             if (muscleGroupUserData == null)
@@ -85,8 +81,8 @@ namespace PeriodisationProgramApp.BusinessLogic.Services
             muscleGroupUserData.MinimumEffectiveVolume = muscleGroupUserDataDto.MinimumEffectiveVolume;
             muscleGroupUserData.MaximumRecoverableVolume = muscleGroupUserDataDto.MaximumRecoverableVolume;
 
-            _unitOfWork.MuscleGroups.Update(muscleGroup);
-            _unitOfWork.Complete();
+            _repository.Update(muscleGroup);
+            await _context.SaveChangesAsync();
 
             muscleGroup.MuscleGroupUsersData = muscleGroup.MuscleGroupUsersData.Where(d => d.UserId == userId).ToList();
             return muscleGroup.Translate<MuscleGroup, MuscleGroupDto>(_mapper);
@@ -94,7 +90,7 @@ namespace PeriodisationProgramApp.BusinessLogic.Services
 
         public async Task<MuscleGroupDto> UpdateMuscleGroupUserData(Guid muscleGroupId, string firebaseId, MuscleGroupUserDataDto muscleGroupUserDataDto)
         {
-            var user = await _unitOfWork.Users.GetUserByFirebaseId(firebaseId);
+            var user = await _usersRepository.GetUserByFirebaseId(firebaseId);
 
             if (user == null)
             {

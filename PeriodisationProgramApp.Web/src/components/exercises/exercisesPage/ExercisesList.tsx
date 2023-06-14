@@ -6,7 +6,6 @@ import React from "react";
 import { AxiosError } from "axios";
 import useExercises from "../../../context/entityContext/entities/exercise/useExercises";
 import { Exercise } from "../../../types/enitities/Exercise";
-import { UserRatingProps } from "../../../types/UserRatingProps";
 
 export default function ExercisesList({ ...other }: GridProps) {
   const { ref, inView } = useInView();
@@ -24,24 +23,6 @@ export default function ExercisesList({ ...other }: GridProps) {
     rate,
     remove,
   } = useExercises();
-
-  const handleLike = async (id: string, isLiked: boolean) => {
-    return like(id, isLiked).then((exercise) => exercise.isLiked);
-  };
-
-  const handleRate = async (
-    id: string,
-    isRated: boolean,
-    rating: number | null
-  ) => {
-    return rate(id, isRated, rating).then((exercise): UserRatingProps => {
-      const result: UserRatingProps = {
-        isRated: exercise.isRated,
-        rating: exercise.userRating,
-      };
-      return result;
-    });
-  };
 
   const handleDelete = async (id: string) => {
     return await remove(id);
@@ -77,8 +58,8 @@ export default function ExercisesList({ ...other }: GridProps) {
             <Grid key={exercise.id} item sm={12} md={6} lg={4} xl={3}>
               <ExercisesCard
                 exercise={exercise}
-                handleLike={handleLike}
-                handleRate={handleRate}
+                handleLike={like}
+                handleRate={rate}
                 handleDelete={handleDelete}
               />
             </Grid>

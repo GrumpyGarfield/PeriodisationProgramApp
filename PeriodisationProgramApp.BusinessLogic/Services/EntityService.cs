@@ -4,7 +4,6 @@ using PeriodisationProgramApp.BusinessLogic.Extensions;
 using PeriodisationProgramApp.BusinessLogic.Services.Interfaces;
 using PeriodisationProgramApp.DataAccess;
 using PeriodisationProgramApp.DataAccess.QueryContext;
-using PeriodisationProgramApp.DataAccess.UnitsOfWork;
 using PeriodisationProgramApp.Domain.Entities;
 using PeriodisationProgramApp.Domain.Interfaces;
 using PeriodisationProgramApp.Domain.Pagination;
@@ -16,11 +15,11 @@ namespace PeriodisationProgramApp.BusinessLogic.Services
         where EntityDto : BaseEntityDto
     {
         protected readonly ApplicationContext _context;
-        protected readonly IGenericRepositoryWithUserData<Entity> _repository;
-        protected readonly IUsersRepository _usersRepository;
+        protected readonly IEntityWithUserDataRepository<Entity> _repository;
+        protected readonly IUserRepository _usersRepository;
         protected readonly IMapper _mapper;
 
-        public EntityService(ApplicationContext context, IGenericRepositoryWithUserData<Entity> repository, IUsersRepository usersRepository, IMapper mapper)
+        public EntityService(ApplicationContext context, IEntityWithUserDataRepository<Entity> repository, IUserRepository usersRepository, IMapper mapper)
         {
             _context = context;
             _repository = repository;
@@ -28,17 +27,17 @@ namespace PeriodisationProgramApp.BusinessLogic.Services
             _mapper = mapper;
         }
 
-        public async Task<PagedResult<EntityDto>> GetEntities(PageableQueryContext context, Guid? userId = null)
+        public async Task<PagedResult<EntityDto>> GetAll(PageableQueryContext context, Guid? userId = null)
         {
             var entities = await _repository.GetPaginatedResultAsync(context, userId);
             return entities.Translate<Entity, EntityDto>(_mapper);
         }
 
-        public async Task<PagedResult<EntityDto>> GetEntities(PageableQueryContext context, string? firebaseId)
+        public async Task<PagedResult<EntityDto>> GetAll(PageableQueryContext context, string? firebaseId)
         {
             if (string.IsNullOrEmpty(firebaseId))
             {
-                return await GetEntities(context);
+                return await GetAll(context);
             }
 
             var user = await _usersRepository.GetUserByFirebaseId(firebaseId);
@@ -48,20 +47,20 @@ namespace PeriodisationProgramApp.BusinessLogic.Services
                 throw new Exception($"User with Firebase ID {firebaseId} not found");
             }
 
-            return await GetEntities(context, user.Id);
+            return await GetAll(context, user.Id);
         }
 
-        public async Task<EntityDto> GetEntity(Guid entityId, Guid? userId = null)
+        public async Task<EntityDto> Get(Guid entityId, Guid? userId = null)
         {
             var entity = await _repository.GetByIdAsync(entityId, userId);
             return entity.Translate<Entity, EntityDto>(_mapper);
         }
 
-        public async Task<EntityDto> GetEntity(Guid entityId, string? firebaseId)
+        public async Task<EntityDto> Get(Guid entityId, string? firebaseId)
         {
             if (string.IsNullOrEmpty(firebaseId))
             {
-                return await GetEntity(entityId);
+                return await Get(entityId);
             }
 
             var user = await _usersRepository.GetUserByFirebaseId(firebaseId);
@@ -71,7 +70,7 @@ namespace PeriodisationProgramApp.BusinessLogic.Services
                 throw new Exception($"User with Firebase ID {firebaseId} not found");
             }
 
-            return await GetEntity(entityId, user.Id);
+            return await Get(entityId, user.Id);
         }
     }
 }

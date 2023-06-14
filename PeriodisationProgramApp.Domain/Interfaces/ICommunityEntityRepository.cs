@@ -3,13 +3,11 @@ using PeriodisationProgramApp.Domain.Pagination;
 
 namespace PeriodisationProgramApp.Domain.Interfaces
 {
-    public interface ICommunityEntityRepository<T, UserLike, UserRating> : IGenericRepository<T>
+    public interface ICommunityEntityRepository<T, UserLike, UserRating> : IEntityWithUserDataRepository<T>
         where T : CommunityEntity<UserLike, UserRating>
         where UserLike : IUserLike
         where UserRating : IUserRating
     {
-        Task<PagedResult<T>> GetPaginatedResultAsync(IPageableQueryContext context, Guid? userId = null);
-
         Task<PagedResult<T>> GetUserCreated(IPageableQueryContext context, Guid userId);
 
         Task<PagedResult<T>> GetUserLiked(IPageableQueryContext context, Guid userId);

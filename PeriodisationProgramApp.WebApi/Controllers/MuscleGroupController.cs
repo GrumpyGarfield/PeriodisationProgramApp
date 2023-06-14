@@ -3,7 +3,6 @@ using PeriodisationProgramApp.DataAccess.QueryContext;
 using PeriodisationProgramApp.Domain.Interfaces;
 using PeriodisationProgramApp.WebApi.Extensions;
 using PeriodisationProgramApp.BusinessLogic.Services.Interfaces;
-using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using PeriodisationProgramApp.WebApi.Dto;
 using PeriodisationProgramApp.Domain.Entities;
@@ -45,7 +44,7 @@ namespace PeriodisationProgramApp.WebApi.Controllers
                 Filters = filters
             };
 
-            return Ok(await _muscleGroupService.GetMuscleGroups(context, uid));
+            return Ok(await _muscleGroupService.GetAll(context, uid));
         }
 
         [HttpGet]
@@ -54,7 +53,7 @@ namespace PeriodisationProgramApp.WebApi.Controllers
         {
             var uid = User.FindFirstValue("user_id");
 
-            return Ok(await _muscleGroupService.GetMuscleGroup(muscleGroupId, uid));
+            return Ok(await _muscleGroupService.Get(muscleGroupId, uid));
         }
 
         [HttpPost]

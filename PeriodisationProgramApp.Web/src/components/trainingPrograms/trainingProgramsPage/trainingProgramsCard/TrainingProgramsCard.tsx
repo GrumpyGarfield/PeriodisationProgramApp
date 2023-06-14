@@ -12,16 +12,15 @@ import { CardList } from "../../../common/card/CardList";
 import { TrainingProgramType } from "../../../../enums/TrainingProgramType";
 import { TrainingLevel } from "../../../../enums/TrainingLevel";
 import { useEnumHelper } from "../../../../helpers/useEnumHelper";
-import { UserRatingProps } from "../../../../types/UserRatingProps";
 
 type Props = {
   trainingProgram: TrainingProgram;
-  handleLike: (id: string, isLiked: boolean) => Promise<boolean>;
+  handleLike: (id: string, isLiked: boolean) => Promise<TrainingProgram>;
   handleRate: (
     id: string,
     isRating: boolean,
     rating: number | null
-  ) => Promise<UserRatingProps>;
+  ) => Promise<TrainingProgram>;
 };
 
 export default function TrainingProgramsCard({

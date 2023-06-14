@@ -24,10 +24,17 @@ import { RsmIndexInfo } from "../../../info/RsmIndexInfo";
 import { FmIndexInfo } from "../../../info/FmIndexInfo";
 import useCreate from "../../../../serverInteraction/hooks/entity/useCreate";
 import { Exercise } from "../../../../types/enitities/Exercise";
+import { useNavigate } from "react-router-dom";
 
 export function ExerciseCreatePage() {
   const entityName = "exercise";
-  const { create } = useCreate<CreateExerciseProps, Exercise>(entityName);
+  const navigate = useNavigate();
+  const { create } = useCreate<CreateExerciseProps, Exercise>(
+    entityName,
+    (entity) => {
+      navigate(`/exercises/${entity.id}`);
+    }
+  );
   const {
     control,
     register,

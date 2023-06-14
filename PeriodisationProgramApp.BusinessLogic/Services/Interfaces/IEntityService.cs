@@ -10,13 +10,13 @@ namespace PeriodisationProgramApp.BusinessLogic.Services.Interfaces
         where EntityDto : BaseEntityDto
 
     {
-        Task<PagedResult<EntityDto>> GetEntities(PageableQueryContext context, Guid? userId);
+        Task<PagedResult<EntityDto>> GetAll(PageableQueryContext context, Guid? userId);
 
-        Task<PagedResult<EntityDto>> GetEntities(PageableQueryContext context, string? firebaseId);
+        Task<PagedResult<EntityDto>> GetAll(PageableQueryContext context, string? firebaseId);
 
-        Task<EntityDto> GetEntity(Guid entityId, Guid? userId);
+        Task<EntityDto> Get(Guid entityId, Guid? userId);
 
-        Task<EntityDto> GetEntity(Guid entityId, string? firebaseId);
+        Task<EntityDto> Get(Guid entityId, string? firebaseId);
     }
 }
 

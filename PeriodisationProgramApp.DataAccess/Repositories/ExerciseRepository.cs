@@ -40,7 +40,7 @@ namespace PeriodisationProgramApp.DataAccess.Repositories
                         .Include(t => t.ExerciseUsersData.Where(d => d.UserId.Equals(userId)));
         }
 
-        public async Task<Exercise> GetWithUsersDataAsync(Guid exerciseId)
+        public new async Task<Exercise> GetWithUsersDataAsync(Guid exerciseId)
         {
             return await _context.Exercises.Include(t => t.User)
                                             .Include(t => t.UserLikes)
@@ -51,7 +51,7 @@ namespace PeriodisationProgramApp.DataAccess.Repositories
                                             .FirstAsync(m => m.Id == exerciseId);
         }
 
-        public async Task<Exercise> GetByIdAsync(Guid exerciseId, Guid? userId = null)
+        public new async Task<Exercise> GetByIdAsync(Guid exerciseId, Guid? userId = null)
         {
             return await IncludeAll(_context.Exercises, userId).FirstAsync(m => m.Id == exerciseId);
         }

@@ -6,8 +6,6 @@ using PeriodisationProgramApp.BusinessLogic.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using PeriodisationProgramApp.WebApi.Dto;
-using PeriodisationProgramApp.Domain.Entities;
-using PeriodisationProgramApp.BusinessLogic.Services;
 using PeriodisationProgramApp.BusinessLogic.Dto;
 using PeriodisationProgramApp.BusinessLogic.Domain.Dto;
 
@@ -50,15 +48,15 @@ namespace PeriodisationProgramApp.WebApi.Controllers
 
             if (isCreated)
             {
-                return Ok(await _exerciseService.GetUserCreatedExercises(context, uid));
+                return Ok(await _exerciseService.GetUserCreated(context, uid));
             }
 
             if (isLiked)
             {
-                return Ok(await _exerciseService.GetUserLikedExercises(context, uid));
+                return Ok(await _exerciseService.GetUserLiked(context, uid));
             }
 
-            return Ok(await _exerciseService.GetExercises(context, uid));
+            return Ok(await _exerciseService.GetAll(context, uid));
         }
 
         [Authorize]
@@ -100,14 +98,13 @@ namespace PeriodisationProgramApp.WebApi.Controllers
             }
         }
 
-        [Authorize]
         [HttpGet]
         [Route("{exerciseId}")]
         public async Task<IActionResult> GetExercise(Guid exerciseId)
         {
             var uid = User.FindFirstValue("user_id");
 
-            return Ok(await _exerciseService.GetExercise(exerciseId, uid));
+            return Ok(await _exerciseService.Get(exerciseId, uid));
         }
 
         [Authorize]
@@ -117,7 +114,7 @@ namespace PeriodisationProgramApp.WebApi.Controllers
         {
             var uid = User.FindFirstValue("user_id");
 
-            return Ok(await _exerciseService.CreateExercise(uid, createExerciseDto));
+            return Ok(await _exerciseService.Create(uid, createExerciseDto));
         }
 
         [Authorize]
@@ -127,7 +124,7 @@ namespace PeriodisationProgramApp.WebApi.Controllers
         {
             var uid = User.FindFirstValue("user_id");
 
-            return Ok(await _exerciseService.UpdateExercise(exerciseId, uid, updateExerciseDto));
+            return Ok(await _exerciseService.Update(exerciseId, uid, updateExerciseDto));
         }
 
         [Authorize]
@@ -137,7 +134,7 @@ namespace PeriodisationProgramApp.WebApi.Controllers
         {
             var uid = User.FindFirstValue("user_id");
 
-            return Ok(await _exerciseService.DeleteExercise(exerciseId, uid));
+            return Ok(await _exerciseService.Delete(exerciseId, uid));
         }
 
         [Authorize]
@@ -147,9 +144,10 @@ namespace PeriodisationProgramApp.WebApi.Controllers
         {
             var uid = User.FindFirstValue("user_id");
 
-            return Ok(true);
+            return Ok(await _exerciseService.Clone(exerciseId, uid));
         }
 
+        [Authorize]
         [HttpPost]
         [Route("{exerciseId}/updateUserData")]
         public async Task<IActionResult> UpdateExerciseUserData(Guid exerciseId, [FromBody] UpdateExerciseUserDataDto updateExerciseUserDataDto)

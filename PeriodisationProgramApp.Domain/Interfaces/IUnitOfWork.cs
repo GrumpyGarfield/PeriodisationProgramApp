@@ -2,7 +2,7 @@
 {
     public interface IUnitOfWork : IDisposable
     {
-        IUsersRepository Users { get; }
+        IUserRepository Users { get; }
 
         IMuscleGroupRepository MuscleGroups { get; }
 

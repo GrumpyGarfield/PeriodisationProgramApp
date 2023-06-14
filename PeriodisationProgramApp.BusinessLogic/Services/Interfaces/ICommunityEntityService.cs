@@ -6,7 +6,7 @@ using PeriodisationProgramApp.Domain.Pagination;
 
 namespace PeriodisationProgramApp.BusinessLogic.Services.Interfaces
 {
-    public interface ICommunityEntityService<Entity, EntityDto, UserLike, UserRating>
+    public interface ICommunityEntityService<Entity, EntityDto, UserLike, UserRating> : IEntityService<Entity, EntityDto>
         where Entity : CommunityEntity<UserLike, UserRating>
             where EntityDto : CommunityEntityDto
         where UserLike : IUserLike

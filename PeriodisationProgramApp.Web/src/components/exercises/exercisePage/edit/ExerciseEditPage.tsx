@@ -87,6 +87,7 @@ export function ExerciseEditPage() {
       type: exercise.type,
       rawStimulusMagnitude: exercise.rawStimulusMagnitude,
       fatigueMagnitude: exercise.fatigueMagnitude,
+      isPublic: exercise.isPublic,
       exerciseMuscleGroups: [
         {
           muscleGroupRole: MuscleGroupRole.Target,

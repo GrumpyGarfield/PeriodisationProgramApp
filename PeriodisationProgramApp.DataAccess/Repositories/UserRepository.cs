@@ -6,7 +6,7 @@ using PeriodisationProgramApp.Domain.Interfaces;
 
 namespace PeriodisationProgramApp.DataAccess.Repositories
 {
-    public class UserRepository : GenericRepository<User>, IUsersRepository
+    public class UserRepository : GenericRepository<User>, IUserRepository
     {
         private readonly IDefaultDataSettings _defaultDataSettings;
 

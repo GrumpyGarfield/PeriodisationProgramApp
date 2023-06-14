@@ -4,6 +4,7 @@ import useAlert from "../../../context/alertContext/useAlert";
 import { BaseEntity } from "../../../types/enitities/BaseEntity";
 import { useNavigate } from "react-router-dom";
 import EntityService from "../../services/entity/EntityInteractionService";
+import useLoader from "../../../context/loaderContext/useLoader";
 
 const useCreate = <T1, T2 extends BaseEntity>(
   entityName: string,
@@ -11,9 +12,11 @@ const useCreate = <T1, T2 extends BaseEntity>(
   onError?: (error: any) => void
 ) => {
   const { showError } = useAlert();
+  const { setIsLoaderOpen } = useLoader();
   const navigate = useNavigate();
 
   const { mutateAsync, isLoading } = useMutation(EntityService.create<T1, T2>, {
+    onMutate: () => setIsLoaderOpen(true),
     onSuccess: onSuccess
       ? onSuccess
       : (entity) => {
@@ -28,6 +31,7 @@ const useCreate = <T1, T2 extends BaseEntity>(
             showError(error.message);
           }
         },
+    onSettled: () => setIsLoaderOpen(false),
   });
 
   const create = async (createProps: T1) => {

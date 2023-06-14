@@ -4,8 +4,10 @@ import React from "react";
 import { auth } from "../../../firebase/Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import useTrainingPrograms from "../../../context/entityContext/entities/trainingProgram/useTrainingPrograms";
+import { useLocation } from "react-router-dom";
 
 export function TrainingProgramsPageHeader() {
+  const location = useLocation();
   const [value, setValue] = React.useState("all");
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
@@ -54,7 +56,11 @@ export function TrainingProgramsPageHeader() {
           </Box>
         ) : null}
       </div>
-      <Button variant="contained" color="secondary">
+      <Button
+        variant="contained"
+        color="secondary"
+        href={`${location.pathname}/create`}
+      >
         Create New
       </Button>
     </Stack>

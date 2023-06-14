@@ -13,5 +13,6 @@ export type UpdateExerciseProps = {
   type: ExerciseType;
   rawStimulusMagnitude: number;
   fatigueMagnitude: number;
+  isPublic: boolean;
   exerciseMuscleGroups: UpdateExerciseMuscleGroupProps[];
 };

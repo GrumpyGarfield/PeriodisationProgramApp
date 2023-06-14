@@ -2,7 +2,7 @@
 
 namespace PeriodisationProgramApp.Domain.Interfaces
 {
-    public interface IUsersRepository : IGenericRepository<User>
+    public interface IUserRepository : IGenericRepository<User>
     {
         Task<User?> GetDefaultUser();
 

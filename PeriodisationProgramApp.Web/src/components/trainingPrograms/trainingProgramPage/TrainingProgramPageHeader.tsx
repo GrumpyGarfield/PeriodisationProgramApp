@@ -3,9 +3,9 @@ import { PageHeader } from "../../../components/common/pageHeader/PageHeader";
 import { UserRatingProps } from "../../../types/UserRatingProps";
 import useLike from "../../../serverInteraction/hooks/communityEntity/useLike";
 import useRate from "../../../serverInteraction/hooks/communityEntity/useRate";
-import { Exercise } from "../../../types/enitities/Exercise";
 import { RateButton } from "../../common/button/RateButton";
 import { LikeButton } from "../../common/button/LikeButton";
+import { TrainingProgram } from "../../../types/enitities/TrainingProgram";
 
 type Props = {
   title: string;
@@ -17,7 +17,7 @@ type Props = {
   id: string;
 };
 
-export function ExercisePageHeader({
+export function TrainingProgramPageHeader({
   title,
   subtitle,
   likes,
@@ -26,9 +26,9 @@ export function ExercisePageHeader({
   userRatingInfo,
   id,
 }: Props) {
-  const entityName = "exercise";
-  const { like } = useLike<Exercise>(entityName);
-  const { rate } = useRate<Exercise>(entityName);
+  const entityName = "trainingProgram";
+  const { like } = useLike<TrainingProgram>(entityName);
+  const { rate } = useRate<TrainingProgram>(entityName);
 
   return (
     <Box>

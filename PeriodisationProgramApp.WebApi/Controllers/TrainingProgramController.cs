@@ -11,6 +11,8 @@ using Microsoft.Net.Http.Headers;
 using FirebaseAdmin.Auth;
 using System.Security.Claims;
 using PeriodisationProgramApp.WebApi.Dto;
+using PeriodisationProgramApp.BusinessLogic.Domain.Dto;
+using PeriodisationProgramApp.BusinessLogic.Services;
 
 namespace PeriodisationProgramApp.WebApi.Controllers
 {
@@ -76,15 +78,15 @@ namespace PeriodisationProgramApp.WebApi.Controllers
 
             if (isCreated)
             {
-                return Ok(await _trainingProgramService.GetUserCreatedTrainingPrograms(context, uid));
+                return Ok(await _trainingProgramService.GetUserCreated(context, uid));
             }
 
             if (isLiked)
             {
-                return Ok(await _trainingProgramService.GetUserLikedTrainingPrograms(context, uid));
+                return Ok(await _trainingProgramService.GetUserLiked(context, uid));
             }
 
-            return Ok(await _trainingProgramService.GetTrainingPrograms(context, uid));
+            return Ok(await _trainingProgramService.GetAll(context, uid));
         }
 
         [Authorize]
@@ -124,6 +126,55 @@ namespace PeriodisationProgramApp.WebApi.Controllers
             {
                 return Ok(await _trainingProgramService.UnsetRating(trainingProgramId, uid));
             }
+        }
+
+        [HttpGet]
+        [Route("{trainingProgramId}")]
+        public async Task<IActionResult> GetTrainingProgram(Guid trainingProgramId)
+        {
+            var uid = User.FindFirstValue("user_id");
+
+            return Ok(await _trainingProgramService.Get(trainingProgramId, uid));
+        }
+
+        [Authorize]
+        [HttpPost]
+        [Route("")]
+        public async Task<IActionResult> CreateTrainingProgram([FromBody] CreateTrainingProgramDto createTrainingProgramDto)
+        {
+            var uid = User.FindFirstValue("user_id");
+
+            return Ok(await _trainingProgramService.Create(uid, createTrainingProgramDto));
+        }
+
+        [Authorize]
+        [HttpPut]
+        [Route("{trainingProgramId}")]
+        public async Task<IActionResult> UpdateTrainingProgram(Guid trainingProgramId, [FromBody] UpdateTrainingProgramDto updateTrainingProgramDto)
+        {
+            var uid = User.FindFirstValue("user_id");
+
+            return Ok(await _trainingProgramService.Update(trainingProgramId, uid, updateTrainingProgramDto));
+        }
+
+        [Authorize]
+        [HttpDelete]
+        [Route("{trainingProgramId}")]
+        public async Task<IActionResult> DeleteTrainingProgram(Guid trainingProgramId)
+        {
+            var uid = User.FindFirstValue("user_id");
+
+            return Ok(await _trainingProgramService.Delete(trainingProgramId, uid));
+        }
+
+        [Authorize]
+        [HttpPost]
+        [Route("{trainingProgramId}/clone")]
+        public async Task<IActionResult> CloneTrainingProgram(Guid trainingProgramId)
+        {
+            var uid = User.FindFirstValue("user_id");
+
+            return Ok(await _trainingProgramService.Clone(trainingProgramId, uid));
         }
     }
 }

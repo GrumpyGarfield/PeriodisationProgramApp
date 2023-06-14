@@ -4,30 +4,23 @@ using PeriodisationProgramApp.BusinessLogic.Extensions;
 using PeriodisationProgramApp.BusinessLogic.Services.Interfaces;
 using PeriodisationProgramApp.DataAccess;
 using PeriodisationProgramApp.DataAccess.QueryContext;
-using PeriodisationProgramApp.DataAccess.UnitsOfWork;
 using PeriodisationProgramApp.Domain.Entities;
 using PeriodisationProgramApp.Domain.Interfaces;
 using PeriodisationProgramApp.Domain.Pagination;
 
 namespace PeriodisationProgramApp.BusinessLogic.Services
 {
-    public class CommunityEntityService<Entity, EntityDto, UserLike, UserRating> : ICommunityEntityService<Entity, EntityDto, UserLike, UserRating>
+    public class CommunityEntityService<Entity, EntityDto, UserLike, UserRating> : EntityService<Entity, EntityDto>, ICommunityEntityService<Entity, EntityDto, UserLike, UserRating>
         where Entity : CommunityEntity<UserLike, UserRating>
         where EntityDto: CommunityEntityDto
         where UserLike : IUserLike
         where UserRating : IUserRating
     {
-        protected readonly ApplicationContext _context;
-        protected readonly ICommunityEntityRepository<Entity, UserLike, UserRating> _repository;
-        protected readonly IUsersRepository _usersRepository;
-        protected readonly IMapper _mapper;
+        protected new readonly ICommunityEntityRepository<Entity, UserLike, UserRating> _repository;
 
-        public CommunityEntityService(ApplicationContext context, ICommunityEntityRepository<Entity, UserLike, UserRating> repository, IUsersRepository usersRepository, IMapper mapper)
+        public CommunityEntityService(ApplicationContext context, ICommunityEntityRepository<Entity, UserLike, UserRating> repository, IUserRepository usersRepository, IMapper mapper) : base (context, repository, usersRepository, mapper)
         {
-            _context = context;
             _repository = repository;
-            _usersRepository = usersRepository;
-            _mapper = mapper;
         }
 
         public async Task<EntityDto> Create<CreateEntityDto>(Guid userId, CreateEntityDto createDto)
