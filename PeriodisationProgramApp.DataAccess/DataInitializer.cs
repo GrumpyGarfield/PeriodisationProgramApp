@@ -38,7 +38,7 @@ namespace PeriodisationProgramApp.DataAccess
                 }
 
                 //UpdateMuscleGroups(_defaultUser.MuscleGroups, _defaultDataSettings.DefaultUser!.MuscleGroups);
-                UpdateExercises(defaultUser.Exercises, _defaultDataSettings.DefaultUser!.Exercises);
+                //UpdateExercises(defaultUser.Exercises, _defaultDataSettings.DefaultUser!.Exercises);
 
                 await _unitOfWork.CompleteAsync();
             }

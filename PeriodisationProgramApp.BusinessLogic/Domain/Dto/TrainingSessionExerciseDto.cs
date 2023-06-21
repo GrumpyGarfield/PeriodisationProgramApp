@@ -7,5 +7,7 @@ namespace PeriodisationProgramApp.BusinessLogic.Dto
         public ExerciseDto? Exercise { get; set; }
 
         public int Sets { get; set; }
+
+        public int Order { get; set; }
     }
 }

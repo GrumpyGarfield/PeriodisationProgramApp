@@ -1,4 +1,6 @@
-﻿using PeriodisationProgramApp.Domain.Enums;
+﻿using PeriodisationProgramApp.BusinessLogic.Dto;
+using PeriodisationProgramApp.Domain.Entities;
+using PeriodisationProgramApp.Domain.Enums;
 
 namespace PeriodisationProgramApp.BusinessLogic.Domain.Dto
 {
@@ -13,5 +15,7 @@ namespace PeriodisationProgramApp.BusinessLogic.Domain.Dto
         public TrainingLevel TrainingLevel { get; set; }
 
         public int NumberOfSessions { get; set; }
+
+        public List<TrainingSessionDto> Sessions { get; set; } = new();
     }
 }

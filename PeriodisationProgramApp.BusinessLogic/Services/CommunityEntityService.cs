@@ -10,7 +10,7 @@ using PeriodisationProgramApp.Domain.Pagination;
 
 namespace PeriodisationProgramApp.BusinessLogic.Services
 {
-    public class CommunityEntityService<Entity, EntityDto, UserLike, UserRating> : EntityService<Entity, EntityDto>, ICommunityEntityService<Entity, EntityDto, UserLike, UserRating>
+    public abstract class CommunityEntityService<Entity, EntityDto, UserLike, UserRating> : EntityService<Entity, EntityDto>, ICommunityEntityService<Entity, EntityDto, UserLike, UserRating>
         where Entity : CommunityEntity<UserLike, UserRating>
         where EntityDto: CommunityEntityDto
         where UserLike : IUserLike
@@ -23,7 +23,7 @@ namespace PeriodisationProgramApp.BusinessLogic.Services
             _repository = repository;
         }
 
-        public async Task<EntityDto> Create<CreateEntityDto>(Guid userId, CreateEntityDto createDto)
+        public virtual async Task<EntityDto> Create<CreateEntityDto>(Guid userId, CreateEntityDto createDto)
             where CreateEntityDto : class
         {
             var entity = _mapper.Map<Entity>(createDto);
@@ -35,7 +35,7 @@ namespace PeriodisationProgramApp.BusinessLogic.Services
             return entity.TranslateToDto<Entity, EntityDto, UserLike, UserRating>(_mapper, userId);
         }
 
-        public async Task<EntityDto> Create<CreateEntityDto>(string firebaseId, CreateEntityDto createDto)
+        public virtual async Task<EntityDto> Create<CreateEntityDto>(string firebaseId, CreateEntityDto createDto)
             where CreateEntityDto : class
         {
             var user = await _usersRepository.GetUserByFirebaseId(firebaseId);
@@ -48,7 +48,7 @@ namespace PeriodisationProgramApp.BusinessLogic.Services
             return await Create(user.Id, createDto);
         }
 
-        public async Task<EntityDto> Update<UpdateEntityDto>(Guid entityId, Guid userId, UpdateEntityDto updateDto)
+        public virtual async Task<EntityDto> Update<UpdateEntityDto>(Guid entityId, Guid userId, UpdateEntityDto updateDto)
            where UpdateEntityDto : class
         {
             var entity = await _repository.GetByIdAsync(entityId);
@@ -66,7 +66,7 @@ namespace PeriodisationProgramApp.BusinessLogic.Services
             return entity.TranslateToDto<Entity, EntityDto, UserLike, UserRating>(_mapper, userId);
         }
 
-        public async Task<EntityDto> Update<UpdateEntityDto>(Guid entityId, string firebaseId, UpdateEntityDto updateDto)
+        public virtual async Task<EntityDto> Update<UpdateEntityDto>(Guid entityId, string firebaseId, UpdateEntityDto updateDto)
             where UpdateEntityDto : class
         {
             var user = await _usersRepository.GetUserByFirebaseId(firebaseId);
@@ -79,7 +79,7 @@ namespace PeriodisationProgramApp.BusinessLogic.Services
             return await Update(entityId, user.Id, updateDto);
         }
 
-        public async Task<bool> Delete(Guid entityId, Guid userId)
+        public virtual async Task<bool> Delete(Guid entityId, Guid userId)
         {
             var entity = await _repository.GetByIdAsync(entityId);
 
@@ -101,7 +101,7 @@ namespace PeriodisationProgramApp.BusinessLogic.Services
             return true;
         }
 
-        public async Task<bool> Delete(Guid entityId, string firebaseId)
+        public virtual async Task<bool> Delete(Guid entityId, string firebaseId)
         {
             var user = await _usersRepository.GetUserByFirebaseId(firebaseId);
 
@@ -113,7 +113,7 @@ namespace PeriodisationProgramApp.BusinessLogic.Services
             return await Delete(entityId, user.Id);
         }
 
-        public async Task<EntityDto> Clone(Guid entityId, Guid userId)
+        public virtual async Task<EntityDto> Clone(Guid entityId, Guid userId)
         {
             var entity = await _repository.GetByIdAsync(entityId);
 
@@ -130,7 +130,7 @@ namespace PeriodisationProgramApp.BusinessLogic.Services
             return entity.TranslateToDto<Entity, EntityDto, UserLike, UserRating>(_mapper, userId);
         }
 
-        public async Task<EntityDto> Clone(Guid entityId, string firebaseId)
+        public virtual async Task<EntityDto> Clone(Guid entityId, string firebaseId)
         {
             var user = await _usersRepository.GetUserByFirebaseId(firebaseId);
 
@@ -142,7 +142,7 @@ namespace PeriodisationProgramApp.BusinessLogic.Services
             return await Clone(entityId, user.Id);
         }
 
-        public async Task<EntityDto> SetLike(Guid entityId, Guid userId)
+        public virtual async Task<EntityDto> SetLike(Guid entityId, Guid userId)
         {
             var entity = await _repository.SetLike(entityId, userId);
             await _context.SaveChangesAsync();
@@ -150,7 +150,7 @@ namespace PeriodisationProgramApp.BusinessLogic.Services
             return entity.TranslateToDto<Entity, EntityDto, UserLike, UserRating>(_mapper, userId);
         }
 
-        public async Task<EntityDto> SetLike(Guid entityId, string firebaseId)
+        public virtual async Task<EntityDto> SetLike(Guid entityId, string firebaseId)
         {
             var user = await _usersRepository.GetUserByFirebaseId(firebaseId);
 
@@ -162,7 +162,7 @@ namespace PeriodisationProgramApp.BusinessLogic.Services
             return await SetLike(entityId, user.Id);
         }
 
-        public async Task<EntityDto> UnsetLike(Guid entityId, Guid userId)
+        public virtual async Task<EntityDto> UnsetLike(Guid entityId, Guid userId)
         {
             var entity = await _repository.UnsetLike(entityId, userId);
             await _context.SaveChangesAsync();
@@ -170,7 +170,7 @@ namespace PeriodisationProgramApp.BusinessLogic.Services
             return entity.TranslateToDto<Entity, EntityDto, UserLike, UserRating>(_mapper, userId);
         }
 
-        public async Task<EntityDto> UnsetLike(Guid entityId, string firebaseId)
+        public virtual async Task<EntityDto> UnsetLike(Guid entityId, string firebaseId)
         {
             var user = await _usersRepository.GetUserByFirebaseId(firebaseId);
 
@@ -182,7 +182,7 @@ namespace PeriodisationProgramApp.BusinessLogic.Services
             return await UnsetLike(entityId, user.Id);
         }
 
-        public async Task<EntityDto> SetRating(Guid exerciseId, Guid userId, int rating)
+        public virtual async Task<EntityDto> SetRating(Guid exerciseId, Guid userId, int rating)
         {
             var entity = await _repository.SetRating(exerciseId, userId, rating);
             await _context.SaveChangesAsync();
@@ -190,7 +190,7 @@ namespace PeriodisationProgramApp.BusinessLogic.Services
             return entity.TranslateToDto<Entity, EntityDto, UserLike, UserRating>(_mapper, userId);
         }
 
-        public async Task<EntityDto> SetRating(Guid exerciseId, string firebaseId, int rating)
+        public virtual async Task<EntityDto> SetRating(Guid exerciseId, string firebaseId, int rating)
         {
             var user = await _usersRepository.GetUserByFirebaseId(firebaseId);
 
@@ -202,7 +202,7 @@ namespace PeriodisationProgramApp.BusinessLogic.Services
             return await SetRating(exerciseId, user.Id, rating);
         }
 
-        public async Task<EntityDto> UnsetRating(Guid exerciseId, Guid userId)
+        public virtual async Task<EntityDto> UnsetRating(Guid exerciseId, Guid userId)
         {
             var entity = await _repository.UnsetRating(exerciseId, userId);
             await _context.SaveChangesAsync();
@@ -210,7 +210,7 @@ namespace PeriodisationProgramApp.BusinessLogic.Services
             return entity.TranslateToDto<Entity, EntityDto, UserLike, UserRating>(_mapper, userId);
         }
 
-        public async Task<EntityDto> UnsetRating(Guid exerciseId, string firebaseId)
+        public virtual async Task<EntityDto> UnsetRating(Guid exerciseId, string firebaseId)
         {
             var user = await _usersRepository.GetUserByFirebaseId(firebaseId);
 
@@ -222,13 +222,13 @@ namespace PeriodisationProgramApp.BusinessLogic.Services
             return await UnsetRating(exerciseId, user.Id);
         }
 
-        public async Task<PagedResult<EntityDto>> GetUserCreated(PageableQueryContext context, Guid userId)
+        public virtual async Task<PagedResult<EntityDto>> GetUserCreated(PageableQueryContext context, Guid userId)
         {
             var entities = await _repository.GetUserCreated(context, userId);
             return entities.TranslateToDto<Entity, EntityDto, UserLike, UserRating>(_mapper, userId);
         }
 
-        public async Task<PagedResult<EntityDto>> GetUserCreated(PageableQueryContext context, string firebaseId)
+        public virtual async Task<PagedResult<EntityDto>> GetUserCreated(PageableQueryContext context, string firebaseId)
         {
             var user = await _usersRepository.GetUserByFirebaseId(firebaseId);
 
@@ -240,13 +240,13 @@ namespace PeriodisationProgramApp.BusinessLogic.Services
             return await GetUserCreated(context, user.Id);
         }
 
-        public async Task<PagedResult<EntityDto>> GetUserLiked(PageableQueryContext context, Guid userId)
+        public virtual async Task<PagedResult<EntityDto>> GetUserLiked(PageableQueryContext context, Guid userId)
         {
             var exercises = await _repository.GetUserLiked(context, userId);
             return exercises.TranslateToDto<Entity, EntityDto, UserLike, UserRating>(_mapper, userId);
         }
 
-        public async Task<PagedResult<EntityDto>> GetUserLiked(PageableQueryContext context, string firebaseId)
+        public virtual async Task<PagedResult<EntityDto>> GetUserLiked(PageableQueryContext context, string firebaseId)
         {
             var user = await _usersRepository.GetUserByFirebaseId(firebaseId);
 

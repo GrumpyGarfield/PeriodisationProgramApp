@@ -27,6 +27,7 @@ import { MuscleGroupsProvider } from "../../../../context/entityContext/entities
 import { PageContentPanel } from "../../../common/pageContent/PageContentPanel";
 import { PageContent } from "../../../common/pageContent/PageContent";
 import useMuscleGroupRoles from "../../../../hooks/useMuscleGroupRoles";
+import SaveIcon from "@mui/icons-material/Save";
 
 type Params = {
   id: string;
@@ -125,15 +126,24 @@ export function ExerciseEditPage() {
     );
   }
 
+  const pageContentPanel = () => {
+    return (
+      <PageContentPanel>
+        <Button
+          variant="contained"
+          startIcon={<SaveIcon />}
+          sx={{ minWidth: 100 }}
+          onClick={handleSubmit(onSubmit)}
+        >
+          {isSubmitting ? "Saving..." : "Save"}
+        </Button>
+      </PageContentPanel>
+    );
+  };
+
   return (
-    <PageContent pageContentPanel={<PageContentPanel />}>
-      <Grid
-        container
-        spacing={3}
-        component="form"
-        noValidate
-        onSubmit={handleSubmit(onSubmit)}
-      >
+    <PageContent pageContentPanel={pageContentPanel()}>
+      <Grid container spacing={3} component="form" noValidate>
         <Grid item xs={12} sm={12} md={12}>
           <PageHeader text={`Edit ${exercise.name}`} />
         </Grid>
@@ -284,11 +294,6 @@ export function ExerciseEditPage() {
               />
             )}
           />
-        </Grid>
-        <Grid item xs={12} sm={12} md={12}>
-          <Button variant="contained" sx={{ width: 150, my: 2 }} type="submit">
-            {isSubmitting ? "Saving..." : "Save"}
-          </Button>
         </Grid>
       </Grid>
     </PageContent>

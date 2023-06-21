@@ -15,6 +15,8 @@ namespace PeriodisationProgramApp.BusinessLogic.Domain.Dto
 
         public List<ExerciseMuscleGroupDto> ExerciseMuscleGroups { get; set; } = new();
 
+        public MuscleGroupDto? TargetMuscleGroup { get; set; }
+
         public int RawStimulusMagnitude { get; set; }
 
         public int FatigueMagnitude { get; set; }

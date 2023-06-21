@@ -28,6 +28,8 @@ namespace PeriodisationProgramApp.Domain.Comparers
 
             if (exercise.IsPublic != otherExercise.IsPublic) return false;
 
+            if (exercise.TargetMuscleGroup.Type != otherExercise.TargetMuscleGroup.Type) return false;
+
             if (exercise.ExerciseMuscleGroups.Intersect(otherExercise.ExerciseMuscleGroups, exerciseMuscleGroupComparer).Count() != exercise.ExerciseMuscleGroups.Count()) return false;
 
             if (exercise.ExerciseMuscleGroups.Count < otherExercise.ExerciseMuscleGroups.Count) return false;

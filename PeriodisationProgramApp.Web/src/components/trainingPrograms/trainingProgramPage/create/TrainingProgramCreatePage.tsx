@@ -2,8 +2,6 @@ import { PageContentPanel } from "../../../common/pageContent/PageContentPanel";
 import { PageContent } from "../../../common/pageContent/PageContent";
 import { PageHeader } from "../../../common/pageHeader/PageHeader";
 import {
-  Box,
-  FormControl,
   FormControlLabel,
   FormLabel,
   Grid,
@@ -11,9 +9,6 @@ import {
   Stack,
   Switch,
   TextField,
-  ToggleButton,
-  ToggleButtonGroup,
-  Typography,
 } from "@mui/material";
 import { FormStepper, StepProps } from "../../../common/stepper/FormStepper";
 import { Controller, useForm } from "react-hook-form";
@@ -41,8 +36,6 @@ export function TrainingProgramCreatePage() {
     handleSubmit,
     trigger,
     getValues,
-    setError,
-    clearErrors,
     formState: { errors },
   } = useForm<CreateTrainingProgramProps>({
     mode: "onBlur",
@@ -52,10 +45,9 @@ export function TrainingProgramCreatePage() {
       type: TrainingProgramType.UpperLower,
     },
   });
-  const { translate, getValuesOfEnum } = useEnumHelper();
+  const { translate } = useEnumHelper();
 
   const validate = async (fields: (keyof CreateTrainingProgramProps)[]) => {
-    console.log(getValues());
     return trigger(fields);
   };
 
@@ -323,7 +315,7 @@ export function TrainingProgramCreatePage() {
 
   const onSubmit = async (trainingProgram: CreateTrainingProgramProps) => {
     const createdTrainingProgram = { ...trainingProgram };
-    console.log(createdTrainingProgram);
+    await create(createdTrainingProgram);
   };
 
   return (

@@ -68,6 +68,9 @@ namespace PeriodisationProgramApp.DataAccess.Migrations
                         .HasColumnType("double precision")
                         .HasComputedColumnSql("cast(\"RawStimulusMagnitude\" + 1 as decimal) / (\"FatigueMagnitude\" + 1)", true);
 
+                    b.Property<Guid?>("TargetMuscleGroupId")
+                        .HasColumnType("uuid");
+
                     b.Property<int>("Type")
                         .HasColumnType("integer");
 
@@ -83,6 +86,8 @@ namespace PeriodisationProgramApp.DataAccess.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("TargetMuscleGroupId");
 
                     b.HasIndex("UserId");
 
@@ -382,6 +387,9 @@ namespace PeriodisationProgramApp.DataAccess.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
 
+                    b.Property<int>("Order")
+                        .HasColumnType("integer");
+
                     b.Property<int>("Sets")
                         .HasColumnType("integer");
 
@@ -562,11 +570,17 @@ namespace PeriodisationProgramApp.DataAccess.Migrations
 
             modelBuilder.Entity("PeriodisationProgramApp.Domain.Entities.Exercise", b =>
                 {
+                    b.HasOne("PeriodisationProgramApp.Domain.Entities.MuscleGroup", "TargetMuscleGroup")
+                        .WithMany()
+                        .HasForeignKey("TargetMuscleGroupId");
+
                     b.HasOne("PeriodisationProgramApp.Domain.Entities.User", "User")
                         .WithMany("Exercises")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("TargetMuscleGroup");
 
                     b.Navigation("User");
                 });

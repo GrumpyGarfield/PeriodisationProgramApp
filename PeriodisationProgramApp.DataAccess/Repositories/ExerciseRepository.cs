@@ -35,23 +35,25 @@ namespace PeriodisationProgramApp.DataAccess.Repositories
             return query.Include(t => t.User)
                         .Include(t => t.UserLikes)
                         .Include(t => t.UserRatings)
+                        .Include(t => t.TargetMuscleGroup)
                         .Include(t => t.ExerciseMuscleGroups.OrderBy(g => g.MuscleGroupRole).ThenBy(g => g.MuscleGroup!.Type))
                             .ThenInclude(g => g.MuscleGroup)
                         .Include(t => t.ExerciseUsersData.Where(d => d.UserId.Equals(userId)));
         }
 
-        public new async Task<Exercise> GetWithUsersDataAsync(Guid exerciseId)
+        public override async Task<Exercise> GetWithUsersDataAsync(Guid exerciseId)
         {
             return await _context.Exercises.Include(t => t.User)
                                             .Include(t => t.UserLikes)
                                             .Include(t => t.UserRatings)
+                                            .Include(t => t.TargetMuscleGroup)
                                             .Include(t => t.ExerciseMuscleGroups.OrderBy(g => g.MuscleGroupRole).ThenBy(g => g.MuscleGroup!.Type))
                                                 .ThenInclude(g => g.MuscleGroup)
                                             .Include(t => t.ExerciseUsersData)
                                             .FirstAsync(m => m.Id == exerciseId);
         }
 
-        public new async Task<Exercise> GetByIdAsync(Guid exerciseId, Guid? userId = null)
+        public override async Task<Exercise> GetByIdAsync(Guid exerciseId, Guid? userId = null)
         {
             return await IncludeAll(_context.Exercises, userId).FirstAsync(m => m.Id == exerciseId);
         }
@@ -69,7 +71,7 @@ namespace PeriodisationProgramApp.DataAccess.Repositories
         {
             return _context.Exercises.Include(e => e.ExerciseMuscleGroups)
                                         .ThenInclude(g => g.MuscleGroup)
-                                     .Where(e => e.ExerciseMuscleGroups.Where(m => m.MuscleGroup!.Type == muscleGroupType && m.MuscleGroupRole == MuscleGroupRole.Target).Any() && e.Type == exerciseType)
+                                     .Where(e => e.TargetMuscleGroup!.Type == muscleGroupType && e.Type == exerciseType)
                                      .OrderBy(r => EF.Functions.Random())
                                      .Take(number);
         }

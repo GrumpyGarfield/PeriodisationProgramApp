@@ -12,7 +12,6 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import useExercise from "../../../context/entityContext/entities/exercise/useExercise";
 import ExercisePageMuscleGroups from "./ExercisePageMuscleGroups";
 import ExercisePageSimilarExercises from "./ExercisePageSimilarExercises";
-import { MuscleGroupRole } from "../../../enums/MuscleGroupRole";
 import YoutubeEmbed from "../../common/embed/YoutubeEmbed";
 import { Article } from "../../common/text/Article";
 import { PageContent } from "../../common/pageContent/PageContent";
@@ -46,10 +45,6 @@ export function ExercisePage() {
       </Typography>
     );
   }
-
-  const targetMuscleGroup = exercise.exerciseMuscleGroups.find(
-    (g) => g.muscleGroupRole === MuscleGroupRole.Target
-  );
 
   const handleDelete = async () => {
     setModalOpen(false);
@@ -144,7 +139,7 @@ export function ExercisePage() {
           initialFilters={[
             {
               name: "targetMuscleGroup",
-              value: targetMuscleGroup!.muscleGroup.type,
+              value: exercise.targetMuscleGroup.type,
             },
             {
               name: "id",
@@ -152,7 +147,7 @@ export function ExercisePage() {
             },
           ]}
         >
-          <ExercisePageSimilarExercises id={targetMuscleGroup!.id} />
+          <ExercisePageSimilarExercises id={exercise.targetMuscleGroup.id} />
         </ExercisesProvider>
       </Box>
     </PageContent>

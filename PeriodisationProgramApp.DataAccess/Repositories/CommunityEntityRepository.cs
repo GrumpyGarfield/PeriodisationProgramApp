@@ -29,17 +29,17 @@ namespace PeriodisationProgramApp.DataAccess.Repositories
                         .Include(t => t.UserRatings);
         }
 
-        public async Task<T> GetWithUsersDataAsync(Guid id)
+        public virtual async Task<T> GetWithUsersDataAsync(Guid id)
         {
             return await _context.Set<T>().FirstAsync(m => m.Id == id);
         }
 
-        public async Task<T> GetByIdAsync(Guid id, Guid? userId = null)
+        public virtual async Task<T> GetByIdAsync(Guid id, Guid? userId = null)
         {
             return await IncludeAll(_context.Set<T>()).FirstAsync(m => m.Id == id);
         }
 
-        public async Task<PagedResult<T>> GetPaginatedResultAsync(IPageableQueryContext context, Guid? userId = null)
+        public virtual async Task<PagedResult<T>> GetPaginatedResultAsync(IPageableQueryContext context, Guid? userId = null)
         {
             var query = _context.Set<T>().Where(t => t.UserId != userId);
             return await GetPagedAsync(query, context, userId);

@@ -14,6 +14,8 @@ import { DeleteDialogModal } from "../../common/modal/DeleteDialogModal";
 import { useState } from "react";
 import useTrainingProgram from "../../../context/entityContext/entities/trainingProgram/useTrainingProgram";
 import { TrainingProgramPageHeader } from "./TrainingProgramPageHeader";
+import { TrainingProgramPageSchedule } from "./TrainingProgramPageSchedule";
+import { TrainingScheduleProvider } from "../../../context/trainingScheduleContext/TrainingScheduleContextProvider";
 
 type Params = {
   id: string;
@@ -104,6 +106,21 @@ export function TrainingProgramPage() {
         <Grid container spacing={2} columns={2}>
           <Grid item xs={2} sm={2} md={1}>
             <Article text={trainingProgram.description} />
+          </Grid>
+        </Grid>
+      </Box>
+      <Box sx={{ pb: 3 }}>
+        <Typography variant="h5" sx={{ pb: 3 }}>
+          Schedule
+        </Typography>
+        <Grid container spacing={2} columns={2}>
+          <Grid item xs={2} sm={2} md={2}>
+            <TrainingScheduleProvider>
+              <TrainingProgramPageSchedule
+                numberOfSessions={trainingProgram.numberOfSessions}
+                trainingSessions={trainingProgram.sessions}
+              />
+            </TrainingScheduleProvider>
           </Grid>
         </Grid>
       </Box>

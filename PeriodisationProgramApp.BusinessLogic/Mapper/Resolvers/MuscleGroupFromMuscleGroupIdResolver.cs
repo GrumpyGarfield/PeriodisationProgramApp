@@ -3,7 +3,9 @@ using PeriodisationProgramApp.BusinessLogic.Domain.Dto;
 using PeriodisationProgramApp.Domain.Entities;
 using PeriodisationProgramApp.Domain.Interfaces;
 
-public class MuscleGroupFromMuscleGroupIdResolver : IMemberValueResolver<CreateExerciseMuscleGroupDto, ExerciseMuscleGroup, Guid, MuscleGroup?>
+public class MuscleGroupFromMuscleGroupIdResolver<T1, T2> : IMemberValueResolver<T1, T2, Guid, MuscleGroup?>
+            where T1 : class
+            where T2 : BaseEntity
 {
     private readonly IUnitOfWork _unitOfWork;
 
@@ -12,7 +14,7 @@ public class MuscleGroupFromMuscleGroupIdResolver : IMemberValueResolver<CreateE
         _unitOfWork = unitOfWork;
     }
 
-    public MuscleGroup Resolve(CreateExerciseMuscleGroupDto source, ExerciseMuscleGroup destination, Guid sourceMember, MuscleGroup? destinationMember, ResolutionContext context)
+    public MuscleGroup Resolve(T1 source, T2 destination, Guid sourceMember, MuscleGroup? destinationMember, ResolutionContext context)
     {
         var muscleGroup = _unitOfWork.MuscleGroups.GetById(sourceMember);
 

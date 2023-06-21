@@ -14,6 +14,8 @@ namespace PeriodisationProgramApp.Domain.Entities
 
         public List<ExerciseMuscleGroup> ExerciseMuscleGroups { get; set; } = new();
 
+        public MuscleGroup? TargetMuscleGroup { get; set; }
+
         public int RawStimulusMagnitude { get; set; }
 
         public int FatigueMagnitude { get; set; }

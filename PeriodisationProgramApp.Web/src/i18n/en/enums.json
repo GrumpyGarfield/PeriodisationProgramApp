@@ -1,5 +1,4 @@
 {
-  "testtest": "Test Test",
   "ExerciseType.Compound": "Compound",
   "ExerciseType.Isolation": "Isolation",
 
@@ -35,5 +34,13 @@
   "TrainingSessionType.Legs": "Legs",
   "TrainingSessionType.Upper": "Upper",
   "TrainingSessionType.Lower": "Lower",
-  "TrainingSessionType.FullBody": "FullBody"
+  "TrainingSessionType.FullBody": "FullBody",
+
+  "DayOfWeek.Sunday": "Sunday",
+  "DayOfWeek.Monday": "Monday",
+  "DayOfWeek.Tuesday": "Tuesday",
+  "DayOfWeek.Wednesday": "Wednesday",
+  "DayOfWeek.Thursday": "Thursday",
+  "DayOfWeek.Friday": "Friday",
+  "DayOfWeek.Saturday": "Saturday"
 }

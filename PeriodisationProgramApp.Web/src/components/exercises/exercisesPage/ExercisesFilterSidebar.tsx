@@ -21,10 +21,13 @@ import { MuscleGroupType } from "../../../enums/MuscleGroupType";
 import { ExerciseType } from "../../../enums/ExerciseType";
 import useEnumMultipleSelectFilter from "../../common/filter/enumSelectFilter/useEnumMultipleSelectFilter";
 import { EnumMultipleSelectFilter } from "../../common/filter/enumSelectFilter/EnumMultipleSelectFilter";
+import { EntityFilter } from "../../../types/EntityFilter";
+import FilterHelper from "../../../helpers/FilterHelper";
 
 export default function ExercisesFilterSidebar() {
   const [activeFilter, setActiveFilter] = useState(false);
   const [openFilter, setOpenFilter] = useState(false);
+  const [activeFilters, setActiveFilters] = useState<EntityFilter[]>([]);
 
   const { filterExercises } = useExercises();
 
@@ -52,7 +55,13 @@ export default function ExercisesFilterSidebar() {
 
     setOpenFilter(false);
 
-    filterExercises(filters.map((filter) => filter.getFilter()));
+    const newFilters = filters.map((filter) => filter.getFilter());
+
+    if (!FilterHelper.equals(activeFilters, newFilters)) {
+      filterExercises(newFilters);
+    }
+
+    setActiveFilters(newFilters);
   };
 
   const handleClearAllButtonClick = () => {
@@ -78,6 +87,9 @@ export default function ExercisesFilterSidebar() {
         onClose={handleCloseFilter}
         PaperProps={{
           sx: { width: 280, border: "none", overflow: "hidden" },
+        }}
+        ModalProps={{
+          sx: { zIndex: 1300 },
         }}
       >
         <Stack

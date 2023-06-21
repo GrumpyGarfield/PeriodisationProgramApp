@@ -10,7 +10,6 @@ import { MuscleGroupType } from "../../../../enums/MuscleGroupType";
 import { useEnumHelper } from "../../../../helpers/useEnumHelper";
 import { Exercise } from "../../../../types/enitities/Exercise";
 import { ExerciseType } from "../../../../enums/ExerciseType";
-import { MuscleGroupRole } from "../../../../enums/MuscleGroupRole";
 import Iconify from "../../../common/iconify/Iconify";
 
 type Props = {
@@ -32,16 +31,13 @@ export default function ExercisesCard({
 }: Props) {
   const [raised, setRaised] = React.useState(false);
   const { translate } = useEnumHelper();
-  const targetMuscleGroup = exercise.exerciseMuscleGroups.find(
-    (muscleGroup) => muscleGroup.muscleGroupRole === MuscleGroupRole.Target
-  );
 
   const exercisesCardListItems: CardListItemProps[] = [
     {
       label: "Target muscle group",
       text: translate(
         "MuscleGroupType",
-        MuscleGroupType[targetMuscleGroup!.muscleGroup.type]
+        MuscleGroupType[exercise.targetMuscleGroup.type]
       ),
       icon: (
         <Iconify

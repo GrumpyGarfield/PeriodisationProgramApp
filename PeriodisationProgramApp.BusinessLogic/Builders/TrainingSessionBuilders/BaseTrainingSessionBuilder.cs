@@ -55,6 +55,15 @@ namespace PeriodisationProgramApp.BusinessLogic.Builders.TrainingSessionBuilders
                 trainingSession.Exercises.AddRange(muscleGroupExercises);
             }
 
+            var exercises = trainingSession.Exercises.OrderBy(e => e.Exercise!.Type)
+                                                                    //.ThenBy(e => e.Exercise!.ExerciseMuscleGroups.First(m => m.MuscleGroupRole == MuscleGroupRole.Target))                                                                    
+                                                                    .ToList();
+
+            for (var i = 0; i < exercises.Count; i++)
+            {
+                exercises[i].Order = i;
+            }
+
             return trainingSession;
         }
 

@@ -1,13 +1,22 @@
-import { Popover, Box } from "@mui/material";
+import { Popover, Box, PopoverOrigin } from "@mui/material";
 import { Dispatch, PropsWithChildren, SetStateAction } from "react";
 
 type Props = {
   id: string;
   anchorEl: HTMLElement | null;
   setAnchorEl: Dispatch<SetStateAction<HTMLElement | null>>;
+  anchorOrigin?: PopoverOrigin;
+  transformOrigin?: PopoverOrigin;
 } & PropsWithChildren;
 
-export function HoverPopover({ id, anchorEl, setAnchorEl, children }: Props) {
+export function HoverPopover({
+  id,
+  anchorEl,
+  setAnchorEl,
+  anchorOrigin,
+  transformOrigin,
+  children,
+}: Props) {
   return (
     <Popover
       id={id}
@@ -16,14 +25,22 @@ export function HoverPopover({ id, anchorEl, setAnchorEl, children }: Props) {
       }}
       open={Boolean(anchorEl)}
       anchorEl={anchorEl}
-      anchorOrigin={{
-        vertical: "bottom",
-        horizontal: "left",
-      }}
-      transformOrigin={{
-        vertical: "top",
-        horizontal: "left",
-      }}
+      anchorOrigin={
+        anchorOrigin
+          ? anchorOrigin
+          : {
+              vertical: "bottom",
+              horizontal: "left",
+            }
+      }
+      transformOrigin={
+        transformOrigin
+          ? transformOrigin
+          : {
+              vertical: "top",
+              horizontal: "left",
+            }
+      }
       onClose={() => setAnchorEl(null)}
       disableRestoreFocus
     >
