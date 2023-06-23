@@ -2,7 +2,7 @@ import { ListItem, ListItemText, Stack } from "@mui/material";
 import { ReactNode, useEffect, useState } from "react";
 import { Draggable } from "react-beautiful-dnd";
 import { HoverPopover } from "../../common/popover/HoverPopover";
-import { CloseIconButton } from "../../common/button/CloseIconButton";
+import { CloseIconButton } from "../../common/button/icon/CloseIconButton";
 import useTrainingSchedule from "../../../context/trainingScheduleContext/useTrainingSchedule";
 
 export type TrainingProgramPageSessionExerciseItemProps = {

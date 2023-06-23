@@ -1,4 +1,4 @@
-import { Box, Grid, Typography, Button } from "@mui/material";
+import { Box, Grid, Typography, Button, Card } from "@mui/material";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { Loader } from "../../common/loader/Loader";
 import { AxiosError } from "axios";
@@ -19,6 +19,8 @@ import { PageContentPanel } from "../../common/pageContent/PageContentPanel";
 import { ExercisesProvider } from "../../../context/entityContext/entities/exercise/ExercisesContextProvider";
 import { DeleteDialogModal } from "../../common/modal/DeleteDialogModal";
 import { useState } from "react";
+import { PageTitle } from "../../common/pageTitle/PageTitle";
+import { SimpleAccordion } from "../../common/accordion/SimpleAccordion";
 
 type Params = {
   id: string;
@@ -31,8 +33,6 @@ export function ExercisePage() {
   const { status, exercise, error, isLoading, remove } = useExercise(id!);
   const [isModalOpen, setModalOpen] = useState(false);
   const navigate = useNavigate();
-
-  const isAuthenticated = user !== null && user !== undefined;
 
   if (isLoading || exercise === undefined) {
     return <Loader />;
@@ -86,70 +86,65 @@ export function ExercisePage() {
   };
 
   return (
-    <PageContent pageContentPanel={pageContentPanel()}>
-      <Grid container spacing={2}>
-        <Grid item xs={8}>
-          <ExercisePageHeader
-            id={exercise.id}
-            title={exercise.name}
-            likes={exercise.likes}
-            isLiked={exercise.isLiked}
-            rating={exercise.rating}
-            userRatingInfo={{
-              isRated: exercise.isRated,
-              rating: exercise.userRating,
-            }}
-          />
-        </Grid>
-        <Grid item xs={4}>
-          <ExercisePageIndexCard
-            exercise={exercise}
-            isAuthenticated={isAuthenticated}
-          />
-        </Grid>
-      </Grid>
-      <Box sx={{ pb: 3 }}>
-        <Typography variant="h5" sx={{ pb: 3 }}>
-          Description
-        </Typography>
-        <Grid container spacing={2} columns={2}>
-          <Grid item xs={2} sm={2} md={1}>
-            <Article text={exercise.description} />
+    <>
+      <PageTitle title={`${exercise.name} | Exercises`} />
+      <PageContent pageContentPanel={pageContentPanel()}>
+        <Grid container spacing={2}>
+          <Grid item xs={8}>
+            <ExercisePageHeader exercise={exercise} />
           </Grid>
-          {exercise.youtubeLink ? (
-            <Grid item xs={2} sm={2} md={1}>
-              <YoutubeEmbed url={exercise.youtubeLink} width={"100%"} />
-            </Grid>
-          ) : null}
+          <Grid item xs={4}>
+            <ExercisePageIndexCard exercise={exercise} />
+          </Grid>
         </Grid>
-      </Box>
-      <Box sx={{ pb: 3 }}>
-        <Typography variant="h5" sx={{ pb: 3 }}>
-          Muscle Groups
-        </Typography>
-        <ExercisePageMuscleGroups
-          exerciseMuscleGroups={exercise.exerciseMuscleGroups}
-        />
-      </Box>
-      <Box sx={{ pb: 3 }}>
-        <Typography variant="h5" sx={{ pb: 3 }}>
-          Similar Exercises
-        </Typography>
-        <ExercisesProvider
-          initialFilters={[
-            {
-              name: "targetMuscleGroup",
-              value: exercise.targetMuscleGroup.type,
-            },
-            {
-              name: "id",
-              value: `!${exercise.id}`,
-            },
-          ]}
-        >
-          <ExercisePageSimilarExercises id={exercise.targetMuscleGroup.id} />
-        </ExercisesProvider>
-      </Box>
-    </PageContent>
+        {exercise.description !== undefined &&
+          exercise.description !== null &&
+          exercise.description !== "" && (
+            <SimpleAccordion title="Description">
+              <Grid container spacing={2} columns={2}>
+                <Grid item xs={2} sm={2} md={1}>
+                  <Card sx={{ height: "100%" }}>
+                    <Article text={exercise.description} />
+                  </Card>
+                </Grid>
+                {exercise.youtubeLink ? (
+                  <Grid item xs={2} sm={2} md={1}>
+                    <Card>
+                      <YoutubeEmbed url={exercise.youtubeLink} width={"100%"} />
+                    </Card>
+                  </Grid>
+                ) : null}
+              </Grid>
+            </SimpleAccordion>
+          )}
+        <Box sx={{ pb: 3 }}>
+          <Typography variant="h5" sx={{ pb: 3 }}>
+            Muscle Groups
+          </Typography>
+          <ExercisePageMuscleGroups
+            exerciseMuscleGroups={exercise.exerciseMuscleGroups}
+          />
+        </Box>
+        <Box sx={{ pb: 3 }}>
+          <Typography variant="h5" sx={{ pb: 3 }}>
+            Similar Exercises
+          </Typography>
+          <ExercisesProvider
+            initialFilters={[
+              {
+                name: "targetMuscleGroup",
+                value: exercise.targetMuscleGroup.type,
+              },
+              {
+                name: "id",
+                value: `!${exercise.id}`,
+              },
+            ]}
+          >
+            <ExercisePageSimilarExercises id={exercise.targetMuscleGroup.id} />
+          </ExercisesProvider>
+        </Box>
+      </PageContent>
+    </>
   );
 }

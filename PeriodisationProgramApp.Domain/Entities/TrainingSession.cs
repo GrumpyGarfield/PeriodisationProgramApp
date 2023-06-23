@@ -2,6 +2,8 @@
 {
     public class TrainingSession : BaseEntity
     {
+        public TrainingSession() { }
+
         public TrainingSession(int week, DayOfWeek dayOfWeek, int repsInReserve)
         {
             Week = week;

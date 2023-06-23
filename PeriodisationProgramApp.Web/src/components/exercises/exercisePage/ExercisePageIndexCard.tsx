@@ -7,16 +7,14 @@ import useExercise from "../../../context/entityContext/entities/exercise/useExe
 import { RsmIndexInfo } from "../../info/RsmIndexInfo";
 import { FmIndexInfo } from "../../info/FmIndexInfo";
 import { SfrIndexInfo } from "../../info/SfrIndexInfo";
+import useAuthentication from "../../../hooks/useAuthentication";
 
 type Props = {
   exercise: Exercise;
-  isAuthenticated: boolean;
 };
 
-export default function ExercisePageIndexCard({
-  exercise,
-  isAuthenticated,
-}: Props) {
+export default function ExercisePageIndexCard({ exercise }: Props) {
+  const { isUserAuthenticated } = useAuthentication();
   const { registerUserData, submitUserData, userDataFormErrors } = useExercise(
     exercise.id
   );
@@ -32,10 +30,11 @@ export default function ExercisePageIndexCard({
           min: { value: 0, message: "Must be at least 0" },
           max: { value: 9, message: "Must be lower than 9" },
           valueAsNumber: true,
-          onBlur: submitUserData,
+          onBlur: isUserAuthenticated ? submitUserData : undefined,
         }),
       },
       errors: userDataFormErrors,
+      readonly: !isUserAuthenticated,
     },
     {
       id: "fatigueMagnitude",
@@ -47,10 +46,11 @@ export default function ExercisePageIndexCard({
           min: { value: 0, message: "Must be at least 0" },
           max: { value: 9, message: "Must be lower than 9" },
           valueAsNumber: true,
-          onBlur: submitUserData,
+          onBlur: isUserAuthenticated ? submitUserData : undefined,
         }),
       },
       errors: userDataFormErrors,
+      readonly: !isUserAuthenticated,
     },
     {
       id: "stimulusToFatigueRatio",

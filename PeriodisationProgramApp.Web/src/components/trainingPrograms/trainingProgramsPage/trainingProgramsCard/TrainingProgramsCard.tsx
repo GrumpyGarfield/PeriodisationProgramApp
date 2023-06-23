@@ -30,7 +30,6 @@ export default function TrainingProgramsCard({
 }: Props) {
   const [raised, setRaised] = React.useState(false);
   const { translate } = useEnumHelper();
-
   const trainingProgramsCardListItems: CardListItemProps[] = [
     {
       label: "Split type",
@@ -57,7 +56,6 @@ export default function TrainingProgramsCard({
 
   return (
     <Card
-      raised={raised}
       onMouseEnter={() => setRaised(true)}
       onMouseLeave={() => setRaised(false)}
       className="block relative"

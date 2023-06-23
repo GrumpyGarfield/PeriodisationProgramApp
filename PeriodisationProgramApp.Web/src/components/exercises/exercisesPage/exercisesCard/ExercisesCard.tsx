@@ -65,7 +65,6 @@ export default function ExercisesCard({
 
   return (
     <Card
-      raised={raised}
       onMouseEnter={() => setRaised(true)}
       onMouseLeave={() => setRaised(false)}
       className="block relative"

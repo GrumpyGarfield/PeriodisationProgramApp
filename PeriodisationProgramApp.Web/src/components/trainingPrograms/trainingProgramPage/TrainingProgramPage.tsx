@@ -16,6 +16,7 @@ import useTrainingProgram from "../../../context/entityContext/entities/training
 import { TrainingProgramPageHeader } from "./TrainingProgramPageHeader";
 import { TrainingProgramPageSchedule } from "./TrainingProgramPageSchedule";
 import { TrainingScheduleProvider } from "../../../context/trainingScheduleContext/TrainingScheduleContextProvider";
+import { PageTitle } from "../../common/pageTitle/PageTitle";
 
 type Params = {
   id: string;
@@ -82,48 +83,40 @@ export function TrainingProgramPage() {
   };
 
   return (
-    <PageContent pageContentPanel={pageContentPanel()}>
-      <Grid container spacing={2}>
-        <Grid item xs={8}>
-          <TrainingProgramPageHeader
-            id={trainingProgram.id}
-            title={trainingProgram.name}
-            likes={trainingProgram.likes}
-            isLiked={trainingProgram.isLiked}
-            rating={trainingProgram.rating}
-            userRatingInfo={{
-              isRated: trainingProgram.isRated,
-              rating: trainingProgram.userRating,
-            }}
-          />
-        </Grid>
-        <Grid item xs={4}></Grid>
-      </Grid>
-      <Box sx={{ pb: 3 }}>
-        <Typography variant="h5" sx={{ pb: 3 }}>
-          Description
-        </Typography>
-        <Grid container spacing={2} columns={2}>
-          <Grid item xs={2} sm={2} md={1}>
-            <Article text={trainingProgram.description} />
+    <>
+      <PageTitle title={`${trainingProgram.name} | Training Programs`} />
+      <PageContent pageContentPanel={pageContentPanel()}>
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <TrainingProgramPageHeader trainingProgram={trainingProgram} />
           </Grid>
         </Grid>
-      </Box>
-      <Box sx={{ pb: 3 }}>
-        <Typography variant="h5" sx={{ pb: 3 }}>
-          Schedule
-        </Typography>
-        <Grid container spacing={2} columns={2}>
-          <Grid item xs={2} sm={2} md={2}>
-            <TrainingScheduleProvider>
-              <TrainingProgramPageSchedule
-                numberOfSessions={trainingProgram.numberOfSessions}
-                trainingSessions={trainingProgram.sessions}
-              />
-            </TrainingScheduleProvider>
+        {trainingProgram.description !== undefined &&
+          trainingProgram.description !== null &&
+          trainingProgram.description !== "" && (
+            <Box sx={{ pb: 3 }}>
+              <Typography variant="h5" sx={{ pb: 3 }}>
+                Description
+              </Typography>
+              <Article text={trainingProgram.description} />
+            </Box>
+          )}
+        <Box sx={{ pb: 3 }}>
+          <Typography variant="h5" sx={{ pb: 3 }}>
+            Schedule
+          </Typography>
+          <Grid container spacing={2} columns={2}>
+            <Grid item xs={2} sm={2} md={2}>
+              <TrainingScheduleProvider>
+                <TrainingProgramPageSchedule
+                  numberOfSessions={trainingProgram.numberOfSessions}
+                  sessions={trainingProgram.sessions}
+                />
+              </TrainingScheduleProvider>
+            </Grid>
           </Grid>
-        </Grid>
-      </Box>
-    </PageContent>
+        </Box>
+      </PageContent>
+    </>
   );
 }

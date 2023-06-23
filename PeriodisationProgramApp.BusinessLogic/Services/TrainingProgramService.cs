@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using PeriodisationProgramApp.BusinessLogic.Domain.Dto;
+using PeriodisationProgramApp.BusinessLogic.Dto;
 using PeriodisationProgramApp.BusinessLogic.Extensions;
 using PeriodisationProgramApp.BusinessLogic.Factories.Interfaces;
 using PeriodisationProgramApp.BusinessLogic.Services.Interfaces;
@@ -9,6 +10,7 @@ using PeriodisationProgramApp.Domain.Entities;
 using PeriodisationProgramApp.Domain.Enums;
 using PeriodisationProgramApp.Domain.Interfaces;
 using PeriodisationProgramApp.Domain.Pagination;
+using System.Linq;
 
 namespace PeriodisationProgramApp.BusinessLogic.Services
 {
@@ -42,5 +44,38 @@ namespace PeriodisationProgramApp.BusinessLogic.Services
 
             return trainingProgram.TranslateToDto(_mapper, userId);
         }
+
+        //public override async Task<TrainingProgramDto> Update<UpdateEntityDto>(Guid entityId, Guid userId, UpdateEntityDto updateDto)
+        //{
+        //    var updateTrainingProgramDto = updateDto as UpdateTrainingProgramDto;
+
+        //    if (updateTrainingProgramDto == null)
+        //    {
+        //        throw new Exception($"UpdateDto is of the wrong class");
+        //    }
+
+        //    var trainingProgram = await _repository.GetByIdAsync(entityId);
+        //    trainingProgram = updateTrainingProgramDto.Translate(trainingProgram, _mapper);
+
+        //    foreach (var sessionDto in updateTrainingProgramDto.Sessions)
+        //    {
+        //        var session = trainingProgram.Sessions.First(s => s.Id == sessionDto.Id);
+
+        //        session.Exercises = session.Exercises.Where(s => sessionDto.Exercises.Select(e => e.Id).Contains(s.Id)).ToList();
+
+        //        var newExercises = sessionDto.Exercises.Where(s => !session.Exercises.Select(e => e.Id).Contains(s.Id)).ToList();
+
+        //        foreach (var exerciseDto in newExercises)
+        //        {
+        //            var newExercise = exerciseDto.Translate<TrainingSessionExerciseDto, TrainingSessionExercise>(_mapper);
+        //            session.Exercises.Add(newExercise);
+        //        }
+        //    }
+
+        //    _repository.Update(trainingProgram);
+        //    await _context.SaveChangesAsync();
+
+        //    return trainingProgram.TranslateToDto(_mapper, userId);
+        //}
     }
 }

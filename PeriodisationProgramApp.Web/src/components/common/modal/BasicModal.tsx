@@ -2,6 +2,7 @@ import Box, { BoxProps } from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { PropsWithChildren } from "react";
+import { CloseIconButton } from "../button/icon/CloseIconButton";
 
 const style = {
   position: "absolute" as "absolute",
@@ -36,6 +37,10 @@ export function BasicModal({
       aria-describedby="modal-modal-description"
     >
       <Box sx={style} {...props}>
+        <CloseIconButton
+          onClick={handleClose}
+          sx={{ position: "absolute", top: 0, right: 0, m: 1 }}
+        />
         <Typography id="modal-modal-title" variant="h5">
           {title}
         </Typography>

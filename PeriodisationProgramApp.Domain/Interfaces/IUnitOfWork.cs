@@ -12,6 +12,10 @@
 
         ITrainingProgramRepository TrainingPrograms { get; }
 
+        ITrainingSessionRepository TrainingSessions { get; }
+
+        ITrainingSessionExerciseRepository TrainingSessionExercises { get; }
+
         int Complete();
 
         Task<int> CompleteAsync();

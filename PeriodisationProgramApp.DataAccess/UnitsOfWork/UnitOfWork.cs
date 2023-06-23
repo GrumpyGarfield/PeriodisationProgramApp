@@ -19,6 +19,8 @@ namespace PeriodisationProgramApp.DataAccess.UnitsOfWork
             Exercises = new ExerciseRepository(_context);
             ExerciseMuscleGroups = new ExerciseMuscleGroupRepository(_context, _defaultDataSettings);
             TrainingPrograms = new TrainingProgramRepository(_context);
+            TrainingSessions = new TrainingSessionRepository(_context);
+            TrainingSessionExercises = new TrainingSessionExerciseRepository(_context);
         }
 
         public IUserRepository Users { get; private set; } 
@@ -30,6 +32,10 @@ namespace PeriodisationProgramApp.DataAccess.UnitsOfWork
         public IExerciseMuscleGroupRepository ExerciseMuscleGroups { get; private set; }
 
         public ITrainingProgramRepository TrainingPrograms { get; private set; }
+
+        public ITrainingSessionRepository TrainingSessions { get; private set; }
+
+        public ITrainingSessionExerciseRepository TrainingSessionExercises { get; private set; }
 
         public int Complete()
         {

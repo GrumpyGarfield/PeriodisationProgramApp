@@ -5,14 +5,15 @@ import {
   Box,
   IconButton,
   Menu,
+  Button,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import AdbIcon from "@mui/icons-material/Adb";
 import React from "react";
 import { Profile } from "../common/authorization/Profile";
 import { logout } from "../../firebase/Firebase";
-import { Link } from "react-router-dom";
 import { User } from "firebase/auth";
+import Iconify from "../common/iconify/Iconify";
 
 type Props = {
   user: User | null | undefined;
@@ -44,7 +45,10 @@ export function Header({ user, loading }: Props) {
     >
       <Box>
         <Toolbar>
-          <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
+          <Iconify
+            icon="game-icons:progression"
+            sx={{ display: { xs: "none", md: "flex" }, mr: 2 }}
+          />
           <Typography
             variant="h6"
             noWrap
@@ -55,12 +59,12 @@ export function Header({ user, loading }: Props) {
               display: { xs: "none", md: "flex" },
               fontFamily: "monospace",
               fontWeight: 700,
-              letterSpacing: ".3rem",
+              letterSpacing: ".1rem",
               color: "inherit",
               textDecoration: "none",
             }}
           >
-            LOGO
+            PERIODISATION PROGRAM APP
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -115,7 +119,9 @@ export function Header({ user, loading }: Props) {
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}></Box>
           <Box sx={{ flexGrow: 0 }}>
             {loading ? null : user === null || user === undefined ? (
-              <Link to="signin">Sign In</Link>
+              <Button variant="text" color="inherit" href={`/signin`}>
+                Sign In
+              </Button>
             ) : (
               <Profile user={user} handleLogout={handleLogout} />
             )}

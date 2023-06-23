@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { TrainingSessionExercise } from "../../../../types/enitities/TrainingSessionExercise";
 import { FormStepper, StepProps } from "../../../common/stepper/FormStepper";
-import { FormLabel, Stack, TextField } from "@mui/material";
+import { Box, FormLabel, Stack, TextField } from "@mui/material";
 import ExercisesSearch from "../../../exercises/exercisesPage/ExercisesSearch";
 import ExercisesFilterSidebar from "../../../exercises/exercisesPage/ExercisesFilterSidebar";
 import ExercisesSort from "../../../exercises/exercisesPage/ExercisesSort";
@@ -45,7 +45,9 @@ export function TrainingProgramPageAddExerciseModal({ onSubmit }: Props) {
           <ExercisesSort />
         </Stack>
       </Stack>
-      <TrainingProgramPageAddExerciseList control={control} />
+      <Box sx={{ height: "50vh", overflow: "hidden" }}>
+        <TrainingProgramPageAddExerciseList control={control} />
+      </Box>
     </ExercisesProvider>
   );
 

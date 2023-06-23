@@ -20,7 +20,7 @@ export function NavigationButton({
       variant="text"
       startIcon={icon}
       onClick={() => {
-        to === undefined ? navigate(-1) : navigate(to);
+        to === undefined ? navigate("..", { relative: "path" }) : navigate(to);
       }}
       sx={{ width: 100 }}
       {...buttonProps}

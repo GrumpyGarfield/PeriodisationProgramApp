@@ -1,11 +1,10 @@
-import { useAuthState } from "react-firebase-hooks/auth";
 import { User } from "../../../../types/enitities/User";
 import { CardMenu } from "../../../common/card/CardMenu";
 import { CardMenuItemProps } from "../../../common/card/CardMenuItem";
-import { auth } from "../../../../firebase/Firebase";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { DeleteDialogModal } from "../../../common/modal/DeleteDialogModal";
+import useAuthentication from "../../../../hooks/useAuthentication";
 
 type Props = {
   id: string;
@@ -22,7 +21,7 @@ export function ExercisesCardMenu({
   setRaised,
   handleDelete,
 }: Props) {
-  const [user] = useAuthState(auth);
+  const { isUserAuthenticated, user } = useAuthentication();
   const navigate = useNavigate();
   const [isRemoveModalOpen, setRemoveModalOpen] = useState(false);
 
@@ -30,7 +29,7 @@ export function ExercisesCardMenu({
     { icon: "eva:share-fill", label: "Share" },
   ];
 
-  if (user !== null && user !== undefined) {
+  if (isUserAuthenticated) {
     cardMenuItems.push({ icon: "cil:clone", label: "Clone" });
   }
 

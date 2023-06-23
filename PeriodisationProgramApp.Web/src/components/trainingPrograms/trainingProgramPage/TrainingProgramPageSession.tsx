@@ -69,7 +69,6 @@ export function TrainingProgramPageSession({
     );
 
     setItems(newItems);
-    console.log(newItems);
 
     const updatedTrainingSession = {
       ...trainingSession,
@@ -90,7 +89,6 @@ export function TrainingProgramPageSession({
     const newItems = [...items];
     newItems.splice(index, 1);
     setItems(newItems);
-    console.log(newItems);
 
     const updatedTrainingSession = {
       ...trainingSession,

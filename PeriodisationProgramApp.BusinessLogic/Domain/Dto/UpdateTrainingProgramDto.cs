@@ -1,4 +1,5 @@
-﻿using PeriodisationProgramApp.Domain.Enums;
+﻿using PeriodisationProgramApp.BusinessLogic.Dto;
+using PeriodisationProgramApp.Domain.Enums;
 
 namespace PeriodisationProgramApp.BusinessLogic.Domain.Dto
 {
@@ -12,7 +13,7 @@ namespace PeriodisationProgramApp.BusinessLogic.Domain.Dto
 
         public int NumberOfSessions { get; set; }
 
-        public int MesocycleLength { get; set; }
+        public List<TrainingSessionDto> Sessions { get; set; } = new();
 
         public bool IsPublic { get; set; }
     }

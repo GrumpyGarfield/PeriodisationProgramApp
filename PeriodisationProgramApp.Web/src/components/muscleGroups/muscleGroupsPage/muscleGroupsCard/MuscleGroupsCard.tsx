@@ -5,14 +5,12 @@ import { CardList } from "../../../common/card/CardList";
 import { MuscleGroupType } from "../../../../enums/MuscleGroupType";
 import { useEnumHelper } from "../../../../helpers/useEnumHelper";
 import { MuscleGroup } from "../../../../types/enitities/MuscleGroup";
-import { useState } from "react";
 
 type Props = {
   muscleGroup: MuscleGroup;
 };
 
 export default function MuscleGroupsCard({ muscleGroup }: Props) {
-  const [raised, setRaised] = useState(false);
   const { translate } = useEnumHelper();
 
   const muscleGroupsCardListItems: CardListItemProps[] = [
@@ -37,12 +35,7 @@ export default function MuscleGroupsCard({ muscleGroup }: Props) {
   ];
 
   return (
-    <Card
-      raised={raised}
-      onMouseEnter={() => setRaised(true)}
-      onMouseLeave={() => setRaised(false)}
-      className="block relative"
-    >
+    <Card className="block relative">
       <Stack spacing={2} sx={{ p: 3 }}>
         <CardHeader
           id={muscleGroup.id}

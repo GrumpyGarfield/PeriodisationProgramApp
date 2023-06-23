@@ -25,6 +25,7 @@ import { FmIndexInfo } from "../../../info/FmIndexInfo";
 import useCreate from "../../../../serverInteraction/hooks/entity/useCreate";
 import { Exercise } from "../../../../types/enitities/Exercise";
 import { useNavigate } from "react-router-dom";
+import { PageTitle } from "../../../common/pageTitle/PageTitle";
 
 export function ExerciseCreatePage() {
   const entityName = "exercise";
@@ -313,14 +314,17 @@ export function ExerciseCreatePage() {
   };
 
   return (
-    <PageContent pageContentPanel={<PageContentPanel />}>
-      <PageHeader text="Create Exercise" />
-      <FormStepper
-        steps={steps}
-        handleFinish={handleSubmit(onSubmit)}
-        validate={validate}
-        errors={errors}
-      />
-    </PageContent>
+    <>
+      <PageTitle title={`Create New | Exercises`} />
+      <PageContent pageContentPanel={<PageContentPanel />}>
+        <PageHeader text="Create Exercise" />
+        <FormStepper
+          steps={steps}
+          handleFinish={handleSubmit(onSubmit)}
+          validate={validate}
+          errors={errors}
+        />
+      </PageContent>
+    </>
   );
 }

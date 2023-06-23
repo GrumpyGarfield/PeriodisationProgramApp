@@ -86,7 +86,11 @@ namespace PeriodisationProgramApp.BusinessLogic.Builders.TrainingSessionBuilders
             for (var i = 0; i < muscleGroupExercisesNumber; i++)
             {
                 var trainingSessionExerciseSets = muscleGroupSets / muscleGroupExercisesNumber + (int)Math.Ceiling((muscleGroupSets % muscleGroupExercisesNumber - i) / (double)muscleGroupExercisesNumber);
-                var trainingSessionExercise = new TrainingSessionExercise(selectedMuscleGroupExercises[i], trainingSessionExerciseSets);
+                var trainingSessionExercise = new TrainingSessionExercise()
+                {
+                    Exercise = selectedMuscleGroupExercises[i],
+                    Sets = trainingSessionExerciseSets
+                };
                 trainingSessionExercises.Add(trainingSessionExercise);
             }
 

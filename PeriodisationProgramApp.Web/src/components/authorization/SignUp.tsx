@@ -36,7 +36,7 @@ export default function SignUp() {
       // maybe trigger a loading screen
       return;
     }
-    if (user) navigate("/");
+    if (user) navigate(-1);
   }, [user, loading, navigate]);
 
   const onSubmit = async ({ username, email, password }: SignUpData) => {

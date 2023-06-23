@@ -5,16 +5,14 @@ import {
 } from "../../common/indexCard/IndexCardList";
 import useMuscleGroup from "../../../context/entityContext/entities/muscleGroup/useMuscleGroup";
 import { SyntheticEvent } from "react";
+import useAuthentication from "../../../hooks/useAuthentication";
 
 type Props = {
   muscleGroup: MuscleGroup;
-  isAuthenticated: boolean;
 };
 
-export default function MuscleGroupPageIndexCard({
-  muscleGroup,
-  isAuthenticated,
-}: Props) {
+export default function MuscleGroupPageIndexCard({ muscleGroup }: Props) {
+  const { isUserAuthenticated } = useAuthentication();
   const { registerUserData, userDataOnBlur, userDataFormErrors } =
     useMuscleGroup(muscleGroup.id);
 
@@ -33,6 +31,7 @@ export default function MuscleGroupPageIndexCard({
         }),
       },
       errors: userDataFormErrors,
+      readonly: !isUserAuthenticated,
     },
     {
       id: "minimumEffectiveVolume",
@@ -48,6 +47,7 @@ export default function MuscleGroupPageIndexCard({
         }),
       },
       errors: userDataFormErrors,
+      readonly: !isUserAuthenticated,
     },
     {
       id: "maximumRecoverableVolume",
@@ -66,6 +66,7 @@ export default function MuscleGroupPageIndexCard({
         }),
       },
       errors: userDataFormErrors,
+      readonly: !isUserAuthenticated,
     },
   ];
 

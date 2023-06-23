@@ -20,6 +20,7 @@ import { TrainingProgram } from "../../../../types/enitities/TrainingProgram";
 import { TrainingProgramType } from "../../../../enums/TrainingProgramType";
 import { TogglePlateGroup } from "../../../common/toggle/TogglePlateGroup";
 import { TrainingLevel } from "../../../../enums/TrainingLevel";
+import { PageTitle } from "../../../common/pageTitle/PageTitle";
 
 export function TrainingProgramCreatePage() {
   const entityName = "trainingProgram";
@@ -319,14 +320,17 @@ export function TrainingProgramCreatePage() {
   };
 
   return (
-    <PageContent pageContentPanel={<PageContentPanel />}>
-      <PageHeader text="Create Training Program" />
-      <FormStepper
-        steps={steps}
-        handleFinish={handleSubmit(onSubmit)}
-        validate={validate}
-        errors={errors}
-      />
-    </PageContent>
+    <>
+      <PageTitle title={`Create New | Training Programs`} />
+      <PageContent pageContentPanel={<PageContentPanel />}>
+        <PageHeader text="Create Training Program" />
+        <FormStepper
+          steps={steps}
+          handleFinish={handleSubmit(onSubmit)}
+          validate={validate}
+          errors={errors}
+        />
+      </PageContent>
+    </>
   );
 }

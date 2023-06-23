@@ -1,8 +1,7 @@
-import { useAuthState } from "react-firebase-hooks/auth";
 import { User } from "../../../../types/enitities/User";
 import { CardMenu } from "../../../common/card/CardMenu";
 import { CardMenuItemProps } from "../../../common/card/CardMenuItem";
-import { auth } from "../../../../firebase/Firebase";
+import useAuthentication from "../../../../hooks/useAuthentication";
 
 type Props = {
   id: string;
@@ -17,13 +16,13 @@ export function TrainingProgramsCardMenu({
   raised,
   setRaised,
 }: Props) {
-  const [user] = useAuthState(auth);
+  const { isUserAuthenticated, user } = useAuthentication();
 
   const cardMenuItems: CardMenuItemProps[] = [
     { icon: "eva:share-fill", label: "Share" },
   ];
 
-  if (user !== null && user !== undefined) {
+  if (isUserAuthenticated) {
     cardMenuItems.push({ icon: "cil:clone", label: "Clone" });
   }
 

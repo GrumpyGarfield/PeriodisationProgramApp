@@ -1,23 +1,43 @@
 import { Grid, Paper, Typography } from "@mui/material";
 import { TrainingSession } from "../../../types/enitities/TrainingSession";
 import { TrainingProgramPageSession } from "./TrainingProgramPageSession";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Scrollbar from "../../common/scrollbar/Scrollbar";
 import useTrainingSchedule from "../../../context/trainingScheduleContext/useTrainingSchedule";
+import { Loader } from "../../common/loader/Loader";
 
 type Props = {
+  sessions: TrainingSession[];
   numberOfSessions: number;
-  trainingSessions: TrainingSession[];
+  handleChange?: (...event: any[]) => void;
   isEditMode?: boolean;
 };
 
 export function TrainingProgramPageSchedule({
+  sessions,
   numberOfSessions,
-  trainingSessions,
+  handleChange,
   isEditMode,
 }: Props) {
   const { setIsEditMode } = useTrainingSchedule();
-  const [sessions, setSessions] = useState(trainingSessions);
+
+  const updateSession = (updatedTrainingSession: TrainingSession) => {
+    sessions = sessions.map((trainingSession) =>
+      trainingSession.id === updatedTrainingSession.id
+        ? updatedTrainingSession
+        : trainingSession
+    );
+    handleChange && handleChange(sessions);
+  };
+
+  useEffect(() => {
+    setIsEditMode(isEditMode ? isEditMode : false);
+  });
+
+  if (sessions === undefined) {
+    return <Loader />;
+  }
+
   const weeks = [
     ...new Set(
       sessions
@@ -25,20 +45,6 @@ export function TrainingProgramPageSchedule({
         .map((trainingSession) => trainingSession.week)
     ),
   ];
-
-  const updateSession = (updatedTrainingSession: TrainingSession) => {
-    const newSessions = sessions.map((trainingSession) =>
-      trainingSession.id === updatedTrainingSession.id
-        ? updatedTrainingSession
-        : trainingSession
-    );
-    console.log(newSessions);
-    setSessions(newSessions);
-  };
-
-  useEffect(() => {
-    setIsEditMode(isEditMode ? isEditMode : false);
-  });
 
   return (
     <Paper square elevation={3} sx={{ height: "768px", overflow: "hidden" }}>

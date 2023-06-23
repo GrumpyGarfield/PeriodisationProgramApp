@@ -1,13 +1,14 @@
 import { Tabs, Tab, Box, Button, Stack } from "@mui/material";
 import { PageHeader } from "../../../components/common/pageHeader/PageHeader";
-import React from "react";
-import { auth } from "../../../firebase/Firebase";
-import { useAuthState } from "react-firebase-hooks/auth";
+import React, { useState } from "react";
 import useTrainingPrograms from "../../../context/entityContext/entities/trainingProgram/useTrainingPrograms";
-import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import useAuthentication from "../../../hooks/useAuthentication";
+import { SingInOrSignUpModal } from "../../common/modal/SingInOrSignUpModal";
 
 export function TrainingProgramsPageHeader() {
-  const location = useLocation();
+  const { isUserAuthenticated } = useAuthentication();
+  const navigate = useNavigate();
   const [value, setValue] = React.useState("all");
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
     setValue(newValue);
@@ -24,8 +25,13 @@ export function TrainingProgramsPageHeader() {
       setOptionalParams({ isLiked: true });
     }
   };
-  const [user] = useAuthState(auth);
+
   const { setOptionalParams } = useTrainingPrograms();
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const handleCreate = () => {
+    isUserAuthenticated ? navigate("create") : setIsModalOpen(true);
+  };
 
   return (
     <Stack
@@ -40,7 +46,7 @@ export function TrainingProgramsPageHeader() {
           text="Training Programs"
           subtext="Browse and create your training programs"
         />
-        {user !== null && user !== undefined ? (
+        {isUserAuthenticated ? (
           <Box sx={{ flexGrow: 1, px: 3 }}>
             <Tabs
               value={value}
@@ -56,13 +62,13 @@ export function TrainingProgramsPageHeader() {
           </Box>
         ) : null}
       </div>
-      <Button
-        variant="contained"
-        color="secondary"
-        href={`${location.pathname}/create`}
-      >
+      <Button variant="contained" color="secondary" onClick={handleCreate}>
         Create New
       </Button>
+      <SingInOrSignUpModal
+        isOpen={isModalOpen}
+        handleClose={() => setIsModalOpen(false)}
+      />
     </Stack>
   );
 }

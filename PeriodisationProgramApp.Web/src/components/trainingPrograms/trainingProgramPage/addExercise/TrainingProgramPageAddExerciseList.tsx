@@ -58,30 +58,24 @@ export default function TrainingProgramPageAddExerciseList({
       control={control}
       name="exercise"
       render={({ field: { onChange, value } }) => (
-        <Box sx={{ height: "50vh", overflow: "hidden" }}>
-          <Scrollbar>
-            <Grid container spacing={3} {...other} sx={{ px: 2, py: 1 }}>
-              {data.pages.map((page) =>
-                page.items.map((exercise: Exercise) => (
-                  <Grid key={exercise.id} item sm={12} md={6} lg={4} xl={3}>
-                    <TrainingProgramPageAddExerciseCard
-                      exercise={exercise}
-                      selectedExercise={value}
-                      handleSelect={onChange}
-                    />
-                  </Grid>
-                ))
-              )}
-            </Grid>
-            <Box ref={ref} sx={{ py: hasNextPage ? 3 : 0 }}>
-              {isFetchingNextPage ? (
-                <Loader />
-              ) : hasNextPage ? (
-                <Loader />
-              ) : null}
-            </Box>
-          </Scrollbar>
-        </Box>
+        <Scrollbar>
+          <Grid container spacing={3} {...other} sx={{ px: 2, py: 1 }}>
+            {data.pages.map((page) =>
+              page.items.map((exercise: Exercise) => (
+                <Grid key={exercise.id} item sm={12} md={6} lg={4} xl={3}>
+                  <TrainingProgramPageAddExerciseCard
+                    exercise={exercise}
+                    selectedExercise={value}
+                    handleSelect={onChange}
+                  />
+                </Grid>
+              ))
+            )}
+          </Grid>
+          <Box ref={ref} sx={{ py: hasNextPage ? 3 : 0 }}>
+            {isFetchingNextPage ? <Loader /> : hasNextPage ? <Loader /> : null}
+          </Box>
+        </Scrollbar>
       )}
     />
   );
