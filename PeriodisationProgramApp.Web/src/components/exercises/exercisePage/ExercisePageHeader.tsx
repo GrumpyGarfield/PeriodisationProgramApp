@@ -56,7 +56,7 @@ export function ExercisePageHeader({ exercise }: Props) {
   ];
 
   return (
-    <Box sx={{ pb: 3 }}>
+    <Box>
       <PageHeader text={name} subtext={user.username} />
       <Stack direction="row" spacing={1} flexShrink={0}>
         <RateButton

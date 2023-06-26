@@ -1,4 +1,4 @@
-import { Grid, Paper, Typography } from "@mui/material";
+import { Card, Grid, Typography } from "@mui/material";
 import { TrainingSession } from "../../../types/enitities/TrainingSession";
 import { TrainingProgramPageSession } from "./TrainingProgramPageSession";
 import React, { useEffect } from "react";
@@ -47,7 +47,7 @@ export function TrainingProgramPageSchedule({
   ];
 
   return (
-    <Paper square elevation={3} sx={{ height: "768px", overflow: "hidden" }}>
+    <Card sx={{ height: "768px", overflow: "hidden" }}>
       <Scrollbar>
         <Grid container spacing={2} columns={numberOfSessions} sx={{ p: 3 }}>
           {weeks.map((week) => {
@@ -78,6 +78,6 @@ export function TrainingProgramPageSchedule({
           })}
         </Grid>
       </Scrollbar>
-    </Paper>
+    </Card>
   );
 }

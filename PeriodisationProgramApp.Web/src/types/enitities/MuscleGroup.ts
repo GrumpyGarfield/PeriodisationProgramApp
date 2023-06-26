@@ -3,6 +3,7 @@ import { MuscleGroupUserData } from "../MuscleGroupUserData";
 import { BaseEntity } from "./BaseEntity";
 
 export type MuscleGroup = {
+  description?: string;
   type: MuscleGroupType;
   maintenanceVolume: number;
   minimumEffectiveVolume: number;

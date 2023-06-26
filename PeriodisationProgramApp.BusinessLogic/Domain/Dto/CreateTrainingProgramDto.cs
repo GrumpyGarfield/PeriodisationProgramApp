@@ -17,6 +17,10 @@ namespace PeriodisationProgramApp.BusinessLogic.Domain.Dto
         public int MesocycleLength { get; set; }
 
         public bool IsPublic { get; set; }
+
+        public bool UseCommunityCreatedExercises { get; set; }
+
+        public bool UseMyExercises { get; set; }
     }
 }
 

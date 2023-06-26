@@ -1,4 +1,4 @@
-import { Box, Grid, Typography, Button } from "@mui/material";
+import { Grid, Typography, Button } from "@mui/material";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { Loader } from "../../common/loader/Loader";
 import { AxiosError } from "axios";
@@ -17,6 +17,7 @@ import { TrainingProgramPageHeader } from "./TrainingProgramPageHeader";
 import { TrainingProgramPageSchedule } from "./TrainingProgramPageSchedule";
 import { TrainingScheduleProvider } from "../../../context/trainingScheduleContext/TrainingScheduleContextProvider";
 import { PageTitle } from "../../common/pageTitle/PageTitle";
+import { PageContentItem } from "../../common/pageContent/PageContentItem";
 
 type Params = {
   id: string;
@@ -86,36 +87,24 @@ export function TrainingProgramPage() {
     <>
       <PageTitle title={`${trainingProgram.name} | Training Programs`} />
       <PageContent pageContentPanel={pageContentPanel()}>
-        <Grid container spacing={2}>
-          <Grid item xs={12}>
-            <TrainingProgramPageHeader trainingProgram={trainingProgram} />
-          </Grid>
-        </Grid>
+        <PageContentItem>
+          <TrainingProgramPageHeader trainingProgram={trainingProgram} />
+        </PageContentItem>
         {trainingProgram.description !== undefined &&
           trainingProgram.description !== null &&
           trainingProgram.description !== "" && (
-            <Box sx={{ pb: 3 }}>
-              <Typography variant="h5" sx={{ pb: 3 }}>
-                Description
-              </Typography>
+            <PageContentItem title="Description">
               <Article text={trainingProgram.description} />
-            </Box>
+            </PageContentItem>
           )}
-        <Box sx={{ pb: 3 }}>
-          <Typography variant="h5" sx={{ pb: 3 }}>
-            Schedule
-          </Typography>
-          <Grid container spacing={2} columns={2}>
-            <Grid item xs={2} sm={2} md={2}>
-              <TrainingScheduleProvider>
-                <TrainingProgramPageSchedule
-                  numberOfSessions={trainingProgram.numberOfSessions}
-                  sessions={trainingProgram.sessions}
-                />
-              </TrainingScheduleProvider>
-            </Grid>
-          </Grid>
-        </Box>
+        <PageContentItem title="Schedule">
+          <TrainingScheduleProvider>
+            <TrainingProgramPageSchedule
+              numberOfSessions={trainingProgram.numberOfSessions}
+              sessions={trainingProgram.sessions}
+            />
+          </TrainingScheduleProvider>
+        </PageContentItem>
       </PageContent>
     </>
   );

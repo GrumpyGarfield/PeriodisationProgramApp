@@ -6,27 +6,34 @@ import ExercisesSort from "./ExercisesSort";
 import ExercisesList from "./ExercisesList";
 import { PageContent } from "../../common/pageContent/PageContent";
 import { PageTitle } from "../../common/pageTitle/PageTitle";
+import { PageContentItem } from "../../common/pageContent/PageContentItem";
 
 export function ExercisesPage() {
   return (
     <>
       <PageTitle title="Exercises" />
       <PageContent>
-        <ExercisesPageHeader />
-        <Stack
-          direction="row"
-          flexWrap="wrap-reverse"
-          alignItems="center"
-          justifyContent="space-between"
-          sx={{ mb: 5 }}
-        >
-          <ExercisesSearch />
-          <Stack direction="row" spacing={1} flexShrink={0} sx={{ my: 1 }}>
-            <ExercisesFilterSidebar />
-            <ExercisesSort />
+        <PageContentItem>
+          <ExercisesPageHeader />
+        </PageContentItem>
+        <PageContentItem>
+          <Stack
+            direction="row"
+            flexWrap="wrap-reverse"
+            alignItems="center"
+            justifyContent="space-between"
+            sx={{ my: 2 }}
+          >
+            <ExercisesSearch />
+            <Stack direction="row" spacing={1} flexShrink={0} sx={{ my: 1 }}>
+              <ExercisesFilterSidebar />
+              <ExercisesSort />
+            </Stack>
           </Stack>
-        </Stack>
-        <ExercisesList />
+        </PageContentItem>
+        <PageContentItem>
+          <ExercisesList />
+        </PageContentItem>
       </PageContent>
     </>
   );

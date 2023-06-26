@@ -18,11 +18,13 @@ import { ExerciseCreatePage } from "../components/exercises/exercisePage/create/
 import { TrainingProgramPage } from "../components/trainingPrograms/trainingProgramPage/TrainingProgramPage";
 import { TrainingProgramCreatePage } from "../components/trainingPrograms/trainingProgramPage/create/TrainingProgramCreatePage";
 import { TrainingProgramEditPage } from "../components/trainingPrograms/trainingProgramPage/edit/TrainingProgramEditPage";
+import { ErrorPage } from "../pages/ErrorPage";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
+    errorElement: <ErrorPage />,
     children: [
       {
         path: "training-programs",

@@ -86,94 +86,88 @@ export function TrainingProgramEditPage() {
     <>
       <PageTitle title={`Edit ${trainingProgram.name} | Training Programs`} />
       <PageContent pageContentPanel={pageContentPanel()}>
-        <Grid container spacing={3} component="form" noValidate>
-          <Grid item xs={12} sm={12} md={12}>
-            <PageHeader text={`Edit ${trainingProgram.name}`} />
-          </Grid>
-          <Grid item xs={12} sm={12} md={12}>
-            <FormLabel>General</FormLabel>
-          </Grid>
-          <Grid item xs={12} sm={12} md={12}>
-            <TextField
-              required
-              fullWidth
-              id="name"
-              label="Name"
-              autoComplete="name"
-              {...register("name", {
-                required: "Enter exercise name",
-                minLength: {
-                  value: 3,
-                  message: "Name length must be more than 3 symbols",
-                },
-                maxLength: {
-                  value: 100,
-                  message: "Name length must be less than 100 symbols",
-                },
-              })}
-              helperText={errors.name?.message}
-              error={errors.name !== undefined}
-            />
-          </Grid>
-          <Grid item xs={12} sm={12} md={12}>
-            <TextField
-              multiline
-              fullWidth
-              id="description"
-              label="Description"
-              autoComplete="description"
-              rows={4}
-              {...register("description", {
-                maxLength: {
-                  value: 5000,
-                  message: "Description length must be less than 5000 symbols",
-                },
-              })}
-              helperText={errors.description?.message}
-              error={errors.description !== undefined}
-            />
-          </Grid>
-          <Grid item xs={12} sm={12} md={12}>
-            <FormLabel>Schedule</FormLabel>
-          </Grid>
-          <Grid item xs={12} sm={12} md={12}>
-            <TrainingScheduleProvider>
-              <Controller
-                control={control}
-                name="sessions"
-                render={({ field: { onChange, value } }) => (
-                  <TrainingProgramPageSchedule
-                    numberOfSessions={trainingProgram.numberOfSessions}
-                    sessions={value}
-                    handleChange={onChange}
-                    isEditMode
-                  />
-                )}
-              />
-            </TrainingScheduleProvider>
-          </Grid>
-          <Grid item xs={12} sm={12} md={12}>
-            <FormLabel>Is Public</FormLabel>
-          </Grid>
-          <Grid item xs={12} sm={12} md={6}>
+        <Grid item xs={12} sm={12} md={12}>
+          <PageHeader text={`Edit ${trainingProgram.name}`} />
+        </Grid>
+        <Grid item xs={12} sm={12} md={12}>
+          <FormLabel>General</FormLabel>
+        </Grid>
+        <Grid item xs={12} sm={12} md={12}>
+          <TextField
+            required
+            fullWidth
+            id="name"
+            label="Name"
+            autoComplete="name"
+            {...register("name", {
+              required: "Enter exercise name",
+              minLength: {
+                value: 3,
+                message: "Name length must be more than 3 symbols",
+              },
+              maxLength: {
+                value: 100,
+                message: "Name length must be less than 100 symbols",
+              },
+            })}
+            helperText={errors.name?.message}
+            error={errors.name !== undefined}
+          />
+        </Grid>
+        <Grid item xs={12} sm={12} md={12}>
+          <TextField
+            multiline
+            fullWidth
+            id="description"
+            label="Description"
+            autoComplete="description"
+            rows={4}
+            {...register("description", {
+              maxLength: {
+                value: 5000,
+                message: "Description length must be less than 5000 symbols",
+              },
+            })}
+            helperText={errors.description?.message}
+            error={errors.description !== undefined}
+          />
+        </Grid>
+        <Grid item xs={12} sm={12} md={12}>
+          <FormLabel>Schedule</FormLabel>
+        </Grid>
+        <Grid item xs={12} sm={12} md={12}>
+          <TrainingScheduleProvider>
             <Controller
               control={control}
-              name="isPublic"
+              name="sessions"
               render={({ field: { onChange, value } }) => (
-                <FormControlLabel
-                  id="isPublic"
-                  control={
-                    <Switch
-                      color="primary"
-                      checked={value}
-                      onChange={onChange}
-                    />
-                  }
-                  label="Public"
+                <TrainingProgramPageSchedule
+                  numberOfSessions={trainingProgram.numberOfSessions}
+                  sessions={value}
+                  handleChange={onChange}
+                  isEditMode
                 />
               )}
             />
-          </Grid>
+          </TrainingScheduleProvider>
+        </Grid>
+        <Grid item xs={12} sm={12} md={12}>
+          <FormLabel>Is Public</FormLabel>
+        </Grid>
+        <Grid item xs={12} sm={12} md={6}>
+          <Controller
+            control={control}
+            name="isPublic"
+            render={({ field: { onChange, value } }) => (
+              <FormControlLabel
+                id="isPublic"
+                control={
+                  <Switch color="primary" checked={value} onChange={onChange} />
+                }
+                label="Public"
+              />
+            )}
+          />
         </Grid>
       </PageContent>
     </>

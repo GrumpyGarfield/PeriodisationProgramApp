@@ -1,16 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using PeriodisationProgramApp.BusinessLogic.Builders.TrainingProgramBuilders;
-using PeriodisationProgramApp.BusinessLogic.Enums;
-using PeriodisationProgramApp.BusinessLogic.Extensions;
 using PeriodisationProgramApp.BusinessLogic.Factories.Interfaces;
-using PeriodisationProgramApp.DataAccess;
 using PeriodisationProgramApp.Domain.Entities;
-using PeriodisationProgramApp.Domain.Enums;
 using PeriodisationProgramApp.Domain.Interfaces;
-using PeriodisationProgramApp.BusinessLogic.Dto;
-using PeriodisationProgramApp.BusinessLogic.Domain.Dto;
 using FirebaseAdmin.Auth;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
@@ -23,67 +15,13 @@ namespace PeriodisationProgramApp.WebApi.Controllers
     {
         private readonly ILogger<UserController> _logger;
         private readonly IUnitOfWork _unitOfWork;
-        private readonly ITrainingProgramFactory _trainingProgramFactory;
         private readonly IMapper _mapper;
 
-        public UserController(ILogger<UserController> logger, IUnitOfWork unitOfWork, ITrainingProgramFactory trainingProgramFactory, IMapper mapper)
+        public UserController(ILogger<UserController> logger, IUnitOfWork unitOfWork, IMapper mapper)
         {
             _logger = logger;
             _unitOfWork = unitOfWork;
-            _trainingProgramFactory = trainingProgramFactory;
             _mapper = mapper;
-        }
-
-        [HttpGet(Name = "GetPushPullLegsProgram")]
-        public IActionResult GetPushPullLegsProgram(int numberOfWeekSessions, int mesocycleLength)
-        {
-            var trainingProgramBuilder = _trainingProgramFactory.GetInstance(TrainingProgramType.PushPullLegs);
-            var trainingProgram = trainingProgramBuilder.GetProgram(numberOfWeekSessions, mesocycleLength, TrainingLevel.Intermediate);
-            var trainingProgramDto = _mapper.Map<TrainingProgramDto>(trainingProgram);
-            var trainingProgramVolume = trainingProgram.GetVolume();
-
-            return Ok(trainingProgramDto);
-        }
-
-        [HttpGet(Name = "GetUpperLowerProgram")]
-        public IActionResult GetUpperLowerProgram(int numberOfWeekSessions, int mesocycleLength)
-        {
-            var trainingProgramBuilder = _trainingProgramFactory.GetInstance(TrainingProgramType.UpperLower);
-            var trainingProgram = trainingProgramBuilder.GetProgram(numberOfWeekSessions, mesocycleLength, TrainingLevel.Intermediate);
-            var trainingProgramDto = _mapper.Map<TrainingProgramDto>(trainingProgram);
-            var trainingProgramVolume = trainingProgram.GetVolume();
-
-            return Ok(trainingProgramDto);
-        }
-
-        [HttpGet(Name = "GetFullBodyProgram")]
-        public IActionResult GetFullBodyProgram(int numberOfWeekSessions, int mesocycleLength)
-        {
-            var trainingProgramBuilder = _trainingProgramFactory.GetInstance(TrainingProgramType.FullBody);
-            var trainingProgram = trainingProgramBuilder.GetProgram(numberOfWeekSessions, mesocycleLength, TrainingLevel.Intermediate);
-            var trainingProgramDto = _mapper.Map<TrainingProgramDto>(trainingProgram);
-            var trainingProgramVolume = trainingProgram.GetVolume();
-
-            return Ok(trainingProgramDto);
-        }
-
-        [HttpGet(Name = "InsertTestUsers")]
-        public IActionResult InsertTestUsers(int count = 1)
-        {
-            for (var i = 0; i < count; i++)
-            {
-                var guid = Guid.NewGuid();
-                var rnd = new Random();
-
-                _unitOfWork.Users.Add(new User()
-                {
-                    Id = guid,
-                    Username = $"User {guid}",
-                    Email = $"testuser{count}@gmail.com",                    
-                });
-            }
-
-            return Ok(_unitOfWork.Complete());
         }
 
         [HttpGet(Name = "AddUser")]

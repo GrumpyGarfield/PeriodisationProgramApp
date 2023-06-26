@@ -38,7 +38,6 @@ export function ExercisesPageHeader() {
       flexWrap="wrap-reverse"
       alignItems="flex-end"
       justifyContent="space-between"
-      sx={{ mb: 5 }}
     >
       <div>
         <PageHeader

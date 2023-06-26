@@ -21,6 +21,9 @@ import { TrainingProgramType } from "../../../../enums/TrainingProgramType";
 import { TogglePlateGroup } from "../../../common/toggle/TogglePlateGroup";
 import { TrainingLevel } from "../../../../enums/TrainingLevel";
 import { PageTitle } from "../../../common/pageTitle/PageTitle";
+import { PageContentItem } from "../../../common/pageContent/PageContentItem";
+import InfoPopover from "../../../common/popover/InfoPopover";
+import { MesocycleLengthInfo } from "../../../info/MesocycleLengthInfo";
 
 export function TrainingProgramCreatePage() {
   const entityName = "trainingProgram";
@@ -242,7 +245,16 @@ export function TrainingProgramCreatePage() {
     <Grid container spacing={4} sx={{ py: 3 }}>
       <Grid item xs={12}>
         <Stack spacing={2}>
-          <FormLabel>Choose mesocycle length</FormLabel>
+          <Stack
+            direction="row"
+            spacing={1}
+            sx={{ display: "flex", alignItems: "center" }}
+          >
+            <FormLabel>Choose mesocycle length</FormLabel>
+            <InfoPopover>
+              <MesocycleLengthInfo />
+            </InfoPopover>
+          </Stack>
           <Controller
             control={control}
             name="mesocycleLength"
@@ -324,12 +336,14 @@ export function TrainingProgramCreatePage() {
       <PageTitle title={`Create New | Training Programs`} />
       <PageContent pageContentPanel={<PageContentPanel />}>
         <PageHeader text="Create Training Program" />
-        <FormStepper
-          steps={steps}
-          handleFinish={handleSubmit(onSubmit)}
-          validate={validate}
-          errors={errors}
-        />
+        <PageContentItem>
+          <FormStepper
+            steps={steps}
+            handleFinish={handleSubmit(onSubmit)}
+            validate={validate}
+            errors={errors}
+          />
+        </PageContentItem>
       </PageContent>
     </>
   );

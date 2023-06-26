@@ -9,4 +9,6 @@ export type CreateTrainingProgramProps = {
   trainingLevel: TrainingLevel;
   mesocycleLength: number;
   isPublic: boolean;
+  useCommunityCreatedExercises: boolean;
+  useMyExercises: boolean;
 };

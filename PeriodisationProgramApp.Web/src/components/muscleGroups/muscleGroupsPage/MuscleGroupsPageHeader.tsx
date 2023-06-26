@@ -8,7 +8,6 @@ export function MuscleGroupsPageHeader() {
       flexWrap="wrap-reverse"
       alignItems="flex-end"
       justifyContent="space-between"
-      sx={{ mb: 5 }}
     >
       <PageHeader
         text="Muscle Groups"
