@@ -1,4 +1,4 @@
-import { Grid, Typography, Button } from "@mui/material";
+import { Typography, Button } from "@mui/material";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { Loader } from "../../common/loader/Loader";
 import { AxiosError } from "axios";

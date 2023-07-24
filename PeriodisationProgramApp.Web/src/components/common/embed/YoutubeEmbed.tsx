@@ -1,8 +1,10 @@
-import { useLayoutEffect, useRef, useState } from "react";
+import { useLayoutEffect, useRef } from "react";
 
 type Props = {
   url: string;
   width: string | number;
+  height: number;
+  setHeight: (height: number) => void;
 };
 
 const getId = (url: string) => {
@@ -12,9 +14,8 @@ const getId = (url: string) => {
   return match && match[2].length === 11 ? match[2] : null;
 };
 
-const YoutubeEmbed = ({ url, width }: Props) => {
+const YoutubeEmbed = ({ url, width, height, setHeight }: Props) => {
   const ref = useRef<HTMLDivElement>(null);
-  const [height, setHeight] = useState<number>();
 
   useLayoutEffect(() => {
     if (ref.current === null) {
@@ -22,7 +23,7 @@ const YoutubeEmbed = ({ url, width }: Props) => {
     }
 
     setHeight((ref.current.offsetWidth / 16) * 9);
-  }, []);
+  }, [setHeight]);
 
   return (
     <div className="video-responsive" ref={ref}>

@@ -7,7 +7,7 @@ import { EntitySorting } from "../types/EntitySorting";
 import { auth } from "../firebase/Firebase";
 
 const apiClient = axios.create({
-  baseURL: "https://localhost:44326/api",
+  baseURL: `${process.env.REACT_APP_BASE_URL}/api`,
   headers: {
     "Content-type": "application/json",
   },

@@ -56,7 +56,6 @@ namespace PeriodisationProgramApp.BusinessLogic.Builders.TrainingSessionBuilders
             }
 
             var exercises = trainingSession.Exercises.OrderBy(e => e.Exercise!.Type)
-                                                                    //.ThenBy(e => e.Exercise!.ExerciseMuscleGroups.First(m => m.MuscleGroupRole == MuscleGroupRole.Target))                                                                    
                                                                     .ToList();
 
             for (var i = 0; i < exercises.Count; i++)
@@ -72,7 +71,7 @@ namespace PeriodisationProgramApp.BusinessLogic.Builders.TrainingSessionBuilders
             var trainingSessionExercises = new List<TrainingSessionExercise>();
 
             var muscleGroup = _unitOfWork.MuscleGroups.GetMuscleGroupByType(muscleGroupType);
-            var muscleGroupSets = muscleGroup.GetTrainingSessionSets(week, _mesocycleLength, _numberOfWeekSessions, isEven);
+            var muscleGroupSets = muscleGroup.GetTrainingSessionSets(week, _mesocycleLength, _numberOfWeekSessions, isEven, _trainingLevel);
             var muscleGroupExercisesNumber = (int)Math.Ceiling((double)muscleGroupSets / 4);
             var selectedMuscleGroupExercises = _exercises.TargetExercises(muscleGroupType).Take(muscleGroupExercisesNumber).ToList();
 

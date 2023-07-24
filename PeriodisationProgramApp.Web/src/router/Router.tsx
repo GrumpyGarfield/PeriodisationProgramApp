@@ -19,6 +19,7 @@ import { TrainingProgramPage } from "../components/trainingPrograms/trainingProg
 import { TrainingProgramCreatePage } from "../components/trainingPrograms/trainingProgramPage/create/TrainingProgramCreatePage";
 import { TrainingProgramEditPage } from "../components/trainingPrograms/trainingProgramPage/edit/TrainingProgramEditPage";
 import { ErrorPage } from "../pages/ErrorPage";
+import { HomePage } from "../pages/HomePage";
 
 const router = createBrowserRouter([
   {
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
     element: <App />,
     errorElement: <ErrorPage />,
     children: [
+      {
+        path: "",
+        element: <HomePage />,
+      },
       {
         path: "training-programs",
         element: (

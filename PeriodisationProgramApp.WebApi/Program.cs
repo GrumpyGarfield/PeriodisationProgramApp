@@ -16,7 +16,7 @@ using PeriodisationProgramApp.WebApi;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Configuration.AddJsonFile("Configs\\database.json");
+builder.Configuration.AddJsonFile("Configs/database.json");
 
 // Add services to the container.
 builder.Services.AddDbContext<ApplicationContext>(options =>
@@ -37,7 +37,7 @@ builder.Services.AddBusinessLogicServices();
 
 builder.Services.AddSingleton(FirebaseApp.Create(new AppOptions()
 {
-    Credential = GoogleCredential.FromFile("Configs\\firebase.json"),
+    Credential = GoogleCredential.FromFile("Configs/firebase.json"),
 }));
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -62,20 +62,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 var app = builder.Build();
-
-using (var serviceScope = app.Services.CreateScope())
-{
-    try
-    {
-        var unitOfWork = serviceScope.ServiceProvider.GetRequiredService<IUnitOfWork>();
-        var defaultDataSettings = serviceScope.ServiceProvider.GetRequiredService<IDefaultDataSettings>();
-        DataInitializer.SeedData(unitOfWork, defaultDataSettings).Wait();
-    }
-    catch(Exception ex)
-    {
-        //Skip loading data
-    }
-}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

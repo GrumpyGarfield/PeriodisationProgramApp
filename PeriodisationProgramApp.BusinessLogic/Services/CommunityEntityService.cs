@@ -10,17 +10,69 @@ using PeriodisationProgramApp.Domain.Pagination;
 
 namespace PeriodisationProgramApp.BusinessLogic.Services
 {
-    public abstract class CommunityEntityService<Entity, EntityDto, UserLike, UserRating> : EntityService<Entity, EntityDto>, ICommunityEntityService<Entity, EntityDto, UserLike, UserRating>
+    public abstract class CommunityEntityService<Entity, EntityDto, UserLike, UserRating> : ICommunityEntityService<Entity, EntityDto, UserLike, UserRating>
         where Entity : CommunityEntity<UserLike, UserRating>
         where EntityDto: CommunityEntityDto
         where UserLike : IUserLike
         where UserRating : IUserRating
     {
-        protected new readonly ICommunityEntityRepository<Entity, UserLike, UserRating> _repository;
+        protected readonly ApplicationContext _context;
+        protected readonly ICommunityEntityRepository<Entity, UserLike, UserRating> _repository;
+        protected readonly IUserRepository _usersRepository;
+        protected readonly IMapper _mapper;
 
-        public CommunityEntityService(ApplicationContext context, ICommunityEntityRepository<Entity, UserLike, UserRating> repository, IUserRepository usersRepository, IMapper mapper) : base (context, repository, usersRepository, mapper)
+        public CommunityEntityService(ApplicationContext context, ICommunityEntityRepository<Entity, UserLike, UserRating> repository, IUserRepository usersRepository, IMapper mapper)
         {
+            _context = context;
             _repository = repository;
+            _usersRepository = usersRepository;
+            _mapper = mapper;
+        }
+
+        public async Task<PagedResult<EntityDto>> GetAll(PageableQueryContext context, Guid? userId = null)
+        {
+            var entities = await _repository.GetPaginatedResultAsync(context, userId);
+            return entities.TranslateToDto<Entity, EntityDto, UserLike, UserRating>(_mapper, userId);
+        }
+
+        public async Task<PagedResult<EntityDto>> GetAll(PageableQueryContext context, string? firebaseId)
+        {
+            if (string.IsNullOrEmpty(firebaseId))
+            {
+                return await GetAll(context);
+            }
+
+            var user = await _usersRepository.GetUserByFirebaseId(firebaseId);
+
+            if (user == null)
+            {
+                throw new Exception($"User with Firebase ID {firebaseId} not found");
+            }
+
+            return await GetAll(context, user.Id);
+        }
+
+        public async Task<EntityDto> Get(Guid entityId, Guid? userId = null)
+        {
+            var entity = await _repository.GetByIdAsync(entityId, userId);
+            return entity.TranslateToDto<Entity, EntityDto, UserLike, UserRating>(_mapper, userId);
+        }
+
+        public async Task<EntityDto> Get(Guid entityId, string? firebaseId)
+        {
+            if (string.IsNullOrEmpty(firebaseId))
+            {
+                return await Get(entityId);
+            }
+
+            var user = await _usersRepository.GetUserByFirebaseId(firebaseId);
+
+            if (user == null)
+            {
+                throw new Exception($"User with Firebase ID {firebaseId} not found");
+            }
+
+            return await Get(entityId, user.Id);
         }
 
         public virtual async Task<EntityDto> Create<CreateEntityDto>(Guid userId, CreateEntityDto createDto)

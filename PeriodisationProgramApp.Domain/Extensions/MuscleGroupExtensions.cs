@@ -25,7 +25,7 @@ namespace PeriodisationProgramApp.Domain.Extensions
             //Maximum adaptive volume of any muscle group per session is generally no lower than 4 sets
             //So we combining lower every two volume sessions to a single session
             //Could lead to slightly more volume, but not to extreme extend
-            if (trainingSessionSets < 3)
+            if (trainingSessionSets < 3 && numberOfSessions > 2)
             {
                 var oppositeRoundingMethod = GetRoundingMethod(!isEven);
                 var nextTrainingSessionSets = (int)oppositeRoundingMethod(trainingWeekSets / numberOfSessions);

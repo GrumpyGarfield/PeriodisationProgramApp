@@ -181,7 +181,7 @@ export function ExerciseEditPage() {
             id="description"
             label="Description"
             autoComplete="description"
-            rows={4}
+            rows={8}
             {...register("description", {
               maxLength: {
                 value: 5000,

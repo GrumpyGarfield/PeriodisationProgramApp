@@ -1,37 +1,117 @@
-import { Typography } from "@mui/material";
-import React from "react";
+import { Button, Link, Typography } from "@mui/material";
+import { PageContent } from "../components/common/pageContent/PageContent";
+import { PageContentItem } from "../components/common/pageContent/PageContentItem";
+import { PageHeader } from "../components/common/pageHeader/PageHeader";
+import { SingInOrSignUpModal } from "../components/common/modal/SingInOrSignUpModal";
+import useAuthentication from "../hooks/useAuthentication";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Link as RouterLink } from "react-router-dom";
+import { SimpleCard } from "../components/common/card/SimpleCard";
 
 export function HomePage() {
+  const { isUserAuthenticated } = useAuthentication();
+  const navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleCreateProgram = () => {
+    isUserAuthenticated
+      ? navigate("/training-programs/create")
+      : setIsModalOpen(true);
+  };
+
+  const handleCreateExercise = () => {
+    isUserAuthenticated ? navigate("/exercises/create") : setIsModalOpen(true);
+  };
+
   return (
-    <React.Fragment>
-      <Typography paragraph>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus
-        non enim praesent elementum facilisis leo vel. Risus at ultrices mi
-        tempus imperdiet. Semper risus in hendrerit gravida rutrum quisque non
-        tellus. Convallis convallis tellus id interdum velit laoreet id donec
-        ultrices. Odio morbi quis commodo odio aenean sed adipiscing. Amet nisl
-        suscipit adipiscing bibendum est ultricies integer quis. Cursus euismod
-        quis viverra nibh cras. Metus vulputate eu scelerisque felis imperdiet
-        proin fermentum leo. Mauris commodo quis imperdiet massa tincidunt. Cras
-        tincidunt lobortis feugiat vivamus at augue. At augue eget arcu dictum
-        varius duis at consectetur lorem. Velit sed ullamcorper morbi tincidunt.
-        Lorem donec massa sapien faucibus et molestie ac.
-      </Typography>
-      <Typography paragraph>
-        Consequat mauris nunc congue nisi vitae suscipit. Fringilla est
-        ullamcorper eget nulla facilisi etiam dignissim diam. Pulvinar elementum
-        integer enim neque volutpat ac tincidunt. Ornare suspendisse sed nisi
-        lacus sed viverra tellus. Purus sit amet volutpat consequat mauris.
-        Elementum eu facilisis sed odio morbi. Euismod lacinia at quis risus sed
-        vulputate odio. Morbi tincidunt ornare massa eget egestas purus viverra
-        accumsan in. In hendrerit gravida rutrum quisque non tellus orci ac.
-        Pellentesque nec nam aliquam sem et tortor. Habitant morbi tristique
-        senectus et. Adipiscing elit duis tristique sollicitudin nibh sit.
-        Ornare aenean euismod elementum nisi quis eleifend. Commodo viverra
-        maecenas accumsan lacus vel facilisis. Nulla posuere sollicitudin
-        aliquam ultrices sagittis orci a.
-      </Typography>
-    </React.Fragment>
+    <PageContent>
+      <PageHeader
+        text="Welcome to Periodisation Program App"
+        subtext="Science based workout generator"
+      />
+      <PageContentItem>
+        <SimpleCard>
+          <Link
+            component={RouterLink}
+            to="training-programs"
+            variant="h5"
+            underline="hover"
+          >
+            Training Programs
+          </Link>
+          <Typography sx={{ pt: 3 }}>
+            <Link component={RouterLink} to="training-programs">
+              Browse
+            </Link>{" "}
+            and{" "}
+            <Link onClick={handleCreateProgram} sx={{ cursor: "pointer" }}>
+              create
+            </Link>{" "}
+            your training programs
+          </Typography>
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={handleCreateProgram}
+            sx={{ position: "absolute", top: 0, right: 0, m: 3 }}
+          >
+            Create New
+          </Button>
+        </SimpleCard>
+      </PageContentItem>
+      <PageContentItem>
+        <SimpleCard>
+          <Link
+            component={RouterLink}
+            to="exercises"
+            variant="h5"
+            underline="hover"
+          >
+            Exercises
+          </Link>
+          <Typography sx={{ pt: 3 }}>
+            <Link component={RouterLink} to="exercises">
+              Browse
+            </Link>{" "}
+            and{" "}
+            <Link onClick={handleCreateExercise} sx={{ cursor: "pointer" }}>
+              create
+            </Link>{" "}
+            your exercises
+          </Typography>
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={handleCreateExercise}
+            sx={{ position: "absolute", top: 0, right: 0, m: 3 }}
+          >
+            Create New
+          </Button>
+        </SimpleCard>
+      </PageContentItem>
+      <PageContentItem>
+        <SimpleCard>
+          <Link
+            component={RouterLink}
+            to="muscle-groups"
+            variant="h5"
+            underline="hover"
+          >
+            Muscle Groups
+          </Link>
+          <Typography sx={{ pt: 3 }}>
+            <Link component={RouterLink} to="muscle-groups">
+              Browse
+            </Link>{" "}
+            and edit muscle groups info
+          </Typography>
+        </SimpleCard>
+      </PageContentItem>
+      <SingInOrSignUpModal
+        isOpen={isModalOpen}
+        handleClose={() => setIsModalOpen(false)}
+      />
+    </PageContent>
   );
 }

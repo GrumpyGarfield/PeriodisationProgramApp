@@ -21,6 +21,7 @@ import { DeleteDialogModal } from "../../common/modal/DeleteDialogModal";
 import { useState } from "react";
 import { PageTitle } from "../../common/pageTitle/PageTitle";
 import { PageContentItem } from "../../common/pageContent/PageContentItem";
+import Scrollbar from "../../common/scrollbar/Scrollbar";
 
 type Params = {
   id: string;
@@ -33,6 +34,8 @@ export function ExercisePage() {
   const { status, exercise, error, isLoading, remove } = useExercise(id!);
   const [isModalOpen, setModalOpen] = useState(false);
   const navigate = useNavigate();
+
+  const [descriptionHeight, setDescriptionHeight] = useState<number>(0);
 
   if (isLoading || exercise === undefined) {
     return <Loader />;
@@ -102,17 +105,30 @@ export function ExercisePage() {
               <PageContentItem>
                 <Typography variant="h5">Description</Typography>
               </PageContentItem>
-              <PageContentItem sm={12} md={6}>
-                <Card sx={{ height: "100%", p: 3 }}>
-                  <Article text={exercise.description} />
+              <PageContentItem sm={12} md={exercise.youtubeLink ? 6 : 12}>
+                <Card
+                  sx={{
+                    height:
+                      descriptionHeight === 0 ? "100%" : descriptionHeight,
+                    py: 3,
+                  }}
+                >
+                  <Scrollbar sx={{ px: 3 }}>
+                    <Article text={exercise.description} />
+                  </Scrollbar>
                 </Card>
               </PageContentItem>
               {exercise.youtubeLink ? (
-                <Grid item sm={12} md={6}>
+                <PageContentItem sm={12} md={6}>
                   <Card>
-                    <YoutubeEmbed url={exercise.youtubeLink} width={"100%"} />
+                    <YoutubeEmbed
+                      url={exercise.youtubeLink}
+                      width={"100%"}
+                      height={descriptionHeight}
+                      setHeight={setDescriptionHeight}
+                    />
                   </Card>
-                </Grid>
+                </PageContentItem>
               ) : null}
             </>
           )}

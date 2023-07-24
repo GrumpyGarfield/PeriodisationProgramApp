@@ -9,7 +9,7 @@ export function Article({ text }: Props) {
     return null;
   }
 
-  const paragraphs = text.split("\\n");
+  const paragraphs = text.split("\n");
   let paragraphId = 0;
 
   return (

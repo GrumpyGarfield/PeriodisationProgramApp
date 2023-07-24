@@ -1,6 +1,6 @@
 {
   "ConnectionStrings": {
-    "DefaultConnection": "Host=localhost;Port=15432;Database=ppadb;Username=ppauser;Password=ktrmn76;"
+    "DefaultConnection": "Host=172.19.0.2;Port=5432;Database=ppadb;Username=ppauser;Password=ktrmn76;"
   },
   "DefaultDataSettings": {
     "DefaultUser": {

@@ -7,7 +7,7 @@ import { PagedResult } from "../../../../types/PagedResult";
 import EntityService from "../../../../serverInteraction/services/entity/EntityInteractionService";
 
 const useTrainingPrograms = (offset: number = 0, limit: number = 9) => {
-  const entity = "trainingProgram";
+  const entityName = "trainingProgram";
   const {
     filters,
     filterEntities,
@@ -31,14 +31,14 @@ const useTrainingPrograms = (offset: number = 0, limit: number = 9) => {
     refetch,
   } = useInfiniteQuery(
     [
-      entity,
+      entityName,
       JSON.stringify(filters),
       JSON.stringify(sortParams),
       JSON.stringify(optionalParams),
     ],
     async ({ pageParam = offset }): Promise<PagedResult<TrainingProgram>> => {
       return await EntityService.getAll<TrainingProgram>(
-        entity,
+        entityName,
         pageParam,
         limit,
         filters,
@@ -57,7 +57,13 @@ const useTrainingPrograms = (offset: number = 0, limit: number = 9) => {
   );
 
   const { like, rate } = useCommunityEntities<TrainingProgram>(
-    entity,
+    entityName,
+    [
+      entityName,
+      JSON.stringify(filters),
+      JSON.stringify(sortParams),
+      JSON.stringify(optionalParams),
+    ],
     optionalParams
   );
 

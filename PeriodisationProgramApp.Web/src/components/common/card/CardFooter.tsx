@@ -36,7 +36,7 @@ export function CardFooter<T extends CommunityEntity>({
       >
         {user.username}
       </Typography>
-      <Stack direction="row" spacing={1} flexShrink={0}>
+      <Stack direction="row" spacing={0.5} flexShrink={0} maxWidth={"50%"}>
         <RateButton
           id={id}
           rating={rating}

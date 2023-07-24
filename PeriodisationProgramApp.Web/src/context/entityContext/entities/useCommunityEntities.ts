@@ -6,13 +6,14 @@ import useLike from "../../../serverInteraction/hooks/communityEntity/useLike";
 
 const useCommunityEntities = <T extends CommunityEntity>(
   entityName: string,
+  queryKey: string[],
   optionalParams?: any
 ) => {
   const queryClient = useQueryClient();
 
   const { like } = useLike<T>(entityName, (communityEntity) => {
     queryClient.setQueryData<InfiniteData<PagedResult<T>>>(
-      [entityName],
+      queryKey,
       (data): InfiniteData<PagedResult<T>> => {
         if (data === undefined) {
           return { pages: [], pageParams: [] };
@@ -37,7 +38,7 @@ const useCommunityEntities = <T extends CommunityEntity>(
 
   const { rate } = useRate<T>(entityName, (communityEntity) => {
     queryClient.setQueryData<InfiniteData<PagedResult<T>>>(
-      [entityName],
+      queryKey,
       (data): InfiniteData<PagedResult<T>> => {
         if (data === undefined) {
           return { pages: [], pageParams: [] };

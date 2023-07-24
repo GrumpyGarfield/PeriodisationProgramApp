@@ -21,8 +21,7 @@ namespace PeriodisationProgramApp.DataAccess.Repositories
             {
                 var filterValues = targetMuscleGroupFilter.Value.Split(',').Select(value => (MuscleGroupType)Enum.Parse(typeof(MuscleGroupType), value));
 
-                query = query.Where(e => e.ExerciseMuscleGroups.Where(m => m.MuscleGroupRole == MuscleGroupRole.Target && filterValues.Contains(m.MuscleGroup!.Type))
-                                                                .Any());
+                query = query.Where(e => filterValues.Contains(e.TargetMuscleGroup!.Type));
             }
 
             return await IncludeAll(query, userId)
@@ -62,7 +61,7 @@ namespace PeriodisationProgramApp.DataAccess.Repositories
         {
             return _context.Exercises.Include(e => e.ExerciseMuscleGroups)
                                         .ThenInclude(g => g.MuscleGroup)
-                                     .Where(e => e.ExerciseMuscleGroups.Where(m => m.MuscleGroup!.Type == muscleGroupType && m.MuscleGroupRole == MuscleGroupRole.Target).Any())
+                                     .Where(e => e.TargetMuscleGroup!.Type == muscleGroupType && e.IsPublic)
                                      .OrderBy(r => EF.Functions.Random())
                                      .Take(number);
         }
@@ -71,7 +70,7 @@ namespace PeriodisationProgramApp.DataAccess.Repositories
         {
             return _context.Exercises.Include(e => e.ExerciseMuscleGroups)
                                         .ThenInclude(g => g.MuscleGroup)
-                                     .Where(e => e.TargetMuscleGroup!.Type == muscleGroupType && e.Type == exerciseType)
+                                     .Where(e => e.TargetMuscleGroup!.Type == muscleGroupType && e.Type == exerciseType && e.IsPublic)
                                      .OrderBy(r => EF.Functions.Random())
                                      .Take(number);
         }

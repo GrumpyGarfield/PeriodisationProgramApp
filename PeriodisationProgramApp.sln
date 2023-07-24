@@ -15,7 +15,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PeriodisationProgramApp.Bus
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "PeriodisationProgramApp.Web", "PeriodisationProgramApp.Web\PeriodisationProgramApp.Web.esproj", "{D1211620-B90E-484C-87CD-634DE9EE9D4D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeriodisationProgramApp.Common", "PeriodisationProgramApp.Common\PeriodisationProgramApp.Common.csproj", "{5951AA9F-94B0-409F-919D-0229479D0F0E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PeriodisationProgramApp.Common", "PeriodisationProgramApp.Common\PeriodisationProgramApp.Common.csproj", "{5951AA9F-94B0-409F-919D-0229479D0F0E}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{DE21D1C4-16D8-49CA-A9B6-5BFBB0350C5E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,6 +55,10 @@ Global
 		{5951AA9F-94B0-409F-919D-0229479D0F0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5951AA9F-94B0-409F-919D-0229479D0F0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5951AA9F-94B0-409F-919D-0229479D0F0E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE21D1C4-16D8-49CA-A9B6-5BFBB0350C5E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE21D1C4-16D8-49CA-A9B6-5BFBB0350C5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE21D1C4-16D8-49CA-A9B6-5BFBB0350C5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE21D1C4-16D8-49CA-A9B6-5BFBB0350C5E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

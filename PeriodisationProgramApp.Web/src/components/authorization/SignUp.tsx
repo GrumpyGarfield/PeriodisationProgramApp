@@ -1,8 +1,7 @@
 import { Button, TextField, Link, Grid, Typography } from "@mui/material";
-import { useState, useEffect } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { auth, registerWithEmailAndPassword } from "../../firebase/Firebase";
+import { registerWithEmailAndPassword } from "../../firebase/Firebase";
 import { FirebaseError } from "firebase/app";
 import { useTranslation } from "react-i18next";
 import { useForm } from "react-hook-form";
@@ -17,7 +16,6 @@ type SignUpData = {
 };
 
 export default function SignUp() {
-  const [user, loading] = useAuthState(auth);
   const navigate = useNavigate();
   const [error, setError] = useState<FirebaseError | undefined>();
   const [t] = useTranslation(["firebase"]);
@@ -31,14 +29,6 @@ export default function SignUp() {
     reValidateMode: "onBlur",
   });
 
-  useEffect(() => {
-    if (loading) {
-      // maybe trigger a loading screen
-      return;
-    }
-    if (user) navigate(-1);
-  }, [user, loading, navigate]);
-
   const onSubmit = async ({ username, email, password }: SignUpData) => {
     const result = await registerWithEmailAndPassword(
       username,
@@ -47,11 +37,15 @@ export default function SignUp() {
     );
 
     setError(result);
+
+    if (result === undefined) {
+      navigate(-1);
+    }
   };
 
   return (
     <AuthorizationForm
-      formHeader="Sign In"
+      formHeader="Sign Up"
       navigationButton={{ icon: <ArrowBackIcon /> }}
       handleSubmit={handleSubmit(onSubmit)}
     >

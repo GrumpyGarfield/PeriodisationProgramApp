@@ -38,6 +38,12 @@ const useExercises = (offset: number = 0, limit: number = 12) => {
 
   const { like, rate } = useCommunityEntities<Exercise>(
     entityName,
+    [
+      entityName,
+      JSON.stringify(filters),
+      JSON.stringify(sortParams),
+      JSON.stringify(optionalParams),
+    ],
     optionalParams
   );
   const { remove } = useRemove(entityName, (result) => {

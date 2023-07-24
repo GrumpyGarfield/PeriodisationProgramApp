@@ -79,8 +79,8 @@ const registerWithEmailAndPassword = async (
     const user = res.user;
 
     if (user !== null && user !== undefined) {
-      await updateProfile(user, { displayName: username.trim() });
       UserService.addThisUser();
+      await updateProfile(user, { displayName: username.trim() });
     }
   } catch (err) {
     console.error(err);
